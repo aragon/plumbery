@@ -48,21 +48,37 @@ Represents an Aragon organization.
 
 A promise resolving to an array of apps installed in the organization.
 
-### Organization#on('apps')
-
-Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
-
 ### Organization#app(address)
 
 A promise resolving to a specific app in the organization.
+
+### Organization#permissions()
+
+A promise resolving to the permissions of an organization.
+
+### Organization#addPermission()
+
+Add a new permission.
+
+### Organization#removePermission()
+
+Remove a permission.
+
+### Organization#execPaths()
+
+Returns an array of valid transaction paths to execute a method on an app.
 
 ### Organization#on('app', address)
 
 Start receiving a specific app. Gets called every time the app updates.
 
-### Organization#permissions()
+### Organization#on('apps')
 
-A promise resolving to the permissions of an organization.
+Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
+
+#### Organization#on('app:event', address, event)
+
+Start receiving events from an app.
 
 ### Organization#on('permissions')
 
@@ -72,38 +88,18 @@ Start receiving the permissions.
 
 An app installed in an organization.
 
-#### App#execPaths()
+## Permission
 
-Returns an array of TransactionPath that allow to execute a method on the app.
-
-#### App#on('event')
-
-Start receiving events from the app.
+Represents a permission.
 
 ## Repo
 
 Represents an app before it gets installed in an organization.
 
+## Role
+
+A role can be applied to an app in order to create a permission.
+
 ## TransactionPath
 
 Represents a single transaction path.
-
-## OrgPermissions
-
-Represent the permissions that exist on an organization.
-
-### OrgPermissions#add()
-
-Add a new permission.
-
-### OrgPermissions#remove()
-
-Remove a permission.
-
-## Permission
-
-Represents a permission.
-
-## PermissionRole
-
-A role that can be applied to an address to create a permission.
