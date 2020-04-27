@@ -76,7 +76,7 @@ Start receiving a specific app. Gets called every time the app updates.
 
 Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
 
-#### Organization#on('app:event', address, event)
+### Organization#on('app:event', address, event)
 
 Start receiving events from an app.
 
