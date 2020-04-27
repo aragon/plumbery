@@ -10,8 +10,6 @@ const connection = new Connection({ connector, signer })
 
 `connector` is a `Connector`, while `signer` is an Ethereum provider (EIP 1193).
 
-### API
-
 ### Connection#organization()
 
 Returns an `Organization` at `address`:
@@ -46,29 +44,27 @@ A connector that read information from a JSON string. Useful for testing / debug
 
 Represents an Aragon organization.
 
-### API
-
-#### Organization#apps()
+### Organization#apps()
 
 A promise resolving to an array of apps installed in the organization.
 
-#### Organization#on('apps')
+### Organization#on('apps')
 
 Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
 
-#### Organization#app(address)
+### Organization#app(address)
 
 A promise resolving to a specific app in the organization.
 
-#### Organization#on('app', address)
+### Organization#on('app', address)
 
 Start receiving a specific app. Gets called every time the app updates.
 
-#### Organization#permissions()
+### Organization#permissions()
 
 A promise resolving to the permissions of an organization.
 
-#### Organization#on('permissions')
+### Organization#on('permissions')
 
 Start receiving the permissions.
 
@@ -76,9 +72,9 @@ Start receiving the permissions.
 
 An app installed in an organization.
 
-#### App#execute()
+#### App#execPaths()
 
-Executes a method on the app.
+Returns an array of TransactionPath that allow to execute a method on the app.
 
 #### App#on('event')
 
@@ -96,13 +92,11 @@ Represents a single transaction path.
 
 Represent the permissions that exist on an organization.
 
-### API
-
-#### OrgPermissions#add()
+### OrgPermissions#add()
 
 Add a new permission.
 
-#### OrgPermissions#remove()
+### OrgPermissions#remove()
 
 Remove a permission.
 
