@@ -1,5 +1,5 @@
 import App from './App'
-import TransactionPathCollection from './TransactionPathCollection'
+import TransactionPath from './TransactionPath'
 
 export default class Organization {
   // List of the apps installed in the organization
@@ -13,7 +13,7 @@ export default class Organization {
   }
 
   // Get the transaction paths that could work to execute something
-  exec(app: App, method: string, params: string[]): TransactionPathCollection {
-    return new TransactionPathCollection()
+  exec(app: App, method: string, params: string[]): TransactionPath[] {
+    return []
   }
 }
