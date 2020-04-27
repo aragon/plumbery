@@ -80,13 +80,13 @@ Returns an array of valid transaction paths to execute a method on an app.
 
 Start receiving a specific app. Gets called every time the app updates.
 
-### Organization#on('apps')
-
-Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
-
 ### Organization#on('app:event', address, event)
 
 Start receiving events from an app.
+
+### Organization#on('apps')
+
+Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
 
 ### Organization#on('permissions')
 
