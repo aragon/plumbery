@@ -76,16 +76,40 @@ Start receiving the permissions.
 
 An app installed in an organization.
 
-#### App#execute('permissions')
+#### App#execute()
 
-Executes a method and
+Executes a method on the app.
 
 #### App#on('event')
+
+Start receiving events from the app.
 
 ## Repo
 
 Represents an app before it gets installed in an organization.
 
-## TransactionPathCollection
-
 ## TransactionPath
+
+Represents a single transaction path.
+
+## OrgPermissions
+
+Represent the permissions that exist on an organization.
+
+### API
+
+#### OrgPermissions#add()
+
+Add a new permission.
+
+#### OrgPermissions#remove()
+
+Remove a permission.
+
+## Permission
+
+Represents a permission.
+
+## PermissionRole
+
+A role that can be applied to an address to create a permission.
