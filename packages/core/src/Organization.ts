@@ -2,18 +2,32 @@ import App from './App'
 import TransactionPath from './TransactionPath'
 
 export default class Organization {
+  #address: string
+  #connector: any
+  #signer: any
+
+  constructor(address, connector, signer) {
+    this.#address = address
+    this.#connector = connector
+    this.#signer = signer
+  }
+
   // List of the apps installed in the organization
-  apps() {
+  async apps() {
     return {}
   }
 
   // List of the apps installed in the organization
-  permissions() {
-    return []
+  async permissions() {
+    return this.#connector.permissions()
   }
 
   // Get the transaction paths that could work to execute something
-  exec(app: App, method: string, params: string[]): TransactionPath[] {
+  async execPaths(
+    app: App,
+    method: string,
+    params: string[]
+  ): Promise<TransactionPath[]> {
     return []
   }
 }

@@ -1,10 +1,15 @@
 import { aragonConnect, ConnectorJson } from 'plumbery-core'
-import jsonData from './org-data.json'
+import data from './org-data.json'
 
 async function main() {
-  const connector = new ConnectorJson(jsonData)
-  const connection = aragonConnect(connector)
+  const connection = aragonConnect({
+    connector: ['json', { data }],
+    signer: {},
+  })
   const org = connection.organization('governance.aragonproject.eth')
+
+  console.log('Permissions:')
+  console.log(await org.permissions())
 }
 
 main()

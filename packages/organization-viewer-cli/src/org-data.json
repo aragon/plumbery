@@ -1,44 +1,18 @@
-[
-  [
-    "0xcafecafe",
+{
+  "permissions": [
     [
+      "0x_app1",
       [
-        "0xcafecafe",
-        [
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe"
-        ]
-      ],
-      [
-        "0xcafecafe",
-        [
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe"
-        ]
+        ["0x_role1", ["0x_entity1", "0x_entity2", "0x_entity3"]],
+        ["0x_role2", ["0x_entity1", "0x_entity2", "0x_entity3"]]
       ]
-    ]
-  ],
-  [
-    "0xcafecafe",
+    ],
     [
+      "0x_app2",
       [
-        "0xcafecafe",
-        [
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe"
-        ]
-      ],
-      [
-        "0xcafecafe",
-        [
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe",
-          "0xcafecafecafecafecafe"
-        ]
+        ["0x_role1", ["0x_entity1", "0x_entity2", "0x_entity3"]],
+        ["0x_role2", ["0x_entity1", "0x_entity2", "0x_entity3"]]
       ]
     ]
   ]
-]
+}
