@@ -52,6 +52,14 @@ A promise resolving to an array of apps installed in the organization.
 
 A promise resolving to a specific app in the organization.
 
+### Organization#addApp()
+
+Install a new app into the organization.
+
+### Organization#removeApp()
+
+Remove an app from the organization.
+
 ### Organization#permissions()
 
 A promise resolving to the permissions of an organization.
