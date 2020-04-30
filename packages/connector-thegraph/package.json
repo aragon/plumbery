@@ -10,6 +10,7 @@
     "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
+    "@types/react": "^16.9.34",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "eslint": "^6.8.0",
@@ -17,6 +18,10 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@brillout/fetch": "^0.2.1",
+    "@urql/core": "^1.11.7",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
     "wonka": "^4.0.9"
   }
 }
