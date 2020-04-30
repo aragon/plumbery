@@ -52,11 +52,11 @@ A promise resolving to an array of apps installed in the organization.
 
 A promise resolving to a specific app in the organization.
 
-### Organization#addApp()
+### Organization#addApp(repoId, params)
 
 Install a new app into the organization.
 
-### Organization#removeApp()
+### Organization#removeApp(appId)
 
 Remove an app from the organization.
 
@@ -64,41 +64,61 @@ Remove an app from the organization.
 
 A promise resolving to the permissions of an organization.
 
-### Organization#addPermission()
+### Organization#addPermission(appId, roleId, address)
 
 Add a new permission.
 
-### Organization#removePermission()
+### Organization#removePermission(appId, roleId, address)
 
 Remove a permission.
 
-### Organization#execPaths()
+### Organization#roleManager(appId, roleId)
 
-Returns an array of valid transaction paths to execute a method on an app.
+Get the managor of a role.
 
-### Organization#on('app', address)
+### Organization#setRoleManager(appId, roleId, address)
+
+Returns an array of transaction paths to set the manager of a role.
+
+### Organization#removeRoleManager(appId, roleId)
+
+Returns an array of transaction paths to remove the manager of a role.
+
+### Organization#appIntent(appId, methodName, args)
+
+Returns an array of transaction paths to execute a method on an app.
+
+### Organization#appCall(appId, methodName, args)
+
+Performs a read-only call on the app contract.
+
+### Organization#appState(appId)
+
+Get the current state of an app.
+
+### Organization#on('app', appId, app => {})
 
 Start receiving a specific app. Gets called every time the app updates.
 
-### Organization#on('app:event', address, event)
+### Organization#on('appEvent', appId, event => {})
 
 Start receiving events from an app.
 
-### Organization#on('apps')
+### Organization#on('appState', appId, appState => {})
+
+Start receiving the state of an app.
+
+### Organization#on('apps', apps => {})
 
 Start receiving an array of the installed apps. Gets called every time a change happens in one of the apps.
 
-### Organization#on('permissions')
+### Organization#on('permissions', permissions => {})
 
 Start receiving the permissions.
 
 ## App
 
 An app installed in an organization.
-
-## Permission
-
-Represents a permission.
 
 ## Repo
 
@@ -107,6 +127,14 @@ Represents an app before it gets installed in an organization.
 ## Role
 
 A role can be applied to an app in order to create a permission.
+
+## Permission
+
+Represents a single permission.
+
+## Permissions
+
+Represents the permissions set in an organization.
 
 ## TransactionPath
 
