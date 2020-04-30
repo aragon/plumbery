@@ -2,7 +2,7 @@
 
 ## Usage
 
-```
+```js
 const connection = new AragonPlumbery({
   connector: new ConnectorEthereum({
     provider: ethereumProvider,
