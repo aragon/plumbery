@@ -19,7 +19,7 @@ export default class Organization {
 
   // List of the apps installed in the organization
   async permissions() {
-    return this.#connector.permissions()
+    return this.#connector.permissions(this.#address)
   }
 
   // Get the transaction paths that could work to execute something

@@ -30,7 +30,9 @@ function getConnector(connector) {
   throw new Error(`Unsupported connector name: ${name}`)
 }
 
-function getSigner(signer) {
+type EthereumProvider = any
+
+function getSigner(signer: EthereumProvider) {
   if (signer) {
     return signer
   }
