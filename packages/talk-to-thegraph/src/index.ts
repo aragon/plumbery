@@ -1,14 +1,44 @@
 import fetch from 'node-fetch'
 import fs from 'fs'
+import ws from 'ws'
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
-const GRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph'
-const ORG_ADDRESS = '0x022fd42a494e0f9e00960d1becc5a1bbed4b528a'
+// const GRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph'
+const GRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
+
+// const GRAPH_WS = 'wss://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph'
+const GRAPH_WS = 'wss://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
+
+// const ORG_ADDRESS = '0x022fd42a494e0f9e00960d1becc5a1bbed4b528a' // mainnet
+const ORG_ADDRESS = '0x9CBc580796F549510D4D91F117555A4964296884' // rinkeby, 'aletalkstothegraph'
+
+let wsclient
 
 async function main(): Promise<void> {
-  trace( 'App names:', await orgAppNames(ORG_ADDRESS) )
-  trace( 'App addresses:', await orgAppAddresses(ORG_ADDRESS) )
-  trace( 'Org permissions:', await orgPermissions(ORG_ADDRESS) )
+  // Queries.
+  // trace( 'App names:', await orgAppNames(ORG_ADDRESS) )
+  // trace( 'App addresses:', await orgAppAddresses(ORG_ADDRESS) )
+  // trace( 'Org permissions:', await orgPermissions(ORG_ADDRESS) )
   // trace( 'Full org data:',  await orgFull(ORG_ADDRESS)         )
+
+  // Subscriptions.
+  subscriptionTest(ORG_ADDRESS, (args): any => {
+    console.log(`\nUPDATE /////////////////////////`)
+    console.log(JSON.stringify(args, null, 2))
+  })
+
+  // Keep program running...
+  await new Promise(() => {})
+}
+
+function subscriptionTest(orgAddress: string, callback: (...args) => {}): void {
+  // Build query.
+  const query = applyOrganizationOnQuery(
+    orgAddress,
+    'subscription_test.graphql'
+  )
+
+  graphSubscribe(query, callback)
 }
 
 function trace(title: string, data: any): void {
@@ -107,6 +137,20 @@ async function graphQuery(query: string): Promise<any> {
   )
 
   return response.json()
+}
+
+function graphSubscribe(query: string, callback: (...args) => {}): void {
+  if (!wsclient) {
+    wsclient = new SubscriptionClient( GRAPH_WS, { reconnect: true }, ws)
+  }
+  // console.log(wsclient)
+
+  const req = wsclient.request({
+    query
+  })
+  // console.log(req)
+
+  req.subscribe({next: callback, error: console.error})
 }
 
 main()
