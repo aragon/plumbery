@@ -1,7 +1,7 @@
-import gql from 'graphql-tag'
 import { ConnectorInterface, PermissionsType } from 'plumbery-core'
+import fetch from 'node-fetch'
 import { createClient } from '@urql/core'
-import fetch from '@brillout/fetch'
+import { QUERY_PERMISSIONS } from './queries'
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: any
@@ -14,35 +14,26 @@ class ConnectorTheGraph implements ConnectorInterface {
     appSubgraphUrl: (repoId: string) => string
     daoSubgraphUrl: string
   }) {
-    this.#daoClient = createClient({ url: daoSubgraphUrl, fetch })
+    this.#daoClient = createClient({
+      fetch: typeof window === 'undefined' ? fetch : window.fetch,
+      maskTypename: true,
+      url: daoSubgraphUrl,
+    })
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
   async permissions(orgAddress: string): Promise<PermissionsType> {
-    return [
-      await this.#daoClient
-        .query(
-          gql`
-            query Organization($id: ID!) {
-              organization(id: $id) {
-                acl {
-                  permissions {
-                    role {
-                      name
-                    }
-                    entity
-                  }
-                }
-              }
-            }
-          `,
-          {
-            id: orgAddress,
-          }
-        )
-        .toPromise()
-        .then(res => res.data.organization.acl.permissions),
-    ]
+    return await this.#daoClient
+      .query(QUERY_PERMISSIONS, { orgAddress })
+      .toPromise()
+      .then(res => {
+        const { permissions } = res.data.organization.acl
+        return permissions.map(({ app, entity, role }) => ({
+          app: app?.address || null,
+          entity,
+          role: role.name,
+        }))
+      })
   }
 }
 
