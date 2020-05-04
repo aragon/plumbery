@@ -9,6 +9,8 @@
   },
   "references": [
     { "path": "packages/core" },
+    { "path": "packages/connector-ethereum" },
+    { "path": "packages/connector-thegraph" },
     { "path": "packages/organization-viewer-cli" },
     { "path": "packages/organization-viewer-web" },
     { "path": "packages/react" }
