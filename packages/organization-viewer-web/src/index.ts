@@ -1,21 +1,14 @@
 import { aragonConnect } from 'plumbery-core'
-import data from './org-data.json'
 
 const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
 
 async function main() {
-  // Initiate the connection
-  // const connection = aragonConnect({
-  //   connector: ['json', { data }],
-  //   signer: {},
-  // })
   const connection = aragonConnect({
     connector: [
       'thegraph',
       {
         daoSubgraphUrl:
           'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        // 'wss://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
         appSubgraphUrl: () => '',
       },
     ],
@@ -32,8 +25,11 @@ async function main() {
 }
 
 function displayPermissions(permissions, orgAddress) {
-  console.log(`Permissions for ${orgAddress}:`)
-  console.log(formatPermissions(permissions))
+  const pre = document.body.appendChild(document.createElement('pre'))
+  pre.innerHTML = [
+    `Permissions for ${orgAddress}:`,
+    formatPermissions(permissions),
+  ].join('\n')
 }
 
 function formatPermissions(permissions) {
