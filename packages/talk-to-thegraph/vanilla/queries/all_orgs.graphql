@@ -1,0 +1,8 @@
+query {
+    organizations {
+        address,
+        acl {
+            address
+        }
+    }
+}
