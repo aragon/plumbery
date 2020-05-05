@@ -1,5 +1,4 @@
 node_modules/
-dist/
 
 .yarn/*
 !.yarn/releases
@@ -8,6 +7,6 @@ dist/
 
 tsconfig.tsbuildinfo
 
-# Stuff injected by Webstorm
+# Webstorm
 schema.graphql
 .graphqlconfig
