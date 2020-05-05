@@ -1,6 +1,8 @@
 node_modules/
 dist/
 
+tsconfig.tsbuildinfo
+
 # Stuff injected by Webstorm
 schema.graphql
 .graphqlconfig
