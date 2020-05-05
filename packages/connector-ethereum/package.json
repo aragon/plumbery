@@ -1,6 +1,7 @@
 {
   "name": "plumbery-connector-ethereum",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "version": "1.0.0",
   "scripts": {
     "build": "yarn clean && yarn compile",
@@ -17,6 +18,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "plumbery-core": "*",
     "wonka": "^4.0.9"
   }
 }

@@ -1,6 +1,7 @@
 {
   "name": "plumbery-connector-thegraph",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "version": "1.0.0",
   "scripts": {
     "build": "yarn clean && yarn compile",
@@ -18,10 +19,12 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "@urql/core": "^1.11.7",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "node-fetch": "^2.6.0",
+    "plumbery-core": "*",
     "wonka": "^4.0.9"
   }
 }

@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
-    "module": "CommonJS",
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2019"
-  },
-  "references": [
-    { "path": "packages/core" },
-    { "path": "packages/connector-ethereum" },
-    { "path": "packages/connector-thegraph" },
-    { "path": "packages/organization-viewer-cli" },
-    { "path": "packages/organization-viewer-web" },
-    { "path": "packages/react" }
-  ]
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2019"
+  }
 }
