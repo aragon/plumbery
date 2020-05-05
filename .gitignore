@@ -1,6 +1,11 @@
 node_modules/
 dist/
 
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
 tsconfig.tsbuildinfo
 
 # Stuff injected by Webstorm
