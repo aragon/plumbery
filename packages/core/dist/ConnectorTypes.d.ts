@@ -1,9 +1,9 @@
-export declare type PermissionsType = {
+export declare type Permission = {
     app: string;
     entity: string;
     role: string;
 };
 export interface ConnectorInterface {
-    permissions(orgAddress: string): Promise<PermissionsType>;
+    permissions(orgAddress: string): Promise<Permission[]>;
 }
 //# sourceMappingURL=ConnectorTypes.d.ts.map

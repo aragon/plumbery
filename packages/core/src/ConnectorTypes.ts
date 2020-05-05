@@ -1,9 +1,9 @@
-export type PermissionsType = {
+export type Permission = {
   app: string
   entity: string
   role: string
 }
 
 export interface ConnectorInterface {
-  permissions(orgAddress: string): Promise<PermissionsType>
+  permissions(orgAddress: string): Promise<Permission[]>
 }

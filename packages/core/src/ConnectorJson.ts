@@ -1,15 +1,15 @@
-import { ConnectorInterface, PermissionsType } from './ConnectorTypes'
+import { ConnectorInterface, Permission } from './ConnectorTypes'
 
-export type ConnectorJsonConfig = { permissions: PermissionsType }
+export type ConnectorJsonConfig = { permissions: Permission[] }
 
 class ConnectorJson implements ConnectorInterface {
-  #permissions: PermissionsType
+  #permissions: Permission[]
 
   constructor({ permissions }: ConnectorJsonConfig) {
     this.#permissions = permissions
   }
 
-  async permissions(): Promise<PermissionsType> {
+  async permissions(): Promise<Permission[]> {
     return this.#permissions
   }
 }

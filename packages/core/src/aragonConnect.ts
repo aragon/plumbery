@@ -17,7 +17,7 @@ declare global {
 
 type ConnectorDeclaration = ConnectorInterface | [string, object | undefined]
 
-function getConnector(connector: ConnectorDeclaration) {
+function getConnector(connector: ConnectorDeclaration): ConnectorInterface {
   if (!Array.isArray(connector)) {
     return connector
   }

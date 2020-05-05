@@ -1,4 +1,4 @@
-import { ConnectorInterface, PermissionsType } from 'plumbery-core'
+import { ConnectorInterface, Permission } from 'plumbery-core'
 
 export type ConnectorEthereumConfig = object
 
@@ -8,12 +8,8 @@ class ConnectorEthereum implements ConnectorInterface {
 
   constructor({}: ConnectorEthereumConfig) {}
 
-  async permissions(orgAddress: string): Promise<PermissionsType> {
-    return {
-      app: '',
-      entity: '',
-      role: ''
-    }
+  async permissions(orgAddress: string): Promise<Permission[]> {
+    return []
   }
 }
 

@@ -1,11 +1,11 @@
-import { ConnectorInterface, PermissionsType } from './ConnectorTypes';
+import { ConnectorInterface, Permission } from './ConnectorTypes';
 export declare type ConnectorJsonConfig = {
-    permissions: PermissionsType;
+    permissions: Permission[];
 };
 declare class ConnectorJson implements ConnectorInterface {
     #private;
     constructor({ permissions }: ConnectorJsonConfig);
-    permissions(): Promise<PermissionsType>;
+    permissions(): Promise<Permission[]>;
 }
 export default ConnectorJson;
 //# sourceMappingURL=ConnectorJson.d.ts.map
