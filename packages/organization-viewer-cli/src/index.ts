@@ -1,9 +1,11 @@
-import { aragonConnect } from 'plumbery-core'
+import { aragonConnect, PermissionsType } from 'plumbery-core'
 import data from './org-data.json'
 
 const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
 
 async function main() {
+  console.log(`DEMO`)
+
   // Initiate the connection
   // const connection = aragonConnect({
   //   connector: ['json', { data }],
@@ -31,22 +33,23 @@ async function main() {
   displayPermissions(permissions, ORG_ADDRESS)
 }
 
-function displayPermissions(permissions, orgAddress) {
+function displayPermissions(permissions: PermissionsType, orgAddress: string) {
   console.log(`Permissions for ${orgAddress}:`)
-  console.log(formatPermissions(permissions))
+  // console.log(formatPermissions(permissions))
 }
 
-function formatPermissions(permissions) {
-  return permissions
-    .map(({ app, role, entity }) => {
-      return [
-        '',
-        `App: ${(app || '').padEnd(42, ' ')}`,
-        `Role: ${role.padEnd(66, ' ')}`,
-        `Entity: ${entity.padEnd(42, ' ')}`,
-      ].join('\n')
-    })
-    .join('\n')
-}
+// function formatPermissions(permissions: PermissionsType) {
+//   return permissions
+//     .map(({ app, role, entity }: PermissionsType) => {
+//       return [
+//         '',
+//         `App: ${(app || '').padEnd(42, ' ')}`,
+//         `Role: ${role.padEnd(66, ' ')}`,
+//         `Entity: ${entity.padEnd(42, ' ')}`,
+//       ].join('\n')
+//     })
+//     .join('\n')
+// }
 
 main()
+  .then(process.exit(0))
