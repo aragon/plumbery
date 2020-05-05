@@ -1,0 +1,20 @@
+{
+    __type(name:"Organization") {
+        fields {
+            name
+            description
+            type {
+                name
+                kind
+                ofType {
+                    name
+                    kind
+                    ofType {
+                        name
+                        kind
+                    }
+                }
+            }
+        }
+    }
+}

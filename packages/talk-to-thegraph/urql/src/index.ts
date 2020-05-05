@@ -10,7 +10,7 @@ const GRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-r
 // const ORG_ADDRESS = '0x059bCFBC477C46AB39D76c05B7b40f3A42e7DE3B' // rinkeby, 'aleisstilltalkingtothegraph'
 const ORG_ADDRESS = '0xd0a36F6441678140bbA1fB8Cba3d75cB87dbe60b'
 
-let client
+let client: Client
 
 async function main(): Promise<void> {
   client = new Client({
@@ -64,7 +64,7 @@ async function testOneTimeCall(): Promise<void> {
   // (2) The data is cached and can now be
   // retrieved synchronously.
   cached = client.readQuery(query)
-  console.log(`cached (after):`, cached.data.organizations)
+  console.log(`cached (after):`, cached!.data.organizations)
 }
 
 async function testStreamedCall(): Promise<void> {
