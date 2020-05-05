@@ -1,6 +1,6 @@
 # Organization
 
-This object represents an Aragon organization and allows to interact with it.
+An `Organization` instance represents an Aragon organization and allows to interact with it.
 
 ## Methods
 
