@@ -1,8 +1,9 @@
 {
   "name": "plumbery-core",
+  "version": "1.0.0",
+  "license": "AGPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "1.0.0",
   "scripts": {
     "build": "yarn clean && yarn compile",
     "dev": "yarn build --watch",
