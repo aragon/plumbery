@@ -1,0 +1,14 @@
+query {
+    organizations(where: {
+        address: "0x022fd42a494e0f9e00960d1becc5a1bbed4b528a" # $orgAddress
+    }) {
+        apps {
+            repo {
+                name
+            }
+            repo {
+                name
+            }
+        }
+    }
+}

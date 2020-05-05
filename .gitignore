@@ -5,3 +5,9 @@ dist/
 !.yarn/releases
 !.yarn/plugins
 .pnp.*
+
+tsconfig.tsbuildinfo
+
+# Stuff injected by Webstorm
+schema.graphql
+.graphqlconfig

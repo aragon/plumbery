@@ -1,17 +1,52 @@
-import { aragonConnect, ConnectorJson } from 'plumbery-core'
+import { aragonConnect } from 'plumbery-core'
 import data from './org-data.json'
 
-async function main() {
+const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
 
+async function main() {
+  // Initiate the connection
+  // const connection = aragonConnect({
+  //   connector: ['json', { data }],
+  //   signer: {},
+  // })
   const connection = aragonConnect({
-    connector: ['json', { data }],
+    connector: [
+      'thegraph',
+      {
+        daoSubgraphUrl:
+          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
+        // 'wss://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
+        appSubgraphUrl: () => '',
+      },
+    ],
     signer: {},
   })
 
-  const org = connection.organization('governance.aragonproject.eth')
+  // Get an Organization instance
+  const org = connection.organization(ORG_ADDRESS)
 
-  console.log('Permissions:')
-  console.log(await org.permissions())
+  // Get the permissions set on the organization
+  const permissions = await org.permissions()
+
+  displayPermissions(permissions, ORG_ADDRESS)
+}
+
+function displayPermissions(permissions, orgAddress) {
+  console.log(`Permissions for ${orgAddress}:`)
+  console.log(formatPermissions(permissions))
+}
+
+function formatPermissions(permissions) {
+  return permissions
+    .map(({ app, role, entity }) => {
+      return [
+        '',
+        `App: ${(app || '').padEnd(42, ' ')}`,
+        `Role: ${role.padEnd(66, ' ')}`,
+        `Entity: ${entity.padEnd(42, ' ')}`,
+      ].join('\n')
+    })
+    .join('\n')
 }
 
 main()

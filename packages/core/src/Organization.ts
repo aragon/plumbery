@@ -1,12 +1,18 @@
 import App from './App'
 import TransactionPath from './TransactionPath'
+import { SignerType } from './SignerTypes'
+import { ConnectorInterface } from './ConnectorTypes'
 
 export default class Organization {
   #address: string
-  #connector: any
-  #signer: any
+  #connector: ConnectorInterface
+  #signer: SignerType
 
-  constructor(address, connector, signer) {
+  constructor(
+    address: string,
+    connector: ConnectorInterface,
+    signer: SignerType
+  ) {
     this.#address = address
     this.#connector = connector
     this.#signer = signer
@@ -19,7 +25,7 @@ export default class Organization {
 
   // List of the apps installed in the organization
   async permissions() {
-    return this.#connector.permissions()
+    return this.#connector.permissions(this.#address)
   }
 
   // Get the transaction paths that could work to execute something

@@ -1,7 +1,9 @@
 {
   "name": "plumbery-connector-thegraph",
-  "main": "dist/index.js",
   "version": "1.0.0",
+  "license": "AGPL-3.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "yarn clean && yarn compile",
     "dev": "yarn build --watch",
@@ -10,6 +12,7 @@
     "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
+    "@types/react": "^16.9.34",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "eslint": "^6.8.0",
@@ -17,6 +20,12 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "@urql/core": "^1.11.7",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
+    "node-fetch": "^2.6.0",
+    "plumbery-core": "*",
     "wonka": "^4.0.9"
   }
 }

@@ -2,5 +2,11 @@
   "name": "root",
   "private": true,
   "devDependencies": {},
-  "workspaces": ["packages/*"]
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "core": "yarn workspace plumbery-core",
+    "c-ethereum": "yarn workspace plumbery-connector-ethereum",
+    "c-thegraph": "yarn workspace plumbery-connector-thegraph",
+    "react": "yarn workspace plumbery-react"
+  }
 }

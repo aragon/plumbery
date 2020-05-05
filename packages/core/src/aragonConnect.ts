@@ -1,8 +1,13 @@
-import ConnectorEthereum from 'plumbery-connector-ethereum'
-import ConnectorTheGraph from 'plumbery-connector-thegraph'
-import ConnectorJson from './ConnectorJson'
-import { ConnectorInterface } from './ConnectorTypes'
+import ConnectorEthereum, {
+  ConnectorEthereumConfig,
+} from 'plumbery-connector-ethereum'
+import ConnectorTheGraph, {
+  ConnectorTheGraphConfig,
+} from 'plumbery-connector-thegraph'
 import Connection from './Connection'
+import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'
+import { ConnectorInterface } from './ConnectorTypes'
+import { SignerType } from './SignerTypes'
 
 declare global {
   interface Window {
@@ -10,7 +15,9 @@ declare global {
   }
 }
 
-function getConnector(connector) {
+type ConnectorDeclaration = ConnectorInterface | [string, object | undefined]
+
+function getConnector(connector: ConnectorDeclaration) {
   if (!Array.isArray(connector)) {
     return connector
   }
@@ -18,19 +25,21 @@ function getConnector(connector) {
   const [name, config = {}] = connector
 
   if (name === 'json') {
-    return new ConnectorJson(config)
+    return new ConnectorJson(<ConnectorJsonConfig>config)
   }
   if (name === 'thegraph') {
-    return new ConnectorTheGraph(config)
+    return new ConnectorTheGraph(<ConnectorTheGraphConfig>config)
   }
   if (name === 'ethereum') {
-    return new ConnectorEthereum(config)
+    return new ConnectorEthereum(<ConnectorEthereumConfig>config)
   }
 
   throw new Error(`Unsupported connector name: ${name}`)
 }
 
-function getSigner(signer) {
+type EthereumProvider = any
+
+function getSigner(signer: EthereumProvider) {
   if (signer) {
     return signer
   }
@@ -47,8 +56,8 @@ function aragonConnect({
   connector,
   signer,
 }: {
-  connector: ConnectorInterface | [string, object | undefined]
-  signer: object | undefined
+  connector: ConnectorDeclaration
+  signer: SignerType | undefined
 }) {
   return new Connection(getConnector(connector), getSigner(signer))
 }

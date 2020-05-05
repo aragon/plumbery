@@ -1,7 +1,9 @@
 {
   "name": "plumbery-core",
-  "main": "dist/index.js",
   "version": "1.0.0",
+  "license": "AGPL-3.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "yarn clean && yarn compile",
     "dev": "yarn build --watch",
@@ -17,6 +19,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "plumbery-connector-ethereum": "*",
+    "plumbery-connector-thegraph": "*",
     "wonka": "^4.0.9"
   }
 }
