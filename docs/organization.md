@@ -51,26 +51,26 @@ Fetch the organization’s permissions.
 | ------- | ---------------------- | --------------------------------------- |
 | returns | `Promise<Permissions>` | A promise resolving to a `Permissions`. |
 
-### Organization#addPermission(appAddress, roleId, address)
+### Organization#addPermission(address, appAddress, roleId)
 
 Add a new permission.
 
 | Name         | Type                        | Description                                           |
 | ------------ | --------------------------- | ----------------------------------------------------- |
+| `address`    | `String`                    | The entity being granted the permission to.           |
 | `appAddress` | `String`                    | Address of the app instance.                          |
 | `roleId`     | `String`                    | The role identifier.                                  |
-| `address`    | `String`                    | The entity being granted the permission to.           |
 | returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
 
-### Organization#removePermission(appAddress, roleId, address)
+### Organization#removePermission(address, appAddress, roleId)
 
 Remove a specific permission.
 
 | Name         | Type                        | Description                                           |
 | ------------ | --------------------------- | ----------------------------------------------------- |
+| `address`    | `String`                    | The entity being granted the permission to.           |
 | `appAddress` | `String`                    | Address of the app instance.                          |
 | `roleId`     | `String`                    | The role identifier.                                  |
-| `address`    | `String`                    | The entity being granted the permission to.           |
 | returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
 
 ### Organization#roleManager(appAddress, roleId)
@@ -83,15 +83,15 @@ Get the current manager of a role.
 | `roleId`     | `String`          | The role identifier.             |
 | returns      | `Promise<String>` | The address of the role manager. |
 
-### Organization#setRoleManager(appAddress, roleId, address)
+### Organization#setRoleManager(address, appAddress, roleId)
 
 Set the manager of a role.
 
 | Name         | Type                        | Description                                                 |
 | ------------ | --------------------------- | ----------------------------------------------------------- |
+| `address`    | `String`                    | The entity to set as a role manager. Pass `null` to remove. |
 | `appAddress` | `String`                    | Address of the app instance.                                |
 | `roleId`     | `String`                    | The role identifier.                                        |
-| `address`    | `String`                    | The entity to set as a role manager. Pass `null` to remove. |
 | returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance.       |
 
 ### Organization#appIntent(appAddress, funcName, funcArgs)
