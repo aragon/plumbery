@@ -1,6 +1,6 @@
 # Permission
 
-Represents a single permission. A permission represents the relation between an app role and an entity.
+A single permission that represents the relation between an app role and an entity.
 
 ## Properties
 
