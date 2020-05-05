@@ -1,3 +1,7 @@
 export default class TransactionPath {
-  readonly description
+  readonly description: string
+
+  constructor() {
+    this.description = ''
+  }
 }
