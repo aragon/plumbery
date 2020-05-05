@@ -1,15 +1,11 @@
 import { ConnectorInterface, PermissionsType } from './ConnectorTypes'
 
-class ConnectorJson implements ConnectorInterface {
-  #permissions = []
+export type ConnectorJsonConfig = { permissions: PermissionsType }
 
-  constructor({
-    data: { permissions },
-  }: {
-    data: {
-      permissions: PermissionsType
-    }
-  }) {
+class ConnectorJson implements ConnectorInterface {
+  #permissions: PermissionsType
+
+  constructor({ permissions }: ConnectorJsonConfig) {
     this.#permissions = permissions
   }
 

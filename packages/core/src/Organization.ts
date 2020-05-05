@@ -1,12 +1,18 @@
 import App from './App'
 import TransactionPath from './TransactionPath'
+import { SignerType } from './SignerTypes'
+import { ConnectorInterface } from './ConnectorTypes'
 
 export default class Organization {
   #address: string
-  #connector: any
-  #signer: any
+  #connector: ConnectorInterface
+  #signer: SignerType
 
-  constructor(address, connector, signer) {
+  constructor(
+    address: string,
+    connector: ConnectorInterface,
+    signer: SignerType
+  ) {
     this.#address = address
     this.#connector = connector
     this.#signer = signer

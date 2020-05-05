@@ -1,10 +1,11 @@
 import Organization from './Organization'
+import { ConnectorInterface } from './ConnectorTypes'
 
 export default class Connection {
-  #connector: any
+  #connector: ConnectorInterface
   #signer: any
 
-  constructor(connector, signer) {
+  constructor(connector: ConnectorInterface, signer: any) {
     this.#connector = connector
     this.#signer = signer
   }
