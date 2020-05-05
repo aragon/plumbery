@@ -6,7 +6,7 @@ export default class Organization {
     #private;
     constructor(address: string, connector: ConnectorInterface, signer: SignerType);
     apps(): Promise<{}>;
-    permissions(): Promise<import("./ConnectorTypes").PermissionsType>;
+    permissions(): Promise<import("./ConnectorTypes").Permission[]>;
     execPaths(app: App, method: string, params: string[]): Promise<TransactionPath[]>;
 }
 //# sourceMappingURL=Organization.d.ts.map

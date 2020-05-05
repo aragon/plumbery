@@ -1,4 +1,4 @@
-import { ConnectorInterface, PermissionsType } from 'plumbery-core';
+import { ConnectorInterface, Permission } from 'plumbery-core';
 declare global {
     interface Window {
         fetch: any;
@@ -11,7 +11,7 @@ export declare type ConnectorTheGraphConfig = {
 declare class ConnectorTheGraph implements ConnectorInterface {
     #private;
     constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig);
-    permissions(orgAddress: string): Promise<PermissionsType>;
+    permissions(orgAddress: string): Promise<Permission[]>;
 }
 export default ConnectorTheGraph;
 //# sourceMappingURL=index.d.ts.map

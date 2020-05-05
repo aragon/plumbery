@@ -1,4 +1,4 @@
-import { ConnectorInterface, PermissionsType } from 'plumbery-core'
+import { ConnectorInterface, Permission } from 'plumbery-core'
 import fetch from 'node-fetch'
 import { createClient } from '@urql/core'
 import { QUERY_PERMISSIONS } from './queries'
@@ -27,7 +27,7 @@ class ConnectorTheGraph implements ConnectorInterface {
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
-  async permissions(orgAddress: string): Promise<PermissionsType> {
+  async permissions(orgAddress: string): Promise<Permission[]> {
     return await this.#daoClient
       .query(QUERY_PERMISSIONS, { orgAddress })
       .toPromise()

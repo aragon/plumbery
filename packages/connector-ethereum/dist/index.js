@@ -7,11 +7,7 @@ class ConnectorEthereum {
         _appClient.set(this, void 0);
     }
     async permissions(orgAddress) {
-        return {
-            app: '',
-            entity: '',
-            role: ''
-        };
+        return [];
     }
 }
 _daoClient = new WeakMap(), _appClient = new WeakMap();

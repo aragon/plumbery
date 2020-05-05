@@ -28,20 +28,20 @@ async function main() {
 }
 function displayPermissions(permissions, orgAddress) {
     console.log(`Permissions for ${orgAddress}:`);
-    // console.log(formatPermissions(permissions))
+    console.log(formatPermissions(permissions));
 }
-// function formatPermissions(permissions: PermissionsType) {
-//   return permissions
-//     .map(({ app, role, entity }: PermissionsType) => {
-//       return [
-//         '',
-//         `App: ${(app || '').padEnd(42, ' ')}`,
-//         `Role: ${role.padEnd(66, ' ')}`,
-//         `Entity: ${entity.padEnd(42, ' ')}`,
-//       ].join('\n')
-//     })
-//     .join('\n')
-// }
+function formatPermissions(permissions) {
+    return permissions
+        .map(({ app, role, entity }) => {
+        return [
+            '',
+            `App: ${(app || '').padEnd(42, ' ')}`,
+            `Role: ${role.padEnd(66, ' ')}`,
+            `Entity: ${entity.padEnd(42, ' ')}`,
+        ].join('\n');
+    })
+        .join('\n');
+}
 main()
     .then(process.exit(0));
 //# sourceMappingURL=index.js.map
