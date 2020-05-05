@@ -4,6 +4,9 @@ async function main(): Promise<void> {
   const client = new Client()
 
   const org = await client.getOrganization('0xd0a36F6441678140bbA1fB8Cba3d75cB87dbe60b')
+  // org.acl?.permissions?.forEach(permission => {
+  //   permission.entity
+  // })
 
   console.log('Address:', org.address)
 
@@ -15,7 +18,6 @@ async function main(): Promise<void> {
   //   console.log(permission.id)
   // })
 }
-
 
 main()
   .then(() => process.exit(0))

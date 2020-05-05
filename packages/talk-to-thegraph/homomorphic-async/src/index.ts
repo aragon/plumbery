@@ -8,14 +8,11 @@ async function main(): Promise<void> {
   console.log('Address:', org.address)
 
   const apps = await org.apps
-  for(let i = 0; i < apps.length; i++) {
-    const app = apps[i]
-
+  for(let app of apps) {
     const repo = await app.repo
     console.log(`App:`, repo?.name)
   }
 }
-
 
 main()
   .then(() => process.exit(0))
