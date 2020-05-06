@@ -1,11 +1,11 @@
-import { Permission } from 'plumbery-core'
-import { OrganizationDataGql, PermissionDataGql } from './graph-types'
+import { Permission, ConnectorTheGraph } from 'plumbery-core'
+import { OrganizationDataGql, PermissionDataGql } from '../../graph-types'
 import { Client } from '@urql/core'
-import { PermissionData } from 'plumbery-core/dist/wrappers/Permission'
 
-export default async function fetchPermissions(
+export default async function fetchPermissionsForOrg(
   orgAddress: string,
-  client: Client
+  client: Client,
+  connector: ConnectorTheGraph
 ): Promise<Permission[]> {
   const query = `
     query {
@@ -33,12 +33,10 @@ export default async function fetchPermissions(
   }
 
   return org.acl.permissions.map((permission: PermissionDataGql) => {
-    const data: PermissionData = {
+    return new Permission({
       app: permission.app?.address,
       entity: permission.entity,
       role: permission.role.name,
-    }
-
-    return new Permission(data)
+    }, connector)
   })
 }

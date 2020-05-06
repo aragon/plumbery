@@ -21,12 +21,12 @@ export default class Organization {
 
   // List of the apps installed in the organization
   async apps(): Promise<App[]> {
-    return this.#connector.apps!(this.#address)
+    return this.#connector.appsForOrg!(this.#address)
   }
 
   // List of the apps installed in the organization
   async permissions(): Promise<Permission[]> {
-    return this.#connector.permissions(this.#address)
+    return this.#connector.permissionsForOrg(this.#address)
   }
 
   // Get the transaction paths that could work to execute something

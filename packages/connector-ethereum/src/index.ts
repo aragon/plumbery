@@ -8,7 +8,7 @@ class ConnectorEthereum implements ConnectorInterface {
 
   constructor({}: ConnectorEthereumConfig) {}
 
-  async permissions(orgAddress: string): Promise<Permission[]> {
+  async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     return []
   }
 }

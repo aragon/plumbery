@@ -1,11 +1,11 @@
-import { App } from 'plumbery-core'
-import { OrganizationDataGql, AppDataGql } from './graph-types'
+import { App, ConnectorTheGraph } from 'plumbery-core'
+import { OrganizationDataGql, AppDataGql } from '../../graph-types'
 import { Client } from '@urql/core'
-import { AppData } from 'plumbery-core/dist/wrappers/App'
 
-export default async function fetchApps(
+export default async function fetchAppsForOrg(
   orgAddress: string,
-  client: Client
+  client: Client,
+  connector: ConnectorTheGraph
 ): Promise<App[]> {
   const query = `
     query {
@@ -30,11 +30,9 @@ export default async function fetchApps(
   }
 
   return org.apps.map((appData: AppDataGql) => {
-    const data: AppData = {
+    return new App({
       name: appData.repo?.name,
       address: appData.address
-    }
-
-    return new App(data)
+    }, connector)
   })
 }

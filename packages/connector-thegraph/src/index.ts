@@ -3,10 +3,12 @@ import { Client } from '@urql/core'
 import {
   ConnectorInterface,
   Permission,
-  App
+  App,
+  Repo
 } from 'plumbery-core'
-import fetchPermissions from './permissions'
-import fetchApps from './apps';
+import fetchPermissionsForOrg from './fetchers/orgs/permissionsForOrg'
+import fetchAppsForOrg from './fetchers/orgs/appsForOrg';
+import fetchRepoForApp from './fetchers/apps/repoForApp';
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -26,12 +28,16 @@ class ConnectorTheGraph implements ConnectorInterface {
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
-  async permissions(orgAddress: string): Promise<Permission[]> {
-    return await fetchPermissions(orgAddress, this.#daoClient)
+  async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
+    return await fetchPermissionsForOrg(orgAddress, this.#daoClient, this)
   }
 
-  async apps(orgAddress: string): Promise<App[]> {
-    return await fetchApps(orgAddress, this.#daoClient)
+  async appsForOrg(orgAddress: string): Promise<App[]> {
+    return await fetchAppsForOrg(orgAddress, this.#daoClient, this)
+  }
+
+  async repoForApp(appAddress: string): Promise<Repo> {
+    return await fetchRepoForApp(appAddress, this.#daoClient, this)
   }
 }
 

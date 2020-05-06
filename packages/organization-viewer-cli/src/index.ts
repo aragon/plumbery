@@ -25,10 +25,15 @@ async function main() {
     signer: {},
   })
 
-  // Connect to the organization and collect data.
+  // Get information about the organization.
   const org = connection.organization(ORG_ADDRESS)
   const permissions = await org.permissions()
   const apps = await org.apps()
+
+  // Get information about an app.
+  const app = apps[0]
+  const repo = await app.repo()
+  console.log(repo)
 
   // Display the information.
   tracePermissions(permissions)
