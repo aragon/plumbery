@@ -6,6 +6,6 @@
 
 yarn clean
 
-echo Clean install...
+echo Clean build...
 yarn build &>/dev/null
 yarn build
