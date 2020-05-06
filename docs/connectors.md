@@ -11,7 +11,7 @@ A connector that fetches information from a The Graph subgraph.
 ### Usage
 
 ```js
-const connection = new AragonPlumbery({
+const plumbery = new Plumbery({
   connector: new ConnectorTheGraph({
     daoSubgraphUrl: 'http://…',
     appSubgraphUrl: (repoId) => {
@@ -28,7 +28,7 @@ A connector that fetches information from a standard Ethereum provider (EIP 1193
 ### Usage
 
 ```js
-const connection = new AragonPlumbery({
+const plumbery = new Plumbery({
   connector: new ConnectorEthereum({
     provider: ethereumProvider,
     appStateReducer: (state, { eventName, appId, repoId }) => {},
