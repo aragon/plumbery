@@ -30,15 +30,18 @@ async function main() {
   const org = connection.organization(ORG_ADDRESS)
   const permissions = await org.permissions()
   const apps = await org.apps()
+  tracePermissions(permissions)
+  traceApps(apps)
 
   // Get information about an app.
   const app = apps[0]
   const repo = await app.repo()
-
-  // Display the information.
-  tracePermissions(permissions)
-  traceApps(apps)
+  traceApp(app)
   traceRepo(repo)
+
+  // Retrieve an app by address.
+  const someApp = await org.app(apps[1].address)
+  traceApp(someApp)
 }
 
 function traceRepo(repo: Repo): void {
@@ -49,12 +52,14 @@ function traceRepo(repo: Repo): void {
 }
 
 function traceApps(apps: App[]): void {
-  console.log('\nApps:')
-  apps.map(app => {
-    console.log(`  Name: ${app.name || ''}`)
-    console.log(`  address: ${app.address}`)
-    console.log('')
-  })
+  apps.map(app => traceApp(app))
+}
+
+function traceApp(app: App): void {
+  console.log('\nApp:')
+  console.log(`  Name: ${app.name || ''}`)
+  console.log(`  address: ${app.address}`)
+  console.log('')
 }
 
 function tracePermissions(permissions: Permission[]): void {

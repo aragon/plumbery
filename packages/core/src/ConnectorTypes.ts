@@ -11,4 +11,5 @@ export interface ConnectorInterface {
   permissionsForOrg(orgAddress: string): Promise<Permission[]>
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>
+  appByAddress?(appAddress: string): Promise<App>
 }

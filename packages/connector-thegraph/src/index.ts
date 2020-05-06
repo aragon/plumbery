@@ -9,6 +9,7 @@ import {
 import fetchPermissionsForOrg from './fetchers/orgs/permissionsForOrg'
 import fetchAppsForOrg from './fetchers/orgs/appsForOrg';
 import fetchRepoForApp from './fetchers/apps/repoForApp';
+import fetchAppByAddress from './fetchers/apps/appByAddress';
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -34,6 +35,10 @@ class ConnectorTheGraph implements ConnectorInterface {
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
     return await fetchAppsForOrg(orgAddress, this.#daoClient, this)
+  }
+
+  async appByAddress(appAdress: string): Promise<App> {
+    return await fetchAppByAddress(appAdress, this.#daoClient, this)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {

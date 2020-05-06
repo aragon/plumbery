@@ -24,6 +24,10 @@ export default class Organization {
     return this.#connector.appsForOrg!(this.#address)
   }
 
+  async app(appAddress: string): Promise<App> {
+    return this.#connector.appByAddress!(appAddress)
+  }
+
   // List of the apps installed in the organization
   async permissions(): Promise<Permission[]> {
     return this.#connector.permissionsForOrg(this.#address)
