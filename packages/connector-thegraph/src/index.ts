@@ -1,23 +1,23 @@
 import 'isomorphic-unfetch';
 import { Client } from '@urql/core'
+import * as queries from './graphql/queries'
+import { DocumentNode } from 'graphql';
+import {
+  OrganizationDataGql,
+  AppDataGql
+} from './graphql/types';
+import {
+  parseApp,
+  parseApps,
+  parsePermissions,
+  parseRepo
+} from './parse';
 import {
   ConnectorInterface,
   Permission,
   App,
   Repo
 } from 'plumbery-core'
-import fetchRepoForApp from './fetchers/apps/repoForApp';
-import {
-  ORGANIZATION_PERMISSIONS,
-  ORGANIZATION_APPS,
-  APP_BY_ADDRESS,
-  REPO_BY_APP_ADDRESS
-} from './queries';
-import { DocumentNode } from 'graphql';
-import { OrganizationDataGql, AppDataGql } from './graph-types';
-import { parseApp, parseApps } from './parse/apps';
-import { parsePermissions } from './parse/permissions';
-import { parseRepo } from './parse/repos';
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -39,7 +39,7 @@ class ConnectorTheGraph implements ConnectorInterface {
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     const org = (await this._performQuery(
-      ORGANIZATION_PERMISSIONS,
+      queries.ORGANIZATION_PERMISSIONS,
       { orgAddress }
     )).organization as OrganizationDataGql
 
@@ -48,7 +48,7 @@ class ConnectorTheGraph implements ConnectorInterface {
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
     const org = (await this._performQuery(
-      ORGANIZATION_APPS,
+      queries.ORGANIZATION_APPS,
       { orgAddress }
     )).organization as OrganizationDataGql
 
@@ -57,7 +57,7 @@ class ConnectorTheGraph implements ConnectorInterface {
 
   async appByAddress(appAddress: string): Promise<App> {
     const app = (await this._performQuery(
-      APP_BY_ADDRESS,
+      queries.APP_BY_ADDRESS,
       { appAddress }
     )).app as AppDataGql
 
@@ -66,7 +66,7 @@ class ConnectorTheGraph implements ConnectorInterface {
 
   async repoForApp(appAddress: string): Promise<Repo> {
     const app = (await this._performQuery(
-      REPO_BY_APP_ADDRESS,
+      queries.REPO_BY_APP_ADDRESS,
       { appAddress }
     )).app as AppDataGql
 

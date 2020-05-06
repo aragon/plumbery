@@ -1,4 +1,4 @@
-import { AppDataGql } from "../graph-types";
+import { AppDataGql } from "../graphql/types";
 import { ConnectorTheGraph, App } from "plumbery-core";
 
 export function parseApp(
