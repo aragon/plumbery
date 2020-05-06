@@ -26,7 +26,6 @@ export default async function fetchPermissionsForOrg(
   `
 
   const results = await client.query(query).toPromise()
-  console.log(JSON.stringify(results, null, 2))
   const org = results.data.organization as OrganizationDataGql
 
   if (!org.acl?.permissions) {

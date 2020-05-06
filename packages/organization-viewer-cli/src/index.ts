@@ -2,10 +2,11 @@ import data from './org-data.json'
 import {
   aragonConnect,
   Permission,
-  App
+  App,
+  Repo
 } from 'plumbery-core'
 
-const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
+const ORG_ADDRESS = '0x022fd42a494e0f9e00960d1becc5a1bbed4b528a'
 
 async function main() {
   // Initiate the connection
@@ -28,16 +29,23 @@ async function main() {
   // Get information about the organization.
   const org = connection.organization(ORG_ADDRESS)
   const permissions = await org.permissions()
-  // const apps = await org.apps()
+  const apps = await org.apps()
 
   // Get information about an app.
-  // const app = apps[0]
-  // const repo = await app.repo()
-  // console.log(repo)
+  const app = apps[0]
+  const repo = await app.repo()
 
   // Display the information.
   tracePermissions(permissions)
-  // traceApps(apps)
+  traceApps(apps)
+  traceRepo(repo)
+}
+
+function traceRepo(repo: Repo): void {
+  console.log('\nRepo:')
+  console.log(`  Name: ${repo.name || ''}`)
+  console.log(`  address: ${repo.address}`)
+  console.log('')
 }
 
 function traceApps(apps: App[]): void {

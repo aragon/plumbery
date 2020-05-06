@@ -1,5 +1,5 @@
 import { Repo, ConnectorTheGraph } from 'plumbery-core'
-import { RepoDataGql } from '../../graph-types'
+import { AppDataGql } from '../../graph-types'
 import { Client } from '@urql/core'
 
 export default async function fetchRepoForApp(
@@ -24,11 +24,14 @@ export default async function fetchRepoForApp(
   `
 
   const results = await client.query(query).toPromise()
-  console.log(JSON.stringify(results, null, 2))
-  const repo = results.data.repo as RepoDataGql
+  const app = results.data.apps[0] as AppDataGql
+
+  if (!app.repo) {
+    throw new Error(`No repo found for app ${appAddress}`)
+  }
 
   return new Repo({
-    name: repo.name,
-    address: repo.address
+    name: app.repo.name,
+    address: app.repo.address
   }, connector)
 }
