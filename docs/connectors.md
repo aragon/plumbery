@@ -1,6 +1,6 @@
 # Connectors
 
-Connectors implement `ConnectorInterface`. A connector contains the mechanism through which the data is going to be fetched.
+Connectors implement `IConnector`. A connector contains the mechanism through which the data is going to be fetched.
 
 Three connectors are provided by default, listed below.
 
@@ -8,9 +8,33 @@ Three connectors are provided by default, listed below.
 
 A connector that fetches information from a The Graph subgraph.
 
+### Usage
+
+```js
+const plumbery = new Plumbery({
+  connector: new ConnectorTheGraph({
+    daoSubgraphUrl: 'http://…',
+    appSubgraphUrl: (repoId) => {
+      return 'http://…'
+    },
+  }),
+})
+```
+
 ## ConnectorEthereumProvider
 
 A connector that fetches information from a standard Ethereum provider (EIP 1193).
+
+### Usage
+
+```js
+const plumbery = new Plumbery({
+  connector: new ConnectorEthereum({
+    provider: ethereumProvider,
+    appStateReducer: (state, { eventName, appId, repoId }) => {},
+  }),
+})
+```
 
 ## ConnectorJson
 
