@@ -7,6 +7,7 @@
     "build": "yarn clean && yarn compile",
     "dev": "yarn build --watch",
     "clean": "rm -rf ./dist && rm -f tsconfig.tsbuildinfo",
+    "start": "node dist/src/index.js",
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
