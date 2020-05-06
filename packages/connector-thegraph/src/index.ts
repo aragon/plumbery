@@ -6,10 +6,18 @@ import {
   App,
   Repo
 } from 'plumbery-core'
-import fetchPermissionsForOrg from './fetchers/orgs/permissionsForOrg'
-import fetchAppsForOrg from './fetchers/orgs/appsForOrg';
 import fetchRepoForApp from './fetchers/apps/repoForApp';
-import fetchAppByAddress from './fetchers/apps/appByAddress';
+import {
+  ORGANIZATION_PERMISSIONS,
+  ORGANIZATION_APPS,
+  APP_BY_ADDRESS,
+  REPO_BY_APP_ADDRESS
+} from './queries';
+import { DocumentNode } from 'graphql';
+import { OrganizationDataGql, AppDataGql } from './graph-types';
+import { parseApp, parseApps } from './parse/apps';
+import { parsePermissions } from './parse/permissions';
+import { parseRepo } from './parse/repos';
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -30,19 +38,51 @@ class ConnectorTheGraph implements ConnectorInterface {
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
-    return await fetchPermissionsForOrg(orgAddress, this.#daoClient, this)
+    const org = (await this._performQuery(
+      ORGANIZATION_PERMISSIONS,
+      { orgAddress }
+    )).organization as OrganizationDataGql
+
+    return parsePermissions(this, org.acl?.permissions)
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
-    return await fetchAppsForOrg(orgAddress, this.#daoClient, this)
+    const org = (await this._performQuery(
+      ORGANIZATION_APPS,
+      { orgAddress }
+    )).organization as OrganizationDataGql
+
+    return parseApps(this, org.apps)
   }
 
-  async appByAddress(appAdress: string): Promise<App> {
-    return await fetchAppByAddress(appAdress, this.#daoClient, this)
+  async appByAddress(appAddress: string): Promise<App> {
+    const app = (await this._performQuery(
+      APP_BY_ADDRESS,
+      { appAddress }
+    )).app as AppDataGql
+
+    return parseApp(this, app)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
-    return await fetchRepoForApp(appAddress, this.#daoClient, this)
+    const app = (await this._performQuery(
+      REPO_BY_APP_ADDRESS,
+      { appAddress }
+    )).app as AppDataGql
+
+    return parseRepo(this, app.repo)
+  }
+
+  private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {
+    const results = await this.#daoClient.query(
+      query,
+      vars
+    ).toPromise()
+
+    // TODO: Check for errors here.
+    // console.log(JSON.stringify(results, null, 2))
+
+    return results.data
   }
 }
 

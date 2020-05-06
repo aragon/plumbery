@@ -26,20 +26,19 @@ async function main() {
     signer: {},
   })
 
-  // Get information about the organization.
   const org = connection.organization(ORG_ADDRESS)
+
   const permissions = await org.permissions()
-  const apps = await org.apps()
   tracePermissions(permissions)
+
+  const apps = await org.apps()
   traceApps(apps)
 
-  // Get information about an app.
   const app = apps[0]
   const repo = await app.repo()
   traceApp(app)
   traceRepo(repo)
 
-  // Retrieve an app by address.
   const someApp = await org.app(apps[1].address)
   traceApp(someApp)
 }
@@ -52,6 +51,7 @@ function traceRepo(repo: Repo): void {
 }
 
 function traceApps(apps: App[]): void {
+  console.log('\nApps:')
   apps.map(app => traceApp(app))
 }
 
