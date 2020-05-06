@@ -1,7 +1,8 @@
 import App from './App'
-import TransactionPath from './TransactionPath'
-import { SignerType } from './SignerTypes'
-import { ConnectorInterface, Permission } from './ConnectorTypes'
+import TransactionPath from '../TransactionPath'
+import { SignerType } from '../SignerTypes'
+import { ConnectorInterface } from '../ConnectorTypes'
+import Permission from './Permission'
 
 export default class Organization {
   #address: string
@@ -19,8 +20,8 @@ export default class Organization {
   }
 
   // List of the apps installed in the organization
-  async apps() {
-    return {}
+  async apps(): Promise<App[]> {
+    return this.#connector.apps!(this.#address)
   }
 
   // List of the apps installed in the organization

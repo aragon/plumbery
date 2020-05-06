@@ -15,72 +15,72 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query'
-  Factory?: Maybe<FactoryData>
-  Registry?: Maybe<Registry>
+  Factory?: Maybe<FactoryDataGql>
+  Registry?: Maybe<RegistryDataGql>
 };
 
-export type Registry = {
+export type RegistryDataGql = {
   __typename?: 'Registry'
   id: Scalars['ID']
   repoCount: Scalars['Int']
-  repos?: Maybe<Array<RepoData>>
+  repos?: Maybe<Array<RepoDataGql>>
 };
 
-export type RepoData = {
+export type RepoDataGql = {
   __typename?: 'Repo'
   id: Scalars['ID']
   address: Scalars['Bytes']
   name: Scalars['String']
   node: Scalars['Bytes']
-  lastVersion?: Maybe<VersionData>
-  versions?: Maybe<Array<VersionData>>
-  apps?: Maybe<Array<AppData>>
+  lastVersion?: Maybe<VersionDataGql>
+  versions?: Maybe<Array<VersionDataGql>>
+  apps?: Maybe<Array<AppDataGql>>
 };
 
-export type VersionData = {
+export type VersionDataGql = {
   __typename?: 'Version'
   id: Scalars['ID']
   semanticVersion: Scalars['String']
   contractAddress: Scalars['Bytes']
   content: Scalars['String']
-  repo: RepoData
+  repo: RepoDataGql
 };
 
-export type FactoryData = {
+export type FactoryDataGql = {
   __typename?: 'Factory'
   id: Scalars['ID']
   orgCount: Scalars['Int']
-  organizations?: Maybe<Array<OrganizationData>>
+  organizations?: Maybe<Array<OrganizationDataGql>>
 };
 
-export type OrganizationData = {
+export type OrganizationDataGql = {
   __typename?: 'Organization'
   id: Scalars['ID']
   address: Scalars['Bytes']
-  acl?: Maybe<AclData>
+  acl?: Maybe<AclDataGql>
   recoveryVault: Scalars['Bytes']
-  apps?: Maybe<Array<AppData>>
-  factory: FactoryData
+  apps?: Maybe<Array<AppDataGql>>
+  factory: FactoryDataGql
 };
 
-export type AclData = {
+export type AclDataGql = {
   __typename?: 'Acl'
   id: Scalars['ID']
   address: Scalars['Bytes']
-  permissions?: Maybe<Array<PermissionData>>
-  organization: OrganizationData
+  permissions?: Maybe<Array<PermissionDataGql>>
+  organization: OrganizationDataGql
 };
 
-export type PermissionData = {
+export type PermissionDataGql = {
   __typename?: 'Permission'
   id: Scalars['ID']
-  app?: Maybe<AppData>
-  role: RoleData
+  app?: Maybe<AppDataGql>
+  role: RoleDataGql
   entity: Scalars['Bytes']
   allowed?: Maybe<Scalars['Boolean']>
 };
 
-export type AppData = {
+export type AppDataGql = {
   __typename?: 'App'
   id: Scalars['ID']
   address: Scalars['Bytes']
@@ -88,16 +88,16 @@ export type AppData = {
   isForwarder: Scalars['Boolean']
   isUpgradeable: Scalars['Boolean']
   implementation?: Maybe<Scalars['Bytes']>
-  repo?: Maybe<RepoData>
-  organization: OrganizationData
-  roles?: Maybe<Array<RoleData>>
+  repo?: Maybe<RepoDataGql>
+  organization: OrganizationDataGql
+  roles?: Maybe<Array<RoleDataGql>>
 };
 
-export type RoleData = {
+export type RoleDataGql = {
   __typename?: 'Role'
   id: Scalars['ID']
-  app: AppData
+  app: AppDataGql
   name: Scalars['String']
   manager: Scalars['Bytes']
-  allowedEntities?: Maybe<Array<PermissionData>>
+  allowedEntities?: Maybe<Array<PermissionDataGql>>
 };

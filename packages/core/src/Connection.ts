@@ -1,4 +1,4 @@
-import Organization from './Organization'
+import Organization from './wrappers/Organization'
 import { ConnectorInterface } from './ConnectorTypes'
 
 export default class Connection {
@@ -10,7 +10,7 @@ export default class Connection {
     this.#signer = signer
   }
 
-  organization(address: string) {
+  organization(address: string): Organization {
     return new Organization(address, this.#connector, this.#signer)
   }
 }

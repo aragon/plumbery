@@ -1,4 +1,5 @@
-import { ConnectorInterface, Permission } from './ConnectorTypes'
+import { ConnectorInterface } from './ConnectorTypes'
+import Permission from './wrappers/Permission'
 
 export type ConnectorJsonConfig = { permissions: Permission[] }
 

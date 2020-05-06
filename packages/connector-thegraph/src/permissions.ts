@@ -1,6 +1,7 @@
 import { Permission } from 'plumbery-core'
-import { OrganizationData, PermissionData } from './graph-types'
+import { OrganizationDataGql, PermissionDataGql } from './graph-types'
 import { Client } from '@urql/core'
+import { PermissionData } from 'plumbery-core/dist/wrappers/Permission'
 
 export default async function fetchPermissions(
   orgAddress: string,
@@ -25,17 +26,19 @@ export default async function fetchPermissions(
   `
 
   const results = await client.query(query).toPromise()
-  console.log(results)
-  const org = results.data.organization as OrganizationData
-  if (!org?.acl?.permissions) {
+  const org = results.data.organization as OrganizationDataGql
+
+  if (!org.acl?.permissions) {
     return []
   }
 
-  return org.acl.permissions.map((permission: PermissionData) => {
-    return {
+  return org.acl.permissions.map((permission: PermissionDataGql) => {
+    const data: PermissionData = {
       app: permission.app?.address,
       entity: permission.entity,
       role: permission.role.name,
     }
+
+    return new Permission(data)
   })
 }

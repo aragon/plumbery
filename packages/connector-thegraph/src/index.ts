@@ -1,7 +1,12 @@
 import 'isomorphic-unfetch';
-import fetchPermissions from './permissions'
-import { ConnectorInterface, Permission } from 'plumbery-core'
 import { Client } from '@urql/core'
+import {
+  ConnectorInterface,
+  Permission,
+  App
+} from 'plumbery-core'
+import fetchPermissions from './permissions'
+import fetchApps from './apps';
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -21,8 +26,12 @@ class ConnectorTheGraph implements ConnectorInterface {
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
-  public async permissions(orgAddress: string): Promise<Permission[]> {
+  async permissions(orgAddress: string): Promise<Permission[]> {
     return await fetchPermissions(orgAddress, this.#daoClient)
+  }
+
+  async apps(orgAddress: string): Promise<App[]> {
+    return await fetchApps(orgAddress, this.#daoClient)
   }
 }
 
