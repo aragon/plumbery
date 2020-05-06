@@ -1,13 +1,7 @@
 import { ConnectorInterface, Permission } from 'plumbery-core'
-import fetch from 'node-fetch'
-import { createClient } from '@urql/core'
-import { QUERY_PERMISSIONS } from './queries'
-
-declare global {
-  interface Window {
-    fetch: any
-  }
-}
+import { Client } from '@urql/core'
+import 'isomorphic-unfetch';
+// import { QUERY_PERMISSIONS } from './queries'
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -19,39 +13,56 @@ class ConnectorTheGraph implements ConnectorInterface {
   #appClient: any
 
   constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
-    this.#daoClient = createClient({
-      fetch: typeof window === 'undefined' ? fetch : window.fetch,
+    this.#daoClient = new Client({
       maskTypename: true,
       url: daoSubgraphUrl,
     })
+
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
   async permissions(orgAddress: string): Promise<Permission[]> {
-    return await this.#daoClient
-      .query(QUERY_PERMISSIONS, { orgAddress })
-      .toPromise()
-      .then((res: any) => {
-        const { permissions } = res?.data?.organization?.acl
-        if (!permissions) {
-          return []
+    const query = `
+      query {
+        organization(id: "${orgAddress}") {
+          acl {
+            permissions {
+              entity
+              app {
+                address
+              }
+              role {
+                name
+                manager
+              }
+            }
+          }
         }
-        return permissions.map(
-          ({
-            app,
-            entity,
-            role,
-          }: {
-            app: any
-            entity: string
-            role: { name: string }
-          }) => ({
-            app: app?.address || '',
-            entity,
-            role: role.name,
-          })
-        )
+      }
+    `
+
+    const res = await this.#daoClient.query(query).toPromise()
+
+    const { permissions } = res?.data?.organization.acl
+    if (!permissions) {
+      return []
+    }
+
+    return permissions.map(
+      ({
+        app,
+        entity,
+        role,
+      }: {
+        app: any
+        entity: string
+        role: { name: string }
+      }) => ({
+        app: app?.address || '',
+        entity,
+        role: role.name,
       })
+    )
   }
 }
 

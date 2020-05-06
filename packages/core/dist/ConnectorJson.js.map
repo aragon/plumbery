@@ -1,1 +1,0 @@
-{"version":3,"file":"ConnectorJson.js","sourceRoot":"","sources":["../src/ConnectorJson.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;AAIA,MAAM,aAAa;IAGjB,YAAY,EAAE,WAAW,EAAuB;QAFhD,+BAA0B;QAGxB,uBAAA,IAAI,gBAAgB,WAAW,EAAA;IACjC,CAAC;IAED,KAAK,CAAC,WAAW;QACf,kDAAwB;IAC1B,CAAC;CACF;;AAED,kBAAe,aAAa,CAAA"}

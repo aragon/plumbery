@@ -1,1 +1,0 @@
-{"version":3,"file":"ConnectorTypes.d.ts","sourceRoot":"","sources":["../src/ConnectorTypes.ts"],"names":[],"mappings":"AAAA,oBAAY,UAAU,GAAG;IACvB,GAAG,EAAE,MAAM,CAAA;IACX,MAAM,EAAE,MAAM,CAAA;IACd,IAAI,EAAE,MAAM,CAAA;CACb,CAAA;AAED,MAAM,WAAW,kBAAkB;IACjC,WAAW,CAAC,UAAU,EAAE,MAAM,GAAG,OAAO,CAAC,UAAU,EAAE,CAAC,CAAA;CACvD"}

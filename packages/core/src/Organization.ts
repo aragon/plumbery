@@ -1,7 +1,7 @@
 import App from './App'
 import TransactionPath from './TransactionPath'
 import { SignerType } from './SignerTypes'
-import { ConnectorInterface } from './ConnectorTypes'
+import { ConnectorInterface, Permission } from './ConnectorTypes'
 
 export default class Organization {
   #address: string
@@ -24,7 +24,7 @@ export default class Organization {
   }
 
   // List of the apps installed in the organization
-  async permissions() {
+  async permissions(): Promise<Permission[]> {
     return this.#connector.permissions(this.#address)
   }
 

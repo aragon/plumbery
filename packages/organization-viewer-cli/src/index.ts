@@ -4,13 +4,12 @@ import data from './org-data.json'
 const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
 
 async function main() {
-  console.log(`DEMO`)
-
   // Initiate the connection
   // const connection = aragonConnect({
   //   connector: ['json', { data }],
   //   signer: {},
   // })
+
   const connection = aragonConnect({
     connector: [
       'thegraph',
@@ -34,7 +33,6 @@ async function main() {
 }
 
 function displayPermissions(permissions: Permission[], orgAddress: string) {
-  console.log(`Permissions for ${orgAddress}:`)
   console.log(formatPermissions(permissions))
 }
 
@@ -52,4 +50,8 @@ function formatPermissions(permissions: Permission[]) {
 }
 
 main()
-  .then(process.exit(0))
+  .then(() => process.exit(0))
+  .catch(err => {
+    console.log(`err`, err)
+    process.exit(1)
+  })

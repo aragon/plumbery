@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const plumbery_core_1 = require("plumbery-core");
 const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4';
 async function main() {
-    console.log(`DEMO`);
     // Initiate the connection
     // const connection = aragonConnect({
     //   connector: ['json', { data }],
@@ -27,7 +26,6 @@ async function main() {
     displayPermissions(permissions, ORG_ADDRESS);
 }
 function displayPermissions(permissions, orgAddress) {
-    console.log(`Permissions for ${orgAddress}:`);
     console.log(formatPermissions(permissions));
 }
 function formatPermissions(permissions) {
@@ -43,5 +41,9 @@ function formatPermissions(permissions) {
         .join('\n');
 }
 main()
-    .then(process.exit(0));
+    .then(() => process.exit(0))
+    .catch(err => {
+    console.log(`err`, err);
+    process.exit(1);
+});
 //# sourceMappingURL=index.js.map

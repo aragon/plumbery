@@ -16,6 +16,8 @@ async function main(): Promise<void> {
   client = new Client({
     url: GRAPH_URL
   })
+  console.log(client)
+  return
 
   await testOneTimeCall()
 
