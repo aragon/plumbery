@@ -9,44 +9,32 @@ async function main() {
   //   connector: ['json', { data }],
   //   signer: {},
   // })
-
   const connection = aragonConnect({
     connector: [
       'thegraph',
       {
         daoSubgraphUrl:
           'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        // 'wss://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
         appSubgraphUrl: () => '',
       },
     ],
     signer: {},
   })
 
-  // Get an Organization instance
+  // Connect to the organization and collect data.
   const org = connection.organization(ORG_ADDRESS)
-
-  // Get the permissions set on the organization
   const permissions = await org.permissions()
 
-  displayPermissions(permissions, ORG_ADDRESS)
+  // Display the information.
+  tracePermissions(permissions)
 }
 
-function displayPermissions(permissions: Permission[], orgAddress: string) {
-  console.log(formatPermissions(permissions))
-}
-
-function formatPermissions(permissions: Permission[]) {
-  return permissions
-    .map(({ app, role, entity }: Permission) => {
-      return [
-        '',
-        `App: ${(app || '').padEnd(42, ' ')}`,
-        `Role: ${role.padEnd(66, ' ')}`,
-        `Entity: ${entity.padEnd(42, ' ')}`,
-      ].join('\n')
-    })
-    .join('\n')
+function tracePermissions(permissions: Permission[]): void {
+  permissions.map(({ app, role, entity }) => {
+    console.log(`\nEntity (who): ${entity}`)
+    console.log(`App (where): ${app || ''}`)
+    console.log(`Role (what): ${role}`)
+  })
 }
 
 main()
