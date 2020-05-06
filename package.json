@@ -4,11 +4,12 @@
   "devDependencies": {},
   "workspaces": ["packages/*"],
   "scripts": {
+    "postinstall": "./scripts/first-build.sh",
     "core": "yarn workspace plumbery-core",
     "connector-ethereum": "yarn workspace plumbery-connector-ethereum",
     "connector-thegraph": "yarn workspace plumbery-connector-thegraph",
     "react": "yarn workspace plumbery-react",
-    "build": "yarn connector-ethereum build && yarn connector-thegraph build && yarn core build",
+    "build": "yarn connector-ethereum build; yarn connector-thegraph build; yarn core build",
     "clean": "yarn connector-ethereum clean && yarn connector-thegraph clean && yarn core clean"
   }
 }
