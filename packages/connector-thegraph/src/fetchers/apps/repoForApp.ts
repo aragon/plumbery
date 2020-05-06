@@ -24,6 +24,7 @@ export default async function fetchRepoForApp(
   `
 
   const results = await client.query(query).toPromise()
+  console.log(JSON.stringify(results, null, 2))
   const repo = results.data.repo as RepoDataGql
 
   return new Repo({

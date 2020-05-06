@@ -18,7 +18,7 @@ async function main() {
       'thegraph',
       {
         daoSubgraphUrl:
-          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
+          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph',
         appSubgraphUrl: () => '',
       },
     ],
@@ -28,16 +28,16 @@ async function main() {
   // Get information about the organization.
   const org = connection.organization(ORG_ADDRESS)
   const permissions = await org.permissions()
-  const apps = await org.apps()
+  // const apps = await org.apps()
 
   // Get information about an app.
-  const app = apps[0]
-  const repo = await app.repo()
-  console.log(repo)
+  // const app = apps[0]
+  // const repo = await app.repo()
+  // console.log(repo)
 
   // Display the information.
   tracePermissions(permissions)
-  traceApps(apps)
+  // traceApps(apps)
 }
 
 function traceApps(apps: App[]): void {
