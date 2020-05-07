@@ -11,7 +11,7 @@ export function parseApp(
 
   return new App(
     {
-      appName: app.repoVersion?.repo.name,
+      name: app.repoVersion?.repo.name,
       appId: app.appId,
       address: app.address,
       version: app.repoVersion?.semanticVersion.replace(/,/g, '.') || 'unknown',
