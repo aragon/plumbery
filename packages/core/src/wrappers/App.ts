@@ -3,18 +3,20 @@ import Base from "./Base"
 import { ConnectorInterface } from "../ConnectorTypes"
 
 export interface AppData {
-  name?: string
+  appName?: string
   address: string
 }
 
 export default class App extends Base implements AppData {
-  readonly name?: string
-  readonly address: string
+  readonly appName?: string
+  readonly address!: string
+  readonly appId!: string
+  readonly version!: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
 
-    this.name = data.name
+    this.appName = data.appName
     this.address = data.address
   }
 

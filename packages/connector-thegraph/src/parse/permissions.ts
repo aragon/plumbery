@@ -1,4 +1,4 @@
-import { PermissionDataGql } from "../graphql/types";
+import { Permission as PermissionDataGql } from "../graphql/types";
 import { Permission, ConnectorTheGraph } from "plumbery-core";
 
 export function parsePermissions(
@@ -13,7 +13,7 @@ export function parsePermissions(
     return new Permission({
       app: permission.app?.address,
       entity: permission.entity,
-      role: permission.role.name,
+      role: permission.role.hash,
     }, connector)
   })
 }

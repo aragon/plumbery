@@ -1,5 +1,5 @@
-import { AppDataGql } from "../graphql/types";
-import { ConnectorTheGraph, App } from "plumbery-core";
+import { App as AppDataGql } from '../graphql/types'
+import { ConnectorTheGraph, App } from 'plumbery-core'
 
 export function parseApp(
   connector: ConnectorTheGraph,
@@ -9,10 +9,15 @@ export function parseApp(
     throw new Error('Unable to parse app.')
   }
 
-  return new App({
-    name: app.repo?.name,
-    address: app.address
-  }, connector)
+  return new App(
+    {
+      appName: app.repoVersion?.repo.name,
+      appId: app.appId,
+      address: app.address,
+      version: app.repoVersion?.semanticVersion.replace(/,/g, '.') || 'unknown',
+    },
+    connector
+  )
 }
 
 export function parseApps(
