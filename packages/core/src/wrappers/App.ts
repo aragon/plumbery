@@ -5,17 +5,18 @@ import { ConnectorInterface } from "../ConnectorTypes"
 export interface AppData {
   name?: string
   address: string
+  // appId: string
 }
 
 export default class App extends Base implements AppData {
   readonly name?: string
-  readonly address: string
+  readonly address!: string
+  // readonly appId: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
 
-    this.name = data.name
-    this.address = data.address
+    Object.assign(this, data)
   }
 
   async repo(): Promise<Repo> {

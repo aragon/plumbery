@@ -8,12 +8,11 @@ export interface RepoData {
 
 export default class Repo extends Base implements RepoData {
   readonly name?: string
-  readonly address: string
+  readonly address!: string
 
   constructor(data: RepoData, connector: ConnectorInterface) {
     super(connector)
 
-    this.name = data.name
-    this.address = data.address
+    Object.assign(this, data)
   }
 }
