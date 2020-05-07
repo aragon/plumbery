@@ -1,4 +1,4 @@
-import { RepoDataGql } from "../graphql/types";
+import { Repo as RepoDataGql } from "../graphql/types";
 import { ConnectorTheGraph, Repo } from "plumbery-core";
 
 export function parseRepo(

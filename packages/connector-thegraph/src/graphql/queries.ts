@@ -4,15 +4,13 @@ import * as fragments from './fragments'
 export const ORGANIZATION_PERMISSIONS = gql`
   query Organization($orgAddress: String!) {
     organization(id: $orgAddress) {
-      acl {
-        permissions {
-          app {
-            address
-          }
-          entity
-          role {
-            name
-          }
+      permissions {
+        app {
+          address
+        }
+        entity
+        role {
+          hash
         }
       }
     }
@@ -40,10 +38,12 @@ export const APP_BY_ADDRESS = gql`
 `
 
 export const REPO_BY_APP_ADDRESS = gql`
-  query Repo($appAddress: String!) {
+  query App($appAddress: String!) {
     app(id: $appAddress) {
-      repo {
-        ...Repo_repo
+      repoVersion {
+        repo {
+          ...Repo_repo
+        }
       }
     }
   }

@@ -6,7 +6,7 @@ import {
   Repo
 } from 'plumbery-core'
 
-const ORG_ADDRESS = '0x022fd42a494e0f9e00960d1becc5a1bbed4b528a'
+const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
 
 async function main() {
   // Initiate the connection
@@ -19,7 +19,7 @@ async function main() {
       'thegraph',
       {
         daoSubgraphUrl:
-          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph',
+          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
         appSubgraphUrl: () => '',
       },
     ],
