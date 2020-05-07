@@ -57,7 +57,7 @@ function traceApps(apps: App[]): void {
 
 function traceApp(app: App): void {
   console.log('\nApp:')
-  console.log(`  Name: ${app.name || ''}`)
+  console.log(`  Name: ${app.appName || ''}`)
   console.log(`  address: ${app.address}`)
   console.log('')
 }

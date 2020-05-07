@@ -16,7 +16,7 @@ export default class App extends Base implements AppData {
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
 
-    this.name = data.name
+    this.appName = data.appName
     this.address = data.address
   }
 
