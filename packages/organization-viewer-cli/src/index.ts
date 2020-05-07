@@ -1,20 +1,45 @@
-import data from './org-data.json'
+// import data from './org-data.json'
 import {
   aragonConnect,
   Permission,
-  App,
-  Repo
+  App
 } from 'plumbery-core'
+import Connection from 'plumbery-core/dist/Connection'
 
 const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
 
 async function main() {
-  // Initiate the connection
-  // const connection = aragonConnect({
+  const connection = initConnection()
+
+  const org = connection.organization(ORG_ADDRESS)
+
+  const permissions = await org.permissions()
+  console.log(`\nPermissions:\n${permissions.map(
+    (p: Permission) => p.describe()
+  ).join('\n')}`)
+
+  const apps = await org.apps()
+  console.log(`\nApps:\n${apps.map(
+    (app: App) => app.describe()
+  ).join('\n')}`)
+
+  const app = apps[0]
+  console.log(`\nFirst app:\n${app.describe()}`)
+
+  const repo = await app.repo()
+  console.log(`\nRepo:\n${repo.describe()}`)
+
+  const someApp = await org.app(apps[1].address)
+  console.log(`\nSome app:\n${app.describe()}`)
+}
+
+function initConnection(): Connection {
+  // return aragonConnect({
   //   connector: ['json', { data }],
   //   signer: {},
   // })
-  const connection = aragonConnect({
+
+  return aragonConnect({
     connector: [
       'thegraph',
       {
@@ -25,23 +50,6 @@ async function main() {
     ],
     signer: {},
   })
-
-  const org = connection.organization(ORG_ADDRESS)
-
-  const permissions = await org.permissions()
-  console.log(`\nPermissions:\n${permissions.map((p: Permission) => p.describe()).join('\n')}`)
-
-  const apps = await org.apps()
-  console.log(`\nApps:\n${apps.map((app: App) => app.describe()).join('\n')}`)
-
-  const app = apps[0]
-  console.log(`\nFirst app:\n${app.describe()}`)
-
-  const repo = await app.repo()
-  console.log(`\nRepo:\n${repo.describe()}`)
-
-  const someApp = await org.app(apps[1].address)
-  console.log(`\nSome app:\n${app.describe()}`)
 }
 
 main()
