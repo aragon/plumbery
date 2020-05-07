@@ -43,7 +43,7 @@ class ConnectorTheGraph implements ConnectorInterface {
       { orgAddress }
     )).organization as OrganizationDataGql
 
-    return parsePermissions(this, org.acl?.permissions)
+    return parsePermissions(this, org?.acl?.permissions)
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
@@ -52,7 +52,7 @@ class ConnectorTheGraph implements ConnectorInterface {
       { orgAddress }
     )).organization as OrganizationDataGql
 
-    return parseApps(this, org.apps)
+    return parseApps(this, org?.apps)
   }
 
   async appByAddress(appAddress: string): Promise<App> {
@@ -70,7 +70,7 @@ class ConnectorTheGraph implements ConnectorInterface {
       { appAddress }
     )).app as AppDataGql
 
-    return parseRepo(this, app.repo)
+    return parseRepo(this, app?.repo)
   }
 
   private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {

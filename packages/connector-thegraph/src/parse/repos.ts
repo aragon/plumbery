@@ -6,7 +6,7 @@ export function parseRepo(
   repo: RepoDataGql | null | undefined
 ): Repo {
   if (!repo) {
-    throw new Error('Unable to find repo.')
+    throw new Error('Unable to parse repo.')
   }
 
   return new Repo({

@@ -6,7 +6,7 @@ export function parsePermissions(
   permissions: PermissionDataGql[] | null | undefined
 ): Permission[] {
   if (!permissions) {
-    return []
+    throw new Error('Unable to parse permissions.')
   }
 
   return permissions.map((permission: PermissionDataGql) => {
