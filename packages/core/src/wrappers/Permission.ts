@@ -7,8 +7,8 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [x] app 	String 	App address.
 // [x] entity 	String 	Entity address receiving the permission.
 // [x] role 	String 	Role identifier.
-// [ ] getApp()
-// [ ] getRole()
+// [x] getApp()
+// [x] getRole()
 
 export interface PermissionData {
   app: string
