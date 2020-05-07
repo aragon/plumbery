@@ -9,6 +9,7 @@ dist/
 
 tsconfig.tsbuildinfo
 
-# Webstorm
+# IDE specific
 schema.graphql
 .graphqlconfig
+.vscode
