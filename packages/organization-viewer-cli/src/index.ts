@@ -29,47 +29,19 @@ async function main() {
   const org = connection.organization(ORG_ADDRESS)
 
   const permissions = await org.permissions()
-  tracePermissions(permissions)
+  console.log(`\nPermissions:\n${permissions.map((p: Permission) => p.describe()).join('\n')}`)
 
   const apps = await org.apps()
-  traceApps(apps)
+  console.log(`\nApps:\n${apps.map((app: App) => app.describe()).join('\n')}`)
 
   const app = apps[0]
+  console.log(`\nFirst app:\n${app.describe()}`)
+
   const repo = await app.repo()
-  traceApp(app)
-  traceRepo(repo)
+  console.log(`\nRepo:\n${repo.describe()}`)
 
   const someApp = await org.app(apps[1].address)
-  traceApp(someApp)
-}
-
-function traceRepo(repo: Repo): void {
-  console.log('\nRepo:')
-  console.log(`  Name: ${repo.name || ''}`)
-  console.log(`  address: ${repo.address}`)
-  console.log('')
-}
-
-function traceApps(apps: App[]): void {
-  console.log('\nApps:')
-  apps.map(app => traceApp(app))
-}
-
-function traceApp(app: App): void {
-  console.log('\nApp:')
-  console.log(`  Name: ${app.name || ''}`)
-  console.log(`  address: ${app.address}`)
-  console.log('')
-}
-
-function tracePermissions(permissions: Permission[]): void {
-  console.log('\nPermissions:')
-  permissions.map((permission) => {
-    console.log(`  Entity (who): ${permission.entity}`)
-    console.log(`  App (where): ${permission.app || ''}`)
-    console.log(`  Role (what): ${permission.role}`)
-    console.log('')
-  })
+  console.log(`\nSome app:\n${app.describe()}`)
 }
 
 main()
