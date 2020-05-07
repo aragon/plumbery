@@ -4,6 +4,25 @@ import { SignerType } from '../SignerTypes'
 import { ConnectorInterface } from '../ConnectorTypes'
 import Permission from './Permission'
 
+// TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/organization.md).
+// [x] Organization#apps()
+// [x] Organization#app(appAddress)
+// [ ] Organization#addApp(repoName, options)
+// [ ] Organization#removeApp(appAddress)
+// [x] Organization#permissions()
+// [ ] Organization#addPermission(address, appAddress, roleId)
+// [ ] Organization#removePermission(address, appAddress, roleId)
+// [ ] Organization#roleManager(appAddress, roleId)
+// [ ] Organization#setRoleManager(address, appAddress, roleId)
+// [ ] Organization#appIntent(appAddress, funcName, funcArgs)
+// [ ] Organization#appCall(appAddress, methodName, args)
+// [ ] Organization#appState(appAddress)
+// [ ] Organization#on(event, params, callback)
+// [ ] Organization#off(event, callback)
+// [ ] Organization#off(event)
+// [ ] Organization#off()
+// [ ] Events...
+
 export default class Organization {
   #address: string
   #connector: ConnectorInterface
