@@ -5,7 +5,7 @@ export function parseApp(
   connector: ConnectorTheGraph,
   app: AppDataGql | null | undefined
 ): App {
-  if (app) {
+  if (!app) {
     throw new Error('Unable to parse app.')
   }
 
