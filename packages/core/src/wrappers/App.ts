@@ -6,7 +6,7 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [x] address 	String 	The address of the app proxy contract (never changes).
 // [x] appId 	String 	The appName but encoded.
 // [-] (need registry name prop) appName 	String 	The app ENS identifier. E.g. "token-manager.aragonpm.eth"
-// [ ] (ipfs) author 	String 	App author, from the repository. E.g. "Aragon Association".
+// [-] (ipfs) author 	String 	App author, from the repository. E.g. "Aragon Association".
 // [ ] chainId 	String 	Chain ID for this app.
 // [ ] codeAddress 	String 	The address of the app contract (changes with every major version).
 // [ ] contentUri 	String 	The location of the app content. Empty for special apps like the kernel. E.g. "ipfs:QmdLEDDfi…"
@@ -20,8 +20,8 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [x] registryAddress 	String 	Address of the aragonPM registry for this app.
 // [-] (need name prop) registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
 // [ ] sourceUrl 	String 	URL of the app source code.
-// [ ] version 	String 	The current version of the app.
-// [ ] kernelAddress 	String 	The address of the kernel.
+// [x] version 	String 	The current version of the app.
+// [x] kernelAddress 	String 	The address of the kernel.
 // [ ] isForwarder 	Boolean 	Whether the app can act as a forwarder.
 // [ ] tags 	String[] 	Tags associated with the app.
 
@@ -31,6 +31,7 @@ export interface AppData {
   appId: string
   version: string
   registryAddress: string
+  kernelAddress: string
 }
 
 export default class App extends Base implements AppData {
@@ -39,6 +40,7 @@ export default class App extends Base implements AppData {
   readonly appId!: string
   readonly version!: string
   readonly registryAddress!: string
+  readonly organizationAddress!: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
