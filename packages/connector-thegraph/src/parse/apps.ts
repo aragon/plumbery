@@ -11,13 +11,13 @@ export function parseApp(
 
   return new App(
     {
-      name: app.repoVersion?.repo.name || 'unknown',
+      name: app.repoVersion?.repo.name,
       isForwarder: app.isForwarder,
       appId: app.appId,
       address: app.address,
       registryAddress: app.repoVersion?.repo?.registry?.address,
       kernelAddress: app.organization?.address,
-      version: app.repoVersion?.semanticVersion.replace(/,/g, '.') || 'unknown',
+      version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
     },
     connector
   )

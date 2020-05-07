@@ -30,20 +30,20 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [ ] App#deprecatedIntents()
 
 export interface AppData {
-  name: string
+  name?: string
   address: string
   appId: string
-  version: string
+  version?: string
   registryAddress: string
   kernelAddress: string
   isForwarder: boolean
 }
 
 export default class App extends Base implements AppData {
-  readonly name!: string
+  readonly name?: string
   readonly address!: string
   readonly appId!: string
-  readonly version!: string
+  readonly version?: string
   readonly registryAddress!: string
   readonly kernelAddress!: string
   readonly isForwarder!: boolean

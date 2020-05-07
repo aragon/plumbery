@@ -1,4 +1,5 @@
 import Base from "./Base"
+import App from './App'
 import { ConnectorInterface } from "../ConnectorTypes"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/permission.md).
@@ -23,5 +24,13 @@ export default class Permission extends Base implements PermissionData {
     super(connector)
 
     Object.assign(this, data)
+  }
+
+  async getApp(): Promise<App | void> {
+    if (!this.app) {
+      return
+    }
+
+    return this._connector.appByAddress!(this.app)
   }
 }
