@@ -26,7 +26,7 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [ ] tags 	String[] 	Tags associated with the app.
 
 export interface AppData {
-  name?: string
+  name: string
   address: string
   appId: string
   version: string
@@ -36,7 +36,7 @@ export interface AppData {
 }
 
 export default class App extends Base implements AppData {
-  readonly name?: string
+  readonly name!: string
   readonly address!: string
   readonly appId!: string
   readonly version!: string

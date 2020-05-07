@@ -11,7 +11,7 @@ export function parseApp(
 
   return new App(
     {
-      name: app.repoVersion?.repo.name,
+      name: app.repoVersion?.repo.name || 'unknown',
       isForwarder: app.isForwarder,
       appId: app.appId,
       address: app.address,
