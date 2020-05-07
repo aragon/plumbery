@@ -1,6 +1,13 @@
 import Base from "./Base"
 import { ConnectorInterface } from "../ConnectorTypes"
 
+// TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/permission.md).
+// [x] app 	String 	App address.
+// [x] entity 	String 	Entity address receiving the permission.
+// [x] role 	String 	Role identifier.
+// [ ] getApp()
+// [ ] getRole()
+
 export interface PermissionData {
   app: string
   entity: string

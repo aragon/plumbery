@@ -2,7 +2,7 @@ import Repo from "./Repo"
 import Base from "./Base"
 import { ConnectorInterface } from "../ConnectorTypes"
 
-// TODO: Implement all these from API spec.
+// TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [x] address 	String 	The address of the app proxy contract (never changes).
 // [x] appId 	String 	The appName but encoded.
 // [-] (need registry name prop) appName 	String 	The app ENS identifier. E.g. "token-manager.aragonpm.eth"
@@ -24,6 +24,10 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [x] kernelAddress 	String 	The address of the kernel.
 // [x] isForwarder 	Boolean 	Whether the app can act as a forwarder.
 // [ ] tags 	String[] 	Tags associated with the app.
+// [x] App#repo()
+// [ ] App#abi()
+// [ ] App#intents()
+// [ ] App#deprecatedIntents()
 
 export interface AppData {
   name: string
