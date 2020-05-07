@@ -29,6 +29,7 @@ export const APP_FRAGMENT = gql`
   fragment App_app on App {
     address
     appId
+    isForwarder
     organization {
       address
     }

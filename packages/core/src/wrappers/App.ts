@@ -22,7 +22,7 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [ ] sourceUrl 	String 	URL of the app source code.
 // [x] version 	String 	The current version of the app.
 // [x] kernelAddress 	String 	The address of the kernel.
-// [ ] isForwarder 	Boolean 	Whether the app can act as a forwarder.
+// [.] isForwarder 	Boolean 	Whether the app can act as a forwarder.
 // [ ] tags 	String[] 	Tags associated with the app.
 
 export interface AppData {
@@ -32,6 +32,7 @@ export interface AppData {
   version: string
   registryAddress: string
   kernelAddress: string
+  isForwarder: boolean
 }
 
 export default class App extends Base implements AppData {
@@ -40,7 +41,8 @@ export default class App extends Base implements AppData {
   readonly appId!: string
   readonly version!: string
   readonly registryAddress!: string
-  readonly organizationAddress!: string
+  readonly kernelAddress!: string
+  readonly isForwarder!: boolean
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
