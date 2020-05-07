@@ -8,9 +8,9 @@ export interface PermissionData {
 }
 
 export default class Permission extends Base implements PermissionData {
-  app: string
-  entity: string
-  role: string
+  readonly app: string
+  readonly entity: string
+  readonly role: string
 
   constructor(data: PermissionData, connector: ConnectorInterface) {
     super(connector)

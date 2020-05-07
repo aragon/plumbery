@@ -7,8 +7,8 @@ export interface RepoData {
 }
 
 export default class Repo extends Base implements RepoData {
-  name?: string
-  address: string
+  readonly name?: string
+  readonly address: string
 
   constructor(data: RepoData, connector: ConnectorInterface) {
     super(connector)

@@ -8,8 +8,8 @@ export interface AppData {
 }
 
 export default class App extends Base implements AppData {
-  name?: string
-  address: string
+  readonly name?: string
+  readonly address: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
