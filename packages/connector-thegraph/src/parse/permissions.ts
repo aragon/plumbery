@@ -14,6 +14,7 @@ export function parsePermissions(
       app: permission.app?.address,
       entity: permission.entity,
       role: permission.role.hash,
+      id: permission.id
     }, connector)
   })
 }

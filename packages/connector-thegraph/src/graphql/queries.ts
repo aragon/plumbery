@@ -5,11 +5,13 @@ export const ORGANIZATION_PERMISSIONS = gql`
   query Organization($orgAddress: String!) {
     organization(id: $orgAddress) {
       permissions {
+        id
         app {
           address
         }
         entity
         role {
+          id
           hash
         }
       }
@@ -48,4 +50,13 @@ export const REPO_BY_APP_ADDRESS = gql`
     }
   }
   ${fragments.REPO_FRAGMENT}
+`
+
+export const ROLE_BY_ID = gql`
+  query Role($roleId: String!) {
+    role(id: $roleId) {
+      hash
+      id
+    }
+  }
 `

@@ -42,6 +42,10 @@ async function main() {
   if (app) {
     console.log(`\nApp from permission:\n${app.describe()}`)
   }
+
+  // Retrieve a role from a permission.
+  const role = await permissions[1].getRole()
+  console.log(`\nRole from permission:\n${role.describe()}`)
 }
 
 function initConnection(): Connection {

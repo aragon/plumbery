@@ -1,6 +1,7 @@
 import App from './wrappers/App'
 import Permission from './wrappers/Permission';
 import Repo from './wrappers/Repo';
+import Role from './wrappers/Role';
 
 // TODO: No functions should be optional.
 // Made optional for now, so that we can develop one connector at a time.
@@ -12,4 +13,5 @@ export interface ConnectorInterface {
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>
   appByAddress?(appAddress: string): Promise<App>
+  roleById?(roleId: string): Promise<Role>
 }
