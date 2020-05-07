@@ -5,7 +5,7 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // TODO: Implement all these from API spec.
 // [x] address 	String 	The address of the app proxy contract (never changes).
 // [x] appId 	String 	The appName but encoded.
-// [.] appName 	String 	The app ENS identifier. E.g. "token-manager.aragonpm.eth"
+// [-] (need registry name prop) appName 	String 	The app ENS identifier. E.g. "token-manager.aragonpm.eth"
 // [ ] (ipfs) author 	String 	App author, from the repository. E.g. "Aragon Association".
 // [ ] chainId 	String 	Chain ID for this app.
 // [ ] codeAddress 	String 	The address of the app contract (changes with every major version).
@@ -17,8 +17,8 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [ ] contentUrl 	String 	The HTTP URL of the app content. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/
 // [ ] icons 	{ src: String, sizes: String }[] 	Array of icons for the app (follows the web app manifest icons format).
 // [x] name 	String 	Name of the app, from the repository. E.g. "Tokens".
-// [ ] registryAddress 	String 	Address of the aragonPM registry for this app.
-// [ ] registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
+// [x] registryAddress 	String 	Address of the aragonPM registry for this app.
+// [-] (need name prop) registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
 // [ ] sourceUrl 	String 	URL of the app source code.
 // [ ] version 	String 	The current version of the app.
 // [ ] kernelAddress 	String 	The address of the kernel.
@@ -30,6 +30,7 @@ export interface AppData {
   address: string
   appId: string
   version: string
+  registryAddress: string
 }
 
 export default class App extends Base implements AppData {
@@ -37,6 +38,7 @@ export default class App extends Base implements AppData {
   readonly address!: string
   readonly appId!: string
   readonly version!: string
+  readonly registryAddress!: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)

@@ -7,6 +7,9 @@ export const REPO_FRAGMENT = gql`
     lastVersion {
       semanticVersion
     }
+    registry {
+      address
+    }
   }
 `
 

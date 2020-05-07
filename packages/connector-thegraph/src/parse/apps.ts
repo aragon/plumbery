@@ -14,6 +14,7 @@ export function parseApp(
       name: app.repoVersion?.repo.name,
       appId: app.appId,
       address: app.address,
+      registryAddress: app.repoVersion?.repo?.registry?.address,
       version: app.repoVersion?.semanticVersion.replace(/,/g, '.') || 'unknown',
     },
     connector
