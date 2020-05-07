@@ -79,8 +79,10 @@ class ConnectorTheGraph implements ConnectorInterface {
       vars
     ).toPromise()
 
-    // TODO: Check for errors here.
-    // console.log(JSON.stringify(results, null, 2))
+    if (results.error) {
+      const queryStr = query.loc?.source.body
+      throw new Error(`Error while connecting to the subgraph at ${this.#daoClient.url} with query: ${queryStr}\n Error: ${results.error}`)
+    }
 
     return results.data
   }

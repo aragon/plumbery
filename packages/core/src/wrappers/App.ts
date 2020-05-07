@@ -5,6 +5,8 @@ import { ConnectorInterface } from "../ConnectorTypes"
 export interface AppData {
   appName?: string
   address: string
+  appId: string
+  version: string
 }
 
 export default class App extends Base implements AppData {
@@ -16,8 +18,7 @@ export default class App extends Base implements AppData {
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
 
-    this.appName = data.appName
-    this.address = data.address
+    Object.assign(this, data)
   }
 
   async repo(): Promise<Repo> {
