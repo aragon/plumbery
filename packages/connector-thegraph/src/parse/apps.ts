@@ -11,7 +11,10 @@ export function parseApp(
 
   return new App({
     name: app.repo?.name,
-    address: app.address
+    appName: app.repo?.name,
+    appId: app.appId,
+    address: app.address,
+    version: app.repo?.lastVersion?.semanticVersion.replace(/,/g, '.') || 'unknown'
   }, connector)
 }
 

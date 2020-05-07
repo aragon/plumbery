@@ -4,14 +4,18 @@ import { ConnectorInterface } from "../ConnectorTypes"
 
 export interface AppData {
   name?: string
+  appName?: string
   address: string
   appId: string
+  version: string
 }
 
 export default class App extends Base implements AppData {
   readonly name?: string
+  readonly appName?: string
   readonly address!: string
   readonly appId!: string
+  readonly version!: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
