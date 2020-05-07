@@ -6,11 +6,11 @@ Note: “Plumbery” is a code name used during the development of this project 
 
 ## Constructor
 
-| Name               | Type                                    | Description                                                                                              |
-| ------------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `config`           | `Object`                                | The main configuration object                                                                            |
-| `config.connector` | `Connector | [String, Object] | String` | Accepts a `Connector` instance, and either a string or a tuple for embedded connectors and their config. |
-| `config.signer`    | `EthereumProvider`                      | An Ethereum provider (EIP 1193) used to sign and submit transactions.                                    |
+| Name               | Type                                      | Description                                                                                              |
+| ------------------ | ----------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `config`           | `Object`                                  | The main configuration object                                                                            |
+| `config.connector` | `Connector \| [String, Object] \| String` | Accepts a `Connector` instance, and either a string or a tuple for embedded connectors and their config. |
+| `config.signer`    | `EthereumProvider`                        | An Ethereum provider (EIP 1193) used to sign and submit transactions.                                    |
 
 ### Example
 
@@ -42,12 +42,6 @@ const myorg = connection.organization('myorg.aragonid.eth')
 
 Updates the Ethereum provider used to sign transactions. Pass `null` to remove.
 
-| Parameter  | Type                      | Description                                                            |
-| ---------- | ------------------------- | ---------------------------------------------------------------------- |
-| `ethereum` | `EthereumProvider | null` | The Ethereum provider (EIP 1193) used to sign and submit transactions. |
-
-### Plumbery#deployOrganization()
-
-Deploys a new organization.
-
-**TBD**
+| Parameter  | Type                       | Description                                                            |
+| ---------- | -------------------------- | ---------------------------------------------------------------------- |
+| `ethereum` | `EthereumProvider \| null` | The Ethereum provider (EIP 1193) used to sign and submit transactions. |

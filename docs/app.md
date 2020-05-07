@@ -11,7 +11,7 @@ An app installed in an organization from a repository.
 | `appName`         | `String`                           | The app ENS identifier. E.g. `"token-manager.aragonpm.eth"`                                                              |
 | `author`          | `String`                           | App author, from the repository. E.g. `"Aragon Association"`.                                                            |
 | `chainId`         | `String`                           | Chain ID for this app.                                                                                                   |
-| `codeAddress`     | `String`                           | The address of the app contract (changes with every version).                                                            |
+| `codeAddress`     | `String`                           | The address of the app contract (changes with every major version).                                                      |
 | `contentUri`      | `String`                           | The location of the app content. Empty for special apps like the kernel. E.g. `"ipfs:QmdLEDDfi…"`                        |
 | `contractPath`    | `String`                           | Path of the contract. E.g. `"contracts/TokenManager.sol"`                                                                |
 | `description`     | `String`                           | App description, from the repository. E.g. `"Manage an organization’s token supply and distribution."`.                  |
@@ -22,7 +22,7 @@ An app installed in an organization from a repository.
 | `name`            | `String`                           | Name of the app, from the repository. E.g. `"Tokens"`.                                                                   |
 | `registryAddress` | `String`                           | Address of the aragonPM registry for this app.                                                                           |
 | `registry`        | `String`                           | Name of the aragonPM registry for this app. E.g. `"aragonpm.eth"`                                                        |
-| `sourceUrl`       | `String`                           | URL of the app source code.                                                                                                   |
+| `sourceUrl`       | `String`                           | URL of the app source code.                                                                                              |
 | `version`         | `String`                           | The current version of the app.                                                                                          |
 | `kernelAddress`   | `String`                           | The address of the kernel.                                                                                               |
 | `isForwarder`     | `Boolean`                          | Whether the app can act as a forwarder.                                                                                  |
