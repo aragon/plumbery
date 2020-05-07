@@ -1,7 +1,23 @@
-import { ConnectorInterface, Permission } from 'plumbery-core'
-import { Client } from '@urql/core'
 import 'isomorphic-unfetch';
-// import { QUERY_PERMISSIONS } from './queries'
+import { Client } from '@urql/core'
+import * as queries from './graphql/queries'
+import { DocumentNode } from 'graphql';
+import {
+  OrganizationDataGql,
+  AppDataGql
+} from './graphql/types';
+import {
+  parseApp,
+  parseApps,
+  parsePermissions,
+  parseRepo
+} from './parse';
+import {
+  ConnectorInterface,
+  Permission,
+  App,
+  Repo
+} from 'plumbery-core'
 
 export type ConnectorTheGraphConfig = {
   appSubgraphUrl: (repoId: string) => string
@@ -9,8 +25,8 @@ export type ConnectorTheGraphConfig = {
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
-  #daoClient: any
-  #appClient: any
+  #daoClient: Client
+  // #appClient: Client
 
   constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
@@ -21,48 +37,52 @@ class ConnectorTheGraph implements ConnectorInterface {
     // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
-  async permissions(orgAddress: string): Promise<Permission[]> {
-    const query = `
-      query {
-        organization(id: "${orgAddress}") {
-          acl {
-            permissions {
-              entity
-              app {
-                address
-              }
-              role {
-                name
-                manager
-              }
-            }
-          }
-        }
-      }
-    `
+  async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
+    const org = (await this._performQuery(
+      queries.ORGANIZATION_PERMISSIONS,
+      { orgAddress }
+    )).organization as OrganizationDataGql
 
-    const res = await this.#daoClient.query(query).toPromise()
+    return parsePermissions(this, org?.acl?.permissions)
+  }
 
-    const { permissions } = res?.data?.organization.acl
-    if (!permissions) {
-      return []
-    }
+  async appsForOrg(orgAddress: string): Promise<App[]> {
+    const org = (await this._performQuery(
+      queries.ORGANIZATION_APPS,
+      { orgAddress }
+    )).organization as OrganizationDataGql
 
-    return permissions.map(
-      ({
-        app,
-        entity,
-        role,
-      }: {
-        app: any
-        entity: string
-        role: { name: string }
-      }) => ({
-        app: app?.address || '',
-        entity,
-        role: role.name,
-      })
-    )
+    return parseApps(this, org?.apps)
+  }
+
+  async appByAddress(appAddress: string): Promise<App> {
+    const app = (await this._performQuery(
+      queries.APP_BY_ADDRESS,
+      { appAddress }
+    )).app as AppDataGql
+
+    return parseApp(this, app)
+  }
+
+  async repoForApp(appAddress: string): Promise<Repo> {
+    const app = (await this._performQuery(
+      queries.REPO_BY_APP_ADDRESS,
+      { appAddress }
+    )).app as AppDataGql
+
+    return parseRepo(this, app?.repo)
+  }
+
+  private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {
+    const results = await this.#daoClient.query(
+      query,
+      vars
+    ).toPromise()
+
+    // TODO: Check for errors here.
+    // console.log(JSON.stringify(results, null, 2))
+
+    return results.data
   }
 }
 

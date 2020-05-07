@@ -1,4 +1,5 @@
-import { ConnectorInterface, Permission } from './ConnectorTypes'
+import { ConnectorInterface } from './ConnectorTypes'
+import Permission from './wrappers/Permission'
 
 export type ConnectorJsonConfig = { permissions: Permission[] }
 
@@ -9,7 +10,7 @@ class ConnectorJson implements ConnectorInterface {
     this.#permissions = permissions
   }
 
-  async permissions(): Promise<Permission[]> {
+  async permissionsForOrg(): Promise<Permission[]> {
     return this.#permissions
   }
 }
