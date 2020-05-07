@@ -22,7 +22,7 @@ import { ConnectorInterface } from "../ConnectorTypes"
 // [ ] sourceUrl 	String 	URL of the app source code.
 // [x] version 	String 	The current version of the app.
 // [x] kernelAddress 	String 	The address of the kernel.
-// [.] isForwarder 	Boolean 	Whether the app can act as a forwarder.
+// [x] isForwarder 	Boolean 	Whether the app can act as a forwarder.
 // [ ] tags 	String[] 	Tags associated with the app.
 
 export interface AppData {
