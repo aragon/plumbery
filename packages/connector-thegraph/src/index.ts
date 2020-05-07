@@ -3,8 +3,8 @@ import { Client } from '@urql/core'
 import * as queries from './graphql/queries'
 import { DocumentNode } from 'graphql';
 import {
-  OrganizationDataGql,
-  AppDataGql
+  Organization as OrganizationDataGql,
+  App as AppDataGql
 } from './graphql/types';
 import {
   parseApp,
@@ -43,7 +43,7 @@ class ConnectorTheGraph implements ConnectorInterface {
       { orgAddress }
     )).organization as OrganizationDataGql
 
-    return parsePermissions(this, org?.acl?.permissions)
+    return parsePermissions(this, org?.permissions)
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
@@ -70,7 +70,7 @@ class ConnectorTheGraph implements ConnectorInterface {
       { appAddress }
     )).app as AppDataGql
 
-    return parseRepo(this, app?.repo)
+    return parseRepo(this, app?.repoVersion?.repo)
   }
 
   private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {

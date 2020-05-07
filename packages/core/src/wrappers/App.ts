@@ -3,7 +3,6 @@ import Base from "./Base"
 import { ConnectorInterface } from "../ConnectorTypes"
 
 export interface AppData {
-  name?: string
   appName?: string
   address: string
   appId: string
@@ -11,7 +10,6 @@ export interface AppData {
 }
 
 export default class App extends Base implements AppData {
-  readonly name?: string
   readonly appName?: string
   readonly address!: string
   readonly appId!: string
