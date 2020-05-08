@@ -20,17 +20,18 @@ for (const transaction of transactions) {
 
 ## Documentation
 
-| Name                                            | Description                                                             |
-| ----------------------------------------------- | ----------------------------------------------------------------------- |
-| [connect()](docs/connect.md)                         | Connect to organizations.                                               |
-| [App](docs/app.md)                                   | An app installed in an organization.                                    |
-| [Connectors](docs/connectors.md)                     | The connectors that fetch data from the chain.                          |
-| [Organization](docs/organization.md)                 | An Aragon organization.                                                 |
-| [Permission](docs/permission.md)                     | A permission represents the relation between an app role and an entity. |
-| [Repo](docs/repo.md)                                 | An app repository.                                                      |
-| [Role](docs/role.md)                                 | A single role, which can get assigned to create a permission.           |
-| [TransactionPath](docs/transaction-path.md)          | A single transaction path.                                              |
-| [TransactionPathList](docs/transaction-path-list.md) | A set of transaction paths.                                             |
+| Name                                              | Description                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [App](docs/app.md)                                | App installed in an organization.                                                           |
+| [connect()](docs/connect.md)                      | Connect to organizations.                                                                   |
+| [Connectors](docs/connectors.md)                  | Connectors that fetch data from the chain.                                                  |
+| [Intent](docs/intent.md)                          | Intent to change anything on an organization or its apps.                                   |
+| [Organization](docs/organization.md)              | Aragon organization.                                                                        |
+| [Permission](docs/permission.md)                  | Permission represents the relation between an app role and an entity.                       |
+| [Repo](docs/repo.md)                              | App repository.                                                                             |
+| [Role](docs/role.md)                              | Single role, which can get assigned to create a permission.                                 |
+| [TransactionPath](docs/transaction-path.md)       | Single transaction path.                                                                    |
+| [TransactionRequest](docs/transaction-request.md) | Object describing a transaction that can get signed by a library like ethers.js or Web3.js. |
 
 ## Principles
 

@@ -1,6 +1,6 @@
 # Intent
 
-Represents an intent that allows to get transaction paths from it.
+Intent to change anything on an organization and its apps, through an Ethereum transaction. Allows to get transaction paths from it.
 
 ## Methods
 
