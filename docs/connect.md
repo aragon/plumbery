@@ -43,6 +43,7 @@ try {
 
   // Custom connector
   const org4 = await connect('org4.aragonid.eth', {
+    // CustomConnector implements IConnector
     connector: new CustomConnector(),
   })
 } catch (err) {
