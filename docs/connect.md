@@ -28,14 +28,15 @@ Connects and returns an `Organization` for `location`.
 ```js
 import { connect } from 'plumbery'
 
+// Connections should get wrapped in a try / catch to capture connection errors.
 try {
-  // Default config and connector
+  // Connect to an org using the default config
   const org1 = await connect('org1.aragonid.eth')
 
-  // Specific connector
+  // Specify a connector
   const org2 = await connect('org2.aragonid.eth', { connector: 'thegraph' })
 
-  // Specific connector with its config
+  // Specify a connector and its config
   const org3 = await connect('org3.aragonid.eth', {
     connector: ['thegraph', { daoSubgraphUrl: 'http://…' }],
   })
@@ -44,7 +45,13 @@ try {
   const org4 = await connect('org4.aragonid.eth', {
     connector: new CustomConnector(),
   })
-} catch (err) {}
+} catch (err) {
+  if (err instanceof ConnectionError) {
+    console.error('Connection error')
+  } else {
+    console.error(err)
+  }
+}
 ```
 
 ## connect(config)
