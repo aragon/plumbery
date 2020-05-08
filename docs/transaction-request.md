@@ -22,3 +22,7 @@ For Web3.js users, return a variant of the object that can get passed to `web3.e
 ### TransactionRequest#toEthers()
 
 For ethers.js users, return a variant of the object that can get passed to `wallet.sendTransaction()`.
+
+### TransactionRequest#toRpc()
+
+For users of the Ethereum JSON-RPC API, return a variant of the object that can get passed to `eth_sendTransaction`.
