@@ -1,35 +1,41 @@
-import { App as AppDataGql } from '../graphql/types'
+import {
+  App as AppDataGql,
+  Organization as OrganizationDataGql,
+} from '../graphql/types'
 import { ConnectorTheGraph, App } from 'plumbery-core'
 import ParseBase from './ParseBase'
 
-export class ParseAppFromApp extends ParseBase {
-  constructor() {
-    super('AppDataGql', 'App')
-  }
+export class AppFromApp extends ParseBase {
+  static parse(
+    connector: ConnectorTheGraph,
+    app: AppDataGql | null | undefined
+  ): App {
+    ParseBase.validateData(app, app)
 
-  parseImplementation(connector: ConnectorTheGraph, app: AppDataGql): App {
     return new App({
-        name: app.repoVersion?.repo.name,
-        isForwarder: app.isForwarder,
-        appId: app.appId,
-        address: app.address,
-        registryAddress: app.repoVersion?.repo?.registry?.address,
-        kernelAddress: app.organization?.address,
-        version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
+        name: app!.repoVersion?.repo.name,
+        isForwarder: app!.isForwarder,
+        appId: app!.appId,
+        address: app!.address,
+        registryAddress: app!.repoVersion?.repo?.registry?.address,
+        kernelAddress: app!.organization?.address,
+        version: app!.repoVersion?.semanticVersion.replace(/,/g, '.'),
       },
       connector
     )
   }
 }
 
-export class ParseAppsFromOrg extends ParseBase {
-  constructor() {
-    super('OrgDataGql', 'App')
-  }
+export class AppsFromOrg extends ParseBase {
+  static parse(
+    connector: ConnectorTheGraph,
+    org: OrganizationDataGql | null | undefined
+  ): App[] {
+    const apps = org?.apps
+    ParseBase.validateData(org, org?.apps)
 
-  parseImplementation(connector: ConnectorTheGraph, apps: AppDataGql[]): App[] {
-    return apps.map((app: AppDataGql) => {
-      return new ParseAppFromApp().parse(connector, app, app)
+    return apps!.map((app: AppDataGql) => {
+      return AppFromApp.parse(connector, app)
     })
   }
 }

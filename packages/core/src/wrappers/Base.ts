@@ -7,10 +7,13 @@ export default class Base {
     this._connector = connector
   }
 
-  public describe(): string {
-    return Object.getOwnPropertyNames(this)
+  public toString(): string {
+    const render = {}
+
+    Object.getOwnPropertyNames(this)
       .filter(prop => !prop.includes('_'))
-      .map(prop => `  ${prop}: ${(this as any)[prop]}`)
-      .join('\n')
+      .map(prop => (render as any)[prop] = (this as any)[prop])
+
+    return JSON.stringify(render, null, 2)
   }
 }

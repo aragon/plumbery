@@ -10,47 +10,39 @@ const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-sub
 const VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
+let app
+
 async function main() {
-  let app
-
   const connection = initConnection()
-
   const org = connection.organization(ORG_ADDRESS)
 
-  // Retrieve all the permissions of an org.
+  console.log('\nPermissions:')
   const permissions = await org.permissions()
-  console.log(`\nPermissions:\n${permissions.map(
-    (p: Permission) => p.describe()
-  ).join('\n')}`)
+  permissions.map((permission: Permission) => console.log(permission.toString()))
 
-  // Retrieve all the apps of an org.
+  console.log('\nApps:')
   const apps = await org.apps()
-  console.log(`\nApps:\n${apps.map(
-    (app: App) => app.describe()
-  ).join('\n')}`)
+  apps.map((app: App) => console.log(app.toString()))
 
-  // Find a voting app.
-  app = apps[0]
-  // app = apps.find((app: App) => app.name == 'voting')!
-  console.log(`\nA voting app:\n${app.describe()}`)
+  console.log('\nA voting app:')
+  app = apps.find((app: App) => app.name == 'voting')!
+  console.log(app.toString())
 
-  // Retrieve a repo from an app.
+  console.log('\nA repo from an app:')
   const repo = await app.repo()
-  console.log(`\nRepo:\n${repo.describe()}`)
+  console.log(repo.toString())
 
-  // Retrieve an app by address.
+  console.log('\nAn app by address:')
   app = await org.app(apps[1].address)
-  console.log(`\nApp by address:\n${app.describe()}`)
+  console.log(app.toString())
 
-  // Retrieve an app from a permission.
+  console.log('\nAn app from a permission:')
   app = await permissions[1].getApp()
-  if (app) {
-    console.log(`\nApp from permission:\n${app.describe()}`)
-  }
+  if (app) { console.log(app.toString()) }
 
-  // Retrieve a role from a permission.
+  console.log('\nA role from a permission:')
   const role = await permissions[1].getRole()
-  console.log(`\nRole from permission:\n${role.describe()}`)
+  console.log(role.toString())
 }
 
 function initConnection(): Connection {

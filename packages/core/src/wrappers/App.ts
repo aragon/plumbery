@@ -36,7 +36,7 @@ export interface AppData {
   version?: string
   registryAddress: string
   kernelAddress: string
-  isForwarder: boolean
+  isForwarder: boolearender.toString()n
 }
 
 export default class App extends Base implements AppData {

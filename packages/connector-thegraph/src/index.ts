@@ -8,11 +8,11 @@ import {
   Role as RoleDataGql
 } from './graphql/types';
 import {
-  ParseAppFromApp,
-  ParseAppsFromOrg,
-  ParsePermissionsFromPermissions,
-  ParseRepoFromApp,
-  ParseRoleFromRole
+  AppFromApp,
+  AppsFromOrg,
+  PermissionsFromOrg,
+  RepoFromApp,
+  RoleFromRole
 } from './parse';
 import {
   ConnectorInterface,
@@ -37,43 +37,42 @@ class ConnectorTheGraph implements ConnectorInterface {
       url: daoSubgraphUrl,
     })
 
-    const appNames = Object.keys(appSubgraphUrls)
-    console.log('appNames:', appNames)
+    // const appNames = Object.keys(appSubgraphUrls)
   }
 
   async roleById(roleId: string): Promise<Role> {
     const res = await this._performQuery(queries.ROLE_BY_ID, { roleId })
     const role = res.role as RoleDataGql
 
-    return new ParseRoleFromRole().parse(this, role, role)
+    return RoleFromRole.parse(this, role)
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     const res = await this._performQuery(queries.ORGANIZATION_PERMISSIONS, { orgAddress })
     const org = res.organization as OrganizationDataGql
 
-    return new ParsePermissionsFromPermissions().parse(this, org, org.permissions)
+    return PermissionsFromOrg.parse(this, org)
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
     const res = await this._performQuery(queries.ORGANIZATION_APPS, { orgAddress })
     const org = res.organization as OrganizationDataGql
 
-    return new ParseAppsFromOrg().parse(this, org, org?.apps)
+    return AppsFromOrg.parse(this, org)
   }
 
   async appByAddress(appAddress: string): Promise<App> {
     const res = await this._performQuery(queries.APP_BY_ADDRESS, { appAddress })
     const app = res.app as AppDataGql
 
-    return new ParseAppFromApp().parse(this, app, app)
+    return AppFromApp.parse(this, app)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
     const res = await this._performQuery(queries.REPO_BY_APP_ADDRESS, { appAddress })
     const app = res.app as AppDataGql
 
-    return new ParseRepoFromApp().parse(this, app, app?.repoVersion?.repo)
+    return RepoFromApp.parse(this, app)
   }
 
   private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {

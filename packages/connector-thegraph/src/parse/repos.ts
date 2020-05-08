@@ -1,16 +1,18 @@
-import { Repo as RepoDataGql } from "../graphql/types";
+import { App as AppDataGql } from "../graphql/types";
 import { ConnectorTheGraph, Repo } from "plumbery-core";
 import ParseBase from './ParseBase'
 
-export class ParseRepoFromApp extends ParseBase {
-  constructor() {
-    super('AppDataGql', 'Repo')
-  }
+export class RepoFromApp extends ParseBase {
+  static parse(
+    connector: ConnectorTheGraph,
+    app: AppDataGql | null | undefined
+  ): Repo {
+    const repo = app?.repoVersion?.repo
+    ParseBase.validateData(app, repo)
 
-  parseImplementation(connector: ConnectorTheGraph, repo: RepoDataGql): Repo {
     return new Repo({
-      name: repo.name,
-      address: repo.address
+      name: repo!.name,
+      address: repo!.address
     }, connector)
   }
 }
