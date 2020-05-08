@@ -1,6 +1,6 @@
 # Intent
 
-Intent to change anything on an organization and its apps, through an Ethereum transaction. Allows to get transaction paths from it.
+An intent to create an Ethereum transaction on, or through, an Aragon organization or its apps. It allows to retrieve transaction paths or a set of transactions to sign.
 
 ## Methods
 
