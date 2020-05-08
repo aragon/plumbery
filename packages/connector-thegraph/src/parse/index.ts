@@ -1,4 +1,4 @@
-export { parseApp, parseApps } from './apps';
-export { parsePermissions } from './permissions';
-export { parseRepo } from './repos';
-export { parseRole } from './roles';
+export { ParseAppFromApp, ParseAppsFromOrg } from './apps';
+export { ParsePermissionsFromOrg as ParsePermissionsFromPermissions } from './permissions';
+export { ParseRepoFromApp } from './repos';
+export { ParseRoleFromRole } from './roles';

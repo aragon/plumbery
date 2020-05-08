@@ -1,18 +1,18 @@
 import { Role as RoleDataGql } from "../graphql/types";
 import { ConnectorTheGraph, Role } from "plumbery-core";
+import ParseBase from './ParseBase'
 
-export function parseRole(
-  connector: ConnectorTheGraph,
-  role: RoleDataGql | null | undefined
-): Role {
-  if (!role) {
-    throw new Error('Unable to parse role.')
+export class ParseRoleFromRole extends ParseBase {
+  constructor() {
+    super('RoleDataGql', 'Role')
   }
 
-  return new Role({
-    name: '?',
-    id: role.id,
-    params: '?',
-    bytes: role.hash
-  }, connector)
+  parseImplementation(connector: ConnectorTheGraph, role: RoleDataGql): Role {
+    return new Role({
+      name: '?',
+      id: role.id,
+      params: '?',
+      bytes: role.hash
+    }, connector)
+  }
 }

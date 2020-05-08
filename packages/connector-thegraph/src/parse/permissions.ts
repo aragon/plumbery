@@ -1,20 +1,20 @@
 import { Permission as PermissionDataGql } from "../graphql/types";
 import { Permission, ConnectorTheGraph } from "plumbery-core";
+import ParseBase from './ParseBase'
 
-export function parsePermissions(
-  connector: ConnectorTheGraph,
-  permissions: PermissionDataGql[] | null | undefined
-): Permission[] {
-  if (!permissions) {
-    throw new Error('Unable to parse permissions.')
+export class ParsePermissionsFromOrg extends ParseBase {
+  constructor() {
+    super('OrgDataGql', 'Permission')
   }
 
-  return permissions.map((permission: PermissionDataGql) => {
-    return new Permission({
-      app: permission.app?.address,
-      entity: permission.entity,
-      role: permission.role.hash,
-      id: permission.id
-    }, connector)
-  })
+  parseImplementation(connector: ConnectorTheGraph, permissions: PermissionDataGql[]): Permission[] {
+    return permissions.map((permission: PermissionDataGql) => {
+      return new Permission({
+        app: permission.app?.address,
+        entity: permission.entity,
+        role: permission.role.hash,
+        id: permission.id
+      }, connector)
+    })
+  }
 }

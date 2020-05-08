@@ -6,7 +6,9 @@ import {
 } from 'plumbery-core'
 import Connection from 'plumbery-core/dist/Connection'
 
-const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
+const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
+const VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
+const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
 async function main() {
   let app
@@ -26,8 +28,11 @@ async function main() {
   console.log(`\nApps:\n${apps.map(
     (app: App) => app.describe()
   ).join('\n')}`)
+
+  // Find a voting app.
   app = apps[0]
-  console.log(`\nFirst app:\n${app.describe()}`)
+  // app = apps.find((app: App) => app.name == 'voting')!
+  console.log(`\nA voting app:\n${app.describe()}`)
 
   // Retrieve a repo from an app.
   const repo = await app.repo()
@@ -58,9 +63,14 @@ function initConnection(): Connection {
     connector: [
       'thegraph',
       {
-        daoSubgraphUrl:
-          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        appSubgraphUrl: () => '',
+        daoSubgraphUrl: DAO_SUBGRAPH_URL,
+        appSubgraphUrls: (repoId: string) => {
+          if (repoId == 'voting') {
+            return VOTING_SUBGRAPH_URL
+          } else {
+            throw new Error('Unknown subgraph.')
+          }
+        },
       },
     ],
     signer: {},

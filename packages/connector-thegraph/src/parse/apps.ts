@@ -1,37 +1,35 @@
 import { App as AppDataGql } from '../graphql/types'
 import { ConnectorTheGraph, App } from 'plumbery-core'
+import ParseBase from './ParseBase'
 
-export function parseApp(
-  connector: ConnectorTheGraph,
-  app: AppDataGql | null | undefined
-): App {
-  if (!app) {
-    throw new Error('Unable to parse app.')
+export class ParseAppFromApp extends ParseBase {
+  constructor() {
+    super('AppDataGql', 'App')
   }
 
-  return new App(
-    {
-      name: app.repoVersion?.repo.name,
-      isForwarder: app.isForwarder,
-      appId: app.appId,
-      address: app.address,
-      registryAddress: app.repoVersion?.repo?.registry?.address,
-      kernelAddress: app.organization?.address,
-      version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
-    },
-    connector
-  )
+  parseImplementation(connector: ConnectorTheGraph, app: AppDataGql): App {
+    return new App({
+        name: app.repoVersion?.repo.name,
+        isForwarder: app.isForwarder,
+        appId: app.appId,
+        address: app.address,
+        registryAddress: app.repoVersion?.repo?.registry?.address,
+        kernelAddress: app.organization?.address,
+        version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
+      },
+      connector
+    )
+  }
 }
 
-export function parseApps(
-  connector: ConnectorTheGraph,
-  apps: AppDataGql[] | null | undefined
-): App[] {
-  if (!apps) {
-    throw new Error('Unable to parse apps.')
+export class ParseAppsFromOrg extends ParseBase {
+  constructor() {
+    super('OrgDataGql', 'App')
   }
 
-  return apps.map((app: AppDataGql) => {
-    return parseApp(connector, app)
-  })
+  parseImplementation(connector: ConnectorTheGraph, apps: AppDataGql[]): App[] {
+    return apps.map((app: AppDataGql) => {
+      return new ParseAppFromApp().parse(connector, app, app)
+    })
+  }
 }

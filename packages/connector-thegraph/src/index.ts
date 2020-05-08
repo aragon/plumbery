@@ -8,11 +8,11 @@ import {
   Role as RoleDataGql
 } from './graphql/types';
 import {
-  parseApp,
-  parseApps,
-  parsePermissions,
-  parseRepo,
-  parseRole
+  ParseAppFromApp,
+  ParseAppsFromOrg,
+  ParsePermissionsFromPermissions,
+  ParseRepoFromApp,
+  ParseRoleFromRole
 } from './parse';
 import {
   ConnectorInterface,
@@ -23,51 +23,57 @@ import {
 } from 'plumbery-core'
 
 export type ConnectorTheGraphConfig = {
-  appSubgraphUrl: (repoId: string) => string
   daoSubgraphUrl: string
+  appSubgraphUrls: { [appName: string]: string }
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: Client
-  // #appClient: Client
+  #appClients: { [appName: string]: Client } = {}
 
-  constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
+  constructor({ daoSubgraphUrl, appSubgraphUrls }: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
       maskTypename: true,
       url: daoSubgraphUrl,
     })
 
-    // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
+    const appNames = Object.keys(appSubgraphUrls)
+    console.log('appNames:', appNames)
   }
 
   async roleById(roleId: string): Promise<Role> {
     const res = await this._performQuery(queries.ROLE_BY_ID, { roleId })
     const role = res.role as RoleDataGql
-    return parseRole(this, role)
+
+    return new ParseRoleFromRole().parse(this, role, role)
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     const res = await this._performQuery(queries.ORGANIZATION_PERMISSIONS, { orgAddress })
     const org = res.organization as OrganizationDataGql
-    return parsePermissions(this, org?.permissions)
+
+    return new ParsePermissionsFromPermissions().parse(this, org, org.permissions)
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
     const res = await this._performQuery(queries.ORGANIZATION_APPS, { orgAddress })
     const org = res.organization as OrganizationDataGql
-    return parseApps(this, org?.apps)
+
+    return new ParseAppsFromOrg().parse(this, org, org?.apps)
   }
 
   async appByAddress(appAddress: string): Promise<App> {
     const res = await this._performQuery(queries.APP_BY_ADDRESS, { appAddress })
     const app = res.app as AppDataGql
-    return parseApp(this, app)
+
+    return new ParseAppFromApp().parse(this, app, app)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
     const res = await this._performQuery(queries.REPO_BY_APP_ADDRESS, { appAddress })
     const app = res.app as AppDataGql
-    return parseRepo(this, app?.repoVersion?.repo)
+
+    return new ParseRepoFromApp().parse(this, app, app?.repoVersion?.repo)
   }
 
   private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<any> {
