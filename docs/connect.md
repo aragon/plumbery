@@ -76,9 +76,9 @@ When `connect()` gets called with a config only, it returns a function that allo
 ```js
 import { connect } from 'plumbery'
 
-const org = await connect({ connector: 'thegraph' })
+const getOrg = await connect({ connector: 'thegraph' })
 
-const org1 = org('org1.aragonid.eth')
-const org2 = org('org2.aragonid.eth')
-const org3 = org('org3.aragonid.eth')
+const org1 = getOrg('org1.aragonid.eth')
+const org2 = getOrg('org2.aragonid.eth')
+const org3 = getOrg('org3.aragonid.eth')
 ```
