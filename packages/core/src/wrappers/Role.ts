@@ -1,4 +1,4 @@
-import Base from "./Base"
+import BaseWrapper from "./BaseWrapper"
 import { ConnectorInterface } from "../ConnectorTypes"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/role.md).
@@ -14,7 +14,7 @@ export interface RoleData {
   bytes: string
 }
 
-export default class Role extends Base implements RoleData {
+export default class Role extends BaseWrapper implements RoleData {
   readonly name!: string
   readonly id!: string
   readonly params!: string

@@ -1,6 +1,6 @@
 import { ConnectorInterface } from "../ConnectorTypes";
 
-export default class Base {
+export default class BaseWrapper {
   protected _connector: ConnectorInterface
 
   constructor(connector: ConnectorInterface) {
