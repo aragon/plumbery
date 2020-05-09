@@ -6,6 +6,8 @@ import {
 } from 'plumbery-core'
 import Connection from 'plumbery-core/dist/Connection'
 
+const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
+const VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
 let app
@@ -39,7 +41,7 @@ async function main() {
   if (app) { console.log(app.toString()) }
 
   console.log('\nA role from a permission:')
-  const role = await permissions[1].getRole()
+  const role = await permissions[2].getRole()
   console.log(role.toString())
 }
 
@@ -53,9 +55,10 @@ function initConnection(): Connection {
     connector: [
       'thegraph',
       {
-        daoSubgraphUrl:
-          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        appSubgraphUrl: () => '',
+        daoSubgraphUrl: DAO_SUBGRAPH_URL,
+        appSubgraphUrls: {
+          voting: VOTING_SUBGRAPH_URL
+        }
       },
     ],
     signer: {},

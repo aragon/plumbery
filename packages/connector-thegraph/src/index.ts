@@ -1,5 +1,5 @@
 import 'isomorphic-unfetch';
-import { Client } from '@urql/core'
+import { Client, maskTypename } from '@urql/core'
 import * as queries from './graphql/queries'
 import { DocumentNode } from 'graphql';
 import {
@@ -23,21 +23,28 @@ type DataGql = any
 type ParseFunction = (connector: ConnectorTheGraph, data: DataGql) => {}
 
 export type ConnectorTheGraphConfig = {
-  appSubgraphUrl: (repoId: string) => string
+  appSubgraphUrls: { [appId: string]: string }
   daoSubgraphUrl: string
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: Client
-  // #appClient: Client
+  #appClients: { [appId: string]: Client }
 
-  constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
+  constructor({ daoSubgraphUrl, appSubgraphUrls }: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
       maskTypename: true,
       url: daoSubgraphUrl,
     })
 
-    // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
+    // this.#appClients = createClient({ url: appSubgraphUrl('app_id') })
+    this.#appClients = {}
+    for (const appId in appSubgraphUrls) {
+      this.#appClients[appId] = new Client({
+        maskTypename: true,
+        url: appSubgraphUrls[appId]
+      })
+    }
   }
 
   async roleById(roleId: string): Promise<Role> {
