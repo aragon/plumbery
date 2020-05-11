@@ -6,46 +6,41 @@ import {
 } from 'plumbery-core'
 import Connection from 'plumbery-core/dist/Connection'
 
-const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
+const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
+
+let app
 
 async function main() {
-  let app
-
   const connection = initConnection()
-
   const org = connection.organization(ORG_ADDRESS)
 
-  // Retrieve all the permissions of an org.
+  console.log('\nPermissions:')
   const permissions = await org.permissions()
-  console.log(`\nPermissions:\n${permissions.map(
-    (p: Permission) => p.describe()
-  ).join('\n')}`)
+  permissions.map((permission: Permission) => console.log(permission.toString()))
 
-  // Retrieve all the apps of an org.
+  console.log('\nApps:')
   const apps = await org.apps()
-  console.log(`\nApps:\n${apps.map(
-    (app: App) => app.describe()
-  ).join('\n')}`)
-  app = apps[0]
-  console.log(`\nFirst app:\n${app.describe()}`)
+  apps.map((app: App) => console.log(app.toString()))
 
-  // Retrieve a repo from an app.
+  console.log('\nA voting app:')
+  app = apps.find((app: App) => app.name == 'voting')!
+  console.log(app.toString())
+
+  console.log('\nA repo from an app:')
   const repo = await app.repo()
-  console.log(`\nRepo:\n${repo.describe()}`)
+  console.log(repo.toString())
 
-  // Retrieve an app by address.
+  console.log('\nAn app by address:')
   app = await org.app(apps[1].address)
-  console.log(`\nApp by address:\n${app.describe()}`)
+  console.log(app.toString())
 
-  // Retrieve an app from a permission.
+  console.log('\nAn app from a permission:')
   app = await permissions[1].getApp()
-  if (app) {
-    console.log(`\nApp from permission:\n${app.describe()}`)
-  }
+  if (app) { console.log(app.toString()) }
 
-  // Retrieve a role from a permission.
+  console.log('\nA role from a permission:')
   const role = await permissions[1].getRole()
-  console.log(`\nRole from permission:\n${role.describe()}`)
+  console.log(role.toString())
 }
 
 function initConnection(): Connection {
