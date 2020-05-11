@@ -57,4 +57,8 @@ export default class App extends BaseWrapper implements AppData {
   async repo(): Promise<Repo> {
     return this._connector.repoForApp!(this.address)
   }
+
+  async getState(selectorAlias: string, args: any[] = []): Promise<any> {
+    return this._connector.getAppState!(this.name!, selectorAlias, args)
+  }
 }

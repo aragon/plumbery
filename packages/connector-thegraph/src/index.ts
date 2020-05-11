@@ -22,29 +22,70 @@ type DataGql = any
 
 type ParseFunction = (connector: ConnectorTheGraph, data: DataGql) => {}
 
+type SelectorDictionary = {
+  [selectorAlias: string]: {
+    query: DocumentNode
+    parser: (data: DataGql) => any
+  }
+}
+
+type AppConnectorConfig = {
+  subgraphUrl: string
+  selectors: SelectorDictionary
+}
+
+type AppConnector = {
+  client: Client
+  selectors: SelectorDictionary
+}
+
 export type ConnectorTheGraphConfig = {
-  appSubgraphUrls: { [appId: string]: string }
   daoSubgraphUrl: string
+  appConnectors: { [appAlias: string]: AppConnectorConfig }
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: Client
-  #appClients: { [appId: string]: Client }
+  #appConnectors: { [appAlias: string]: AppConnector }
 
-  constructor({ daoSubgraphUrl, appSubgraphUrls }: ConnectorTheGraphConfig) {
+  constructor(config: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
       maskTypename: true,
-      url: daoSubgraphUrl,
+      url: config.daoSubgraphUrl,
     })
 
-    // this.#appClients = createClient({ url: appSubgraphUrl('app_id') })
-    this.#appClients = {}
-    for (const appId in appSubgraphUrls) {
-      this.#appClients[appId] = new Client({
-        maskTypename: true,
-        url: appSubgraphUrls[appId]
-      })
+    this.#appConnectors = {}
+    for (const appAlias in config.appConnectors) {
+      const appConfig = config.appConnectors[appAlias]
+
+      this.#appConnectors[appAlias] = {
+        client: new Client({
+          maskTypename: true,
+          url: appConfig.subgraphUrl
+        }),
+        selectors: appConfig.selectors
+      }
     }
+  }
+
+  async getAppState(appAlias: string, selectorAlias: string, args: any[]): Promise<any> {
+    const appConnector = this.#appConnectors[appAlias]
+    if (!appConnector) {
+      throw new Error(`App connector not found for ${appAlias}`)
+    }
+
+    const selector = appConnector.selectors[selectorAlias]
+    if (!selector) {
+      throw new Error(`App selector not found for ${selectorAlias}`)
+    }
+
+    const results = await this._performQuery(
+      selector.query,
+      { ...args },
+      appConnector.client
+    )
+
+    return selector.parser(results)
   }
 
   async roleById(roleId: string): Promise<Role> {
@@ -102,15 +143,15 @@ class ConnectorTheGraph implements ConnectorInterface {
     }
   }
 
-  private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<QueryResult> {
-    const results = await this.#daoClient.query(
+  private async _performQuery(query: DocumentNode, vars: any =  {}, client = this.#daoClient): Promise<QueryResult> {
+    const results = await client.query(
       query,
       vars
     ).toPromise()
 
     if (results.error) {
       const queryStr = query.loc?.source.body
-      throw new Error(`Error while connecting to the subgraph at ${this.#daoClient.url} with query: ${queryStr}\n Error: ${results.error}`)
+      throw new Error(`Error while connecting to the subgraph at ${client.url} with query: ${queryStr}\n Error: ${results.error}`)
     }
 
     return results.data

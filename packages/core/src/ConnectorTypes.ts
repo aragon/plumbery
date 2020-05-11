@@ -14,4 +14,5 @@ export interface ConnectorInterface {
   repoForApp?(appAddress: string): Promise<Repo>
   appByAddress?(appAddress: string): Promise<App>
   roleById?(roleId: string): Promise<Role>
+  getAppState?(appAlias: string, selectorAlias: string, args: any[]): Promise<any>
 }

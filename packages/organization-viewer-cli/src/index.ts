@@ -1,4 +1,5 @@
 // import data from './org-data.json'
+import gql from 'graphql-tag'
 import {
   aragonConnect,
   Permission,
@@ -10,7 +11,7 @@ const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-sub
 const VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
-let app
+let app: App
 
 async function main() {
   const connection = initConnection()
@@ -23,10 +24,6 @@ async function main() {
   console.log('\nApps:')
   const apps = await org.apps()
   apps.map((app: App) => console.log(app.toString()))
-
-  console.log('\nA voting app:')
-  app = apps.find((app: App) => app.name == 'voting')!
-  console.log(app.toString())
 
   console.log('\nA repo from an app:')
   const repo = await app.repo()
@@ -43,26 +40,53 @@ async function main() {
   console.log('\nA role from a permission:')
   const role = await permissions[2].getRole()
   console.log(role.toString())
+
+  console.log('\nA voting app:')
+  const voting = apps.find((app: App) => app.name == 'voting')
+  const votes = await voting!.getState('votes')
+  console.log(votes)
+}
+
+const votingAppSelectors = {
+  votes: {
+    query: gql`
+      query {
+        votes {
+          id
+          creator
+          metadata
+          executed
+        }
+      }
+    `,
+    parser: (data: any) => {
+      return data
+    }
+  }
 }
 
 function initConnection(): Connection {
-  // return aragonConnect({
-  //   connector: ['json', { data }],
-  //   signer: {},
-  // })
-
   return aragonConnect({
     connector: [
       'thegraph',
       {
         daoSubgraphUrl: DAO_SUBGRAPH_URL,
-        appSubgraphUrls: {
-          voting: VOTING_SUBGRAPH_URL
+        appConnectors: {
+          voting: {
+            subgraphUrl: VOTING_SUBGRAPH_URL,
+            selectors: votingAppSelectors
+          }
         }
       },
     ],
     signer: {},
   })
+
+  // JSON connector.
+  // return aragonConnect({
+  //   connector: ['json', { data }],
+  //   signer: {},
+  // })
 }
 
 main()
