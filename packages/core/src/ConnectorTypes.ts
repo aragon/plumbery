@@ -8,7 +8,13 @@ import Role from './wrappers/Role';
 // When making these non-optional, make sure to also:
 //   * remove non-null assertions from Organization.ts (e.g. this.#connector.apps!(...)).
 //   * remove similar non-null assertions all wrappers.
+
 export interface ConnectorInterface {
+  execute?(moduleName: string, selectorName: string, args: any): Promise<any>
+  dummy?(): void // TODO: remove.
+}
+
+export interface ConnectorCoreModuleInterface {
   permissionsForOrg(orgAddress: string): Promise<Permission[]>
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>

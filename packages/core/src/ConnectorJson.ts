@@ -13,6 +13,9 @@ class ConnectorJson implements ConnectorInterface {
   async permissionsForOrg(): Promise<Permission[]> {
     return this.#permissions
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  dummy(): void {}
 }
 
 export default ConnectorJson

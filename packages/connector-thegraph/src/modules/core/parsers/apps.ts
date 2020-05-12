@@ -1,10 +1,14 @@
-import { App as AppDataGql } from '../graphql/types'
+import { App as AppDataGql } from '../queries/types'
+import { Organization as OrganizationDataGql } from "../queries/types";
 import { ConnectorTheGraph, App } from 'plumbery-core'
+import { QueryResult } from 'packages/connector-thegraph/src/types'
 
 export function parseApp(
   connector: ConnectorTheGraph,
-  app: AppDataGql | null | undefined
+  data: QueryResult
 ): App {
+  const app = data.app as AppDataGql
+
   if (!app) {
     throw new Error('Unable to parse app.')
   }
@@ -25,13 +29,16 @@ export function parseApp(
 
 export function parseApps(
   connector: ConnectorTheGraph,
-  apps: AppDataGql[] | null | undefined
+  data: QueryResult
 ): App[] {
+  const org = data.organization as OrganizationDataGql
+  const apps = org?.apps as AppDataGql[]
+
   if (!apps) {
     throw new Error('Unable to parse apps.')
   }
 
   return apps.map((app: AppDataGql) => {
-    return parseApp(connector, app)
+    return parseApp(connector, { app })
   })
 }

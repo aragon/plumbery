@@ -1,93 +1,62 @@
 import 'isomorphic-unfetch';
 import { Client } from '@urql/core'
-import * as queries from './graphql/queries'
 import { DocumentNode } from 'graphql';
-import {
-  parseApp,
-  parseApps,
-  parsePermissions,
-  parseRepo,
-  parseRole
-} from './parse';
-import {
-  ConnectorInterface,
-  Permission,
-  App,
-  Repo,
-  Role
-} from 'plumbery-core'
-
-type QueryResult = any
-type DataGql = any
-
-type ParseFunction = (connector: ConnectorTheGraph, data: DataGql) => {}
+import { ConnectorInterface } from 'plumbery-core'
+import { Module, ParseFunction, QueryResult } from './types';
 
 export type ConnectorTheGraphConfig = {
-  appSubgraphUrl: (repoId: string) => string
   daoSubgraphUrl: string
+  modules: [string]
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: Client
-  // #appClient: Client
 
-  constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
+  #modules: {
+    [moduleName: string]: Module
+  }
+
+  constructor(config: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
       maskTypename: true,
-      url: daoSubgraphUrl,
+      url: config.daoSubgraphUrl,
     })
 
-    // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
+    this.#modules = {}
+    this.loadModule('core', config.daoSubgraphUrl)
   }
 
-  async roleById(roleId: string): Promise<Role> {
+  loadModule(moduleName: string, subgraphUrl: string): void {
+    if (this.#modules[moduleName]) {
+      throw new Error(`Module ${moduleName} already loaded.`)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const module = require(`./modules/${moduleName}`).default
+    module.subgraphUrl = subgraphUrl
+
+    this.#modules[moduleName] = module
+  }
+
+  async execute(moduleName: string, selectorName: string, args: any = {}): Promise<any> {
+    const module = this.#modules[moduleName]
+    if (!module) {
+      throw new Error(`Invalid module "${moduleName}".`)
+    }
+
+    const selector = module.selectors[selectorName]
+
     const result = await this._performQuery(
-      queries.ROLE_BY_ID,
-      { roleId }
+      selector.query,
+      args
     )
 
-    return this._parseQuery(parseRole, result, result.role)
+    return this._parseQuery(selector.parser, result)
   }
 
-  async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
-    const result = await this._performQuery(
-      queries.ORGANIZATION_PERMISSIONS,
-      { orgAddress }
-    )
-
-    return this._parseQuery(parsePermissions, result, result.organization?.permissions)
-  }
-
-  async appsForOrg(orgAddress: string): Promise<App[]> {
-    const result = await this._performQuery(
-      queries.ORGANIZATION_APPS,
-      { orgAddress }
-    )
-
-    return this._parseQuery(parseApps, result, result.organization?.apps)
-  }
-
-  async appByAddress(appAddress: string): Promise<App> {
-    const result = await this._performQuery(
-      queries.APP_BY_ADDRESS,
-      { appAddress }
-    )
-
-    return this._parseQuery(parseApp, result, result.app)
-  }
-
-  async repoForApp(appAddress: string): Promise<Repo> {
-    const result = await this._performQuery(
-      queries.REPO_BY_APP_ADDRESS,
-      { appAddress }
-    )
-
-    return this._parseQuery(parseRepo, result, result.app?.repoVersion?.repo)
-  }
-
-  private _parseQuery(parser: ParseFunction, result: QueryResult, data: DataGql): any {
+  private _parseQuery(parser: ParseFunction, result: QueryResult): any {
     try {
-      return parser(this, data)
+      return parser(this, result)
     } catch (error) {
       throw new Error(`${error.message} The query results where:\n${
         JSON.stringify(result, null, 2)
@@ -95,15 +64,16 @@ class ConnectorTheGraph implements ConnectorInterface {
     }
   }
 
-  private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<QueryResult> {
+  private async _performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
     const results = await this.#daoClient.query(
       query,
-      vars
+      args
     ).toPromise()
 
     if (results.error) {
       const queryStr = query.loc?.source.body
-      throw new Error(`Error while connecting to the subgraph at ${this.#daoClient.url} with query: ${queryStr}\n Error: ${results.error}`)
+      const argsStr = JSON.stringify(args, null, 2)
+      throw new Error(`Error performing query.\nArguments:${argsStr}\nQuery: ${queryStr}\nSubgraph:${this.#daoClient.url}`)
     }
 
     return results.data

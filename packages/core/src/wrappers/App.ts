@@ -55,6 +55,6 @@ export default class App extends Base implements AppData {
   }
 
   async repo(): Promise<Repo> {
-    return this._connector.repoForApp!(this.address)
+    return this._connector.execute!('core', 'repoForApp', { appAddress: this.address })
   }
 }

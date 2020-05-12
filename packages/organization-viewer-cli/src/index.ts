@@ -39,23 +39,16 @@ async function main() {
   if (app) { console.log(app.toString()) }
 
   console.log('\nA role from a permission:')
-  const role = await permissions[1].getRole()
+  const role = await permissions[0].getRole()
   console.log(role.toString())
 }
 
 function initConnection(): Connection {
-  // return aragonConnect({
-  //   connector: ['json', { data }],
-  //   signer: {},
-  // })
-
   return aragonConnect({
     connector: [
       'thegraph',
       {
-        daoSubgraphUrl:
-          'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        appSubgraphUrl: () => '',
+        daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
       },
     ],
     signer: {},

@@ -3,7 +3,7 @@
 // 1. Get schema from Aragon subgraph (https://github.com/aragon/dao-subgraph)
 // 2. Paste in generator (https://graphql-code-generator.com/#live-demo)
 // 3. Add on top:
-/*  
+/*
     directive @entity on OBJECT
     directive @derivedFrom(field: String) on FIELD_DEFINITION
 

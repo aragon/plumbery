@@ -11,6 +11,9 @@ class ConnectorEthereum implements ConnectorInterface {
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     return []
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  dummy(): void {}
 }
 
 export default ConnectorEthereum

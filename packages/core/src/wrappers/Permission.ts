@@ -34,10 +34,12 @@ export default class Permission extends Base implements PermissionData {
       return
     }
 
-    return this._connector.appByAddress!(this.app)
+    return this._connector.execute!('core', 'appByAddress', { appAddress: this.app })
   }
 
   async getRole(): Promise<Role> {
-    return this._connector.roleById!(`${this.entity}-${this.role}`)
+    const roleId = `${this.entity}-${this.role}`
+
+    return this._connector.execute!('core', 'roleById', { roleId })
   }
 }

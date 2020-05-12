@@ -1,10 +1,13 @@
-import { Role as RoleDataGql } from "../graphql/types";
+import { Role as RoleDataGql } from "../queries/types";
 import { ConnectorTheGraph, Role } from "plumbery-core";
+import { QueryResult } from "packages/connector-thegraph/src/types";
 
 export function parseRole(
   connector: ConnectorTheGraph,
-  role: RoleDataGql | null | undefined
+  data: QueryResult
 ): Role {
+  const role = data.role as RoleDataGql
+
   if (!role) {
     throw new Error('Unable to parse role.')
   }
