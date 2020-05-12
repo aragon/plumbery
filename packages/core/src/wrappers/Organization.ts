@@ -39,15 +39,15 @@ export default class Organization {
   }
 
   async apps(): Promise<App[]> {
-    return this.#connector.execute!('core', 'appsForOrg', { orgAddress: this.#address })
+    return this.#connector.execute!('org', 'appsForOrg', { orgAddress: this.#address })
   }
 
   async app(appAddress: string): Promise<App> {
-    return this.#connector.execute!('core', 'appByAddress', { appAddress })
+    return this.#connector.execute!('org', 'appByAddress', { appAddress })
   }
 
   async permissions(): Promise<Permission[]> {
-    return this.#connector.execute!('core', 'permissionsForOrg', { orgAddress: this.#address })
+    return this.#connector.execute!('org', 'permissionsForOrg', { orgAddress: this.#address })
   }
 
   // Get the transaction paths that could work to execute something

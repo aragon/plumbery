@@ -23,7 +23,7 @@ class ConnectorTheGraph implements ConnectorInterface {
     })
 
     this.#modules = {}
-    this.loadModule('core', config.daoSubgraphUrl)
+    this.loadModule('org', config.daoSubgraphUrl)
   }
 
   loadModule(moduleName: string, subgraphUrl: string): void {
