@@ -1,5 +1,6 @@
 import Base from "../Base"
 import { ConnectorInterface } from "../../ConnectorTypes"
+import Cast from './Cast'
 
 export interface VoteData {
   id: string
@@ -20,7 +21,7 @@ export default class Vote extends Base implements VoteData {
     Object.assign(this, data)
   }
 
-  async casts(): Promise<any> {
+  async casts(): Promise<Cast[]> {
     const voteId = this.id.split('0x')[1] // TODO: Remove this. Work around for vote data coming back as a hex string.
 
     return this.connector.execute!('voting', 'castsForVote', { voteId })

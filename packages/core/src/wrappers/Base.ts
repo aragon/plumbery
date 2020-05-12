@@ -1,10 +1,14 @@
 import { ConnectorInterface } from "../ConnectorTypes";
 
 export default class Base {
-  connector: ConnectorInterface
+  _connector: ConnectorInterface
+
+  get connector(): ConnectorInterface {
+    return this._connector
+  }
 
   constructor(connector: ConnectorInterface) {
-    this.connector = connector
+    this._connector = connector
   }
 
   public toString(): string {

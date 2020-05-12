@@ -13,3 +13,4 @@ export { default as Role } from './wrappers/org/Role'
 
 export { default as Voting } from './wrappers/voting/Voting'
 export { default as Vote } from './wrappers/voting/Vote'
+export { default as Cast } from './wrappers/voting/Cast'

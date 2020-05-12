@@ -3,7 +3,9 @@ import {
   aragonConnect,
   Permission,
   App,
-  Voting
+  Voting,
+  Vote,
+  Cast
 } from 'plumbery-core'
 import Connection from 'plumbery-core/dist/Connection'
 
@@ -63,12 +65,14 @@ async function readVoting(connection: Connection): Promise<void> {
 
   console.log('\nVotes:')
   const votes = await voting.votes()
-  console.log(votes.toString())
+  votes.map((vote: Vote) => console.log(vote.toString()))
 
-  console.log('\nSome vote\'s casts:')
-  const vote = votes[1]
+  console.log('\nAnalysis of a vote:')
+  const vote = votes[0]
   const casts = await vote.casts()
-  console.log(casts)
+  const yeas = casts.filter((cast: Cast) => cast.supports).length
+  const nays = casts.filter((cast: Cast) => !cast.supports).length
+  console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${yeas} yeas and ${nays} nays.`)
 }
 
 function initConnection(): Connection {
