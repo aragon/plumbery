@@ -1,6 +1,6 @@
 import Repo from "./Repo"
-import Base from "./Base"
-import { ConnectorInterface } from "../ConnectorTypes"
+import Base from "../Base"
+import { ConnectorInterface } from "../../ConnectorTypes"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [x] address 	String 	The address of the app proxy contract (never changes).
@@ -55,6 +55,6 @@ export default class App extends Base implements AppData {
   }
 
   async repo(): Promise<Repo> {
-    return this._connector.execute!('org', 'repoForApp', { appAddress: this.address })
+    return this.connector.execute!('org', 'repoForApp', { appAddress: this.address })
   }
 }

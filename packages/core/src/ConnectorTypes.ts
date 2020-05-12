@@ -1,7 +1,7 @@
-import App from './wrappers/App'
-import Permission from './wrappers/Permission';
-import Repo from './wrappers/Repo';
-import Role from './wrappers/Role';
+import App from './wrappers/org/App'
+import Permission from './wrappers/org/Permission';
+import Repo from './wrappers/org/Repo';
+import Role from './wrappers/org/Role';
 
 // TODO: No functions should be optional.
 // Made optional for now, so that we can develop one connector at a time.

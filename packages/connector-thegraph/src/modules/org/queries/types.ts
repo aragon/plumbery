@@ -1,6 +1,6 @@
 // Generated with https://graphql-code-generator.com/#live-demo
 
-// 1. Get schema from Aragon subgraph (https://github.com/aragon/dao-subgraph)
+// 1. Get schema from Aragon subgraph (https://github.com/ajsantander/voting-subgraph/blob/master/schema.graphql)
 // 2. Paste in generator (https://graphql-code-generator.com/#live-demo)
 // 3. Add on top:
 /*
@@ -9,15 +9,6 @@
 
     scalar BigInt
     scalar Bytes
-
-    schema {
-      query: Query
-    }
-
-    type Query {
-      OrgFactory: OrgFactory
-      RegistryFactory: RegistryFactory
-    }
 */
 // 4. Generate and paste output here
 

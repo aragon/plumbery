@@ -1,5 +1,5 @@
-import Base from "./Base"
-import { ConnectorInterface } from "../ConnectorTypes"
+import Base from "../Base"
+import { ConnectorInterface } from "../../ConnectorTypes"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/role.md).
 // [ ] name 	String 	Name of the role. E.g. "Mint tokens".

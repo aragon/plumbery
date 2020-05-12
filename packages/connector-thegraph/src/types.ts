@@ -1,5 +1,6 @@
 import { DocumentNode } from "graphql"
 import { ConnectorTheGraph } from "plumbery-core"
+import { Client } from "@urql/core"
 
 export type DataGql = any
 
@@ -16,7 +17,7 @@ export type Selector = {
 }
 
 export type Module = {
-  subgraphUrl?: string
+  client?: Client
   selectors: {
     [selectorName: string]: Selector
   }

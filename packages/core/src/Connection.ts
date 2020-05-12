@@ -1,4 +1,4 @@
-import Organization from './wrappers/Organization'
+import Organization from './wrappers/org/Organization'
 import { ConnectorInterface } from './ConnectorTypes'
 
 export default class Connection {

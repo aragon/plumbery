@@ -1,0 +1,1 @@
+export { parseVotes } from './votes'

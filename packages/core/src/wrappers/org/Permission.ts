@@ -1,7 +1,7 @@
-import Base from "./Base"
+import Base from "../Base"
 import App from './App'
 import Role from './Role'
-import { ConnectorInterface } from "../ConnectorTypes"
+import { ConnectorInterface } from "../../ConnectorTypes"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/permission.md).
 // [x] app 	String 	App address.
@@ -34,12 +34,12 @@ export default class Permission extends Base implements PermissionData {
       return
     }
 
-    return this._connector.execute!('org', 'appByAddress', { appAddress: this.app })
+    return this.connector.execute!('org', 'appByAddress', { appAddress: this.app })
   }
 
   async getRole(): Promise<Role> {
     const roleId = `${this.entity}-${this.role}`
 
-    return this._connector.execute!('org', 'roleById', { roleId })
+    return this.connector.execute!('org', 'roleById', { roleId })
   }
 }

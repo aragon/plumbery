@@ -1,7 +1,7 @@
 import App from './App'
-import TransactionPath from '../TransactionPath'
-import { SignerType } from '../SignerTypes'
-import { ConnectorInterface } from '../ConnectorTypes'
+import TransactionPath from '../../TransactionPath'
+import { SignerType } from '../../SignerTypes'
+import { ConnectorInterface } from '../../ConnectorTypes'
 import Permission from './Permission'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/organization.md).

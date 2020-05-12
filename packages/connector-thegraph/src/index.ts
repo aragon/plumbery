@@ -5,35 +5,46 @@ import { ConnectorInterface } from 'plumbery-core'
 import { Module, ParseFunction, QueryResult } from './types';
 
 export type ConnectorTheGraphConfig = {
-  daoSubgraphUrl: string
-  modules: [string]
+  modules: {
+    [moduleName: string]: {
+      subgraphUrl: string
+    }
+  }
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
-  #daoClient: Client
-
   #modules: {
     [moduleName: string]: Module
   }
 
   constructor(config: ConnectorTheGraphConfig) {
-    this.#daoClient = new Client({
-      maskTypename: true,
-      url: config.daoSubgraphUrl,
-    })
+    if (!config.modules.org) {
+      throw new Error('Must specify an org module.')
+    }
 
     this.#modules = {}
-    this.loadModule('org', config.daoSubgraphUrl)
+
+    for (const moduleName in config.modules) {
+      const module = config.modules[moduleName]
+
+      this.loadModule(moduleName, module.subgraphUrl)
+    }
   }
 
   loadModule(moduleName: string, subgraphUrl: string): void {
+    console.log(`LOADING MODULE: ${moduleName}`)
+
     if (this.#modules[moduleName]) {
       throw new Error(`Module ${moduleName} already loaded.`)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const module = require(`./modules/${moduleName}`).default
-    module.subgraphUrl = subgraphUrl
+
+    module.client = new Client({
+      maskTypename: true,
+      url: subgraphUrl
+    })
 
     this.#modules[moduleName] = module
   }
@@ -44,9 +55,15 @@ class ConnectorTheGraph implements ConnectorInterface {
       throw new Error(`Invalid module "${moduleName}".`)
     }
 
+    const client = module.client
+    if (!client) {
+      throw new Error(`Client not set on module "${moduleName}".`)
+    }
+
     const selector = module.selectors[selectorName]
 
     const result = await this._performQuery(
+      client,
       selector.query,
       args
     )
@@ -64,8 +81,8 @@ class ConnectorTheGraph implements ConnectorInterface {
     }
   }
 
-  private async _performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
-    const results = await this.#daoClient.query(
+  private async _performQuery(client: Client, query: DocumentNode, args: any =  {}): Promise<QueryResult> {
+    const results = await client.query(
       query,
       args
     ).toPromise()
@@ -73,7 +90,7 @@ class ConnectorTheGraph implements ConnectorInterface {
     if (results.error) {
       const queryStr = query.loc?.source.body
       const argsStr = JSON.stringify(args, null, 2)
-      throw new Error(`Error performing query.\nArguments:${argsStr}\nQuery: ${queryStr}\nSubgraph:${this.#daoClient.url}`)
+      throw new Error(`Error performing query.\nArguments:${argsStr}\nQuery: ${queryStr}\nSubgraph:${client.url}`)
     }
 
     return results.data
