@@ -1,4 +1,4 @@
-import { App } from "../.."
+import { App, Vote } from "../.."
 import Base from "../Base"
 
 export default class Voting extends Base {
@@ -16,7 +16,7 @@ export default class Voting extends Base {
     Object.assign(this, app)
   }
 
-  async votes(): Promise<any> {
+  async votes(): Promise<Vote[]> {
     return this.connector.execute!('voting', 'votesForApp', { appAddress: this.address })
   }
 }

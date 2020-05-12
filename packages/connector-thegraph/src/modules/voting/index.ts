@@ -7,6 +7,11 @@ const coreModule: Module = {
     votesForApp: {
       query: queries.ALL_VOTES,
       parser: parsers.parseVotes
+    },
+
+    castsForVote: {
+      query: queries.CASTS_FOR_VOTE,
+      parser: parsers.parseCasts
     }
   }
 }

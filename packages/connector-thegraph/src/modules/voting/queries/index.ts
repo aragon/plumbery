@@ -10,3 +10,16 @@ export const ALL_VOTES = gql`
     }
   }
 `
+
+export const CASTS_FOR_VOTE = gql`
+  query Casts($voteId: ID!) {
+    casts(where: {
+      voteId: $voteId
+    }) {
+      id
+      voteId
+      voter
+      supports
+    }
+  }
+`

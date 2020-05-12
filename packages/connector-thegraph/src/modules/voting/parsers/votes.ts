@@ -1,12 +1,23 @@
 import { Vote as VoteDataGql } from '../queries/types'
-import { ConnectorTheGraph } from "plumbery-core";
+import { Vote, ConnectorTheGraph } from "plumbery-core";
 import { QueryResult } from "packages/connector-thegraph/src/types";
 
 export function parseVotes(
   connector: ConnectorTheGraph,
   data: QueryResult
-): any {
+): Vote[] {
   const votes = data.votes as VoteDataGql[]
 
-  return votes
+  if (!votes) {
+    throw new Error('Unable to parse votes.')
+  }
+
+  return votes.map((vote: VoteDataGql) => {
+    return new Vote({
+      id: vote.id,
+      creator: vote.creator,
+      metadata: vote.metadata,
+      executed: vote.executed
+    }, connector)
+  })
 }

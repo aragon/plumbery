@@ -32,8 +32,6 @@ class ConnectorTheGraph implements ConnectorInterface {
   }
 
   loadModule(moduleName: string, subgraphUrl: string): void {
-    console.log(`LOADING MODULE: ${moduleName}`)
-
     if (this.#modules[moduleName]) {
       throw new Error(`Module ${moduleName} already loaded.`)
     }

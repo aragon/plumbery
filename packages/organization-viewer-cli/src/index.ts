@@ -63,7 +63,12 @@ async function readVoting(connection: Connection): Promise<void> {
 
   console.log('\nVotes:')
   const votes = await voting.votes()
-  console.log(votes)
+  console.log(votes.toString())
+
+  console.log('\nSome vote\'s casts:')
+  const vote = votes[1]
+  const casts = await vote.casts()
+  console.log(casts)
 }
 
 function initConnection(): Connection {
