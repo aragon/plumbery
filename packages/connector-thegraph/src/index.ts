@@ -1,7 +1,6 @@
 import 'isomorphic-unfetch';
-import { Client } from '@urql/core'
 import * as queries from './graphql/queries'
-import { DocumentNode } from 'graphql';
+import ConnectorTheGraphBase from './core/ConnectorTheGraphBase'
 import {
   parseApp,
   parseApps,
@@ -11,29 +10,19 @@ import {
 } from './parse';
 import {
   ConnectorInterface,
-  Permission,
-  App,
+  Permission, PermissionData,
+  App, AppData,
   Repo,
   Role
 } from 'plumbery-core'
-
-type QueryResult = any
-type DataGql = any
-
-type ParseFunction = (connector: ConnectorTheGraph, data: DataGql) => {}
 
 export type ConnectorTheGraphConfig = {
   daoSubgraphUrl: string
 }
 
-class ConnectorTheGraph implements ConnectorInterface {
-  #daoClient: Client
-
+export  default class ConnectorTheGraph extends ConnectorTheGraphBase implements ConnectorInterface {
   constructor(config: ConnectorTheGraphConfig) {
-    this.#daoClient = new Client({
-      maskTypename: true,
-      url: config.daoSubgraphUrl,
-    })
+    super(config.daoSubgraphUrl)
   }
 
   async roleById(roleId: string): Promise<Role> {
@@ -42,7 +31,9 @@ class ConnectorTheGraph implements ConnectorInterface {
       { roleId }
     )
 
-    return this._parseQuery(parseRole, result, result.role)
+    const data = this._parseQuery(parseRole, result, result.role)
+
+    return new Role(data, this)
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
@@ -51,7 +42,11 @@ class ConnectorTheGraph implements ConnectorInterface {
       { orgAddress }
     )
 
-    return this._parseQuery(parsePermissions, result, result.organization?.permissions)
+    const datas = this._parseQuery(parsePermissions, result, result.organization?.permissions)
+
+    return datas.map((data: PermissionData) => {
+      return new Permission(data, this)
+    })
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
@@ -60,7 +55,11 @@ class ConnectorTheGraph implements ConnectorInterface {
       { orgAddress }
     )
 
-    return this._parseQuery(parseApps, result, result.organization?.apps)
+    const datas = this._parseQuery(parseApps, result, result.organization?.apps)
+
+    return datas.map((data: AppData) => {
+      return new App(data, this)
+    })
   }
 
   async appByAddress(appAddress: string): Promise<App> {
@@ -69,7 +68,9 @@ class ConnectorTheGraph implements ConnectorInterface {
       { appAddress }
     )
 
-    return this._parseQuery(parseApp, result, result.app)
+    const data = this._parseQuery(parseApp, result, result.app)
+
+    return new App(data, this)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
@@ -78,32 +79,8 @@ class ConnectorTheGraph implements ConnectorInterface {
       { appAddress }
     )
 
-    return this._parseQuery(parseRepo, result, result.app?.repoVersion?.repo)
-  }
+    const data = this._parseQuery(parseRepo, result, result.app?.repoVersion?.repo)
 
-  private _parseQuery(parser: ParseFunction, result: QueryResult, data: DataGql): any {
-    try {
-      return parser(this, data)
-    } catch (error) {
-      throw new Error(`${error.message} The query results where:\n${
-        JSON.stringify(result, null, 2)
-      }`)
-    }
-  }
-
-  private async _performQuery(query: DocumentNode, vars: any =  {}): Promise<QueryResult> {
-    const results = await this.#daoClient.query(
-      query,
-      vars
-    ).toPromise()
-
-    if (results.error) {
-      const queryStr = query.loc?.source.body
-      throw new Error(`Error while connecting to the subgraph at ${this.#daoClient.url} with query: ${queryStr}\n Error: ${results.error}`)
-    }
-
-    return results.data
+    return new Repo(data, this)
   }
 }
-
-export default ConnectorTheGraph

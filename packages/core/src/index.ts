@@ -5,8 +5,8 @@ export { default as ConnectorJson } from './ConnectorJson'
 export { default as aragonConnect } from './aragonConnect'
 
 // TODO: Use index.ts in src/wrappers instead?
-export { default as Permission } from './wrappers/Permission'
 export { default as Organization } from './wrappers/Organization'
-export { default as App } from './wrappers/App'
-export { default as Repo } from './wrappers/Repo'
-export { default as Role } from './wrappers/Role'
+export { default as App, AppData } from './wrappers/App'
+export { default as Repo, RepoData } from './wrappers/Repo'
+export { default as Role, RoleData } from './wrappers/Role'
+export { default as Permission, PermissionData } from './wrappers/Permission'

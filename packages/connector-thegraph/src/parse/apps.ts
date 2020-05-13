@@ -1,37 +1,32 @@
 import { App as AppDataGql } from '../graphql/types'
-import { ConnectorTheGraph, App } from 'plumbery-core'
+import { AppData } from 'plumbery-core'
 
 export function parseApp(
-  connector: ConnectorTheGraph,
   app: AppDataGql | null | undefined
-): App {
+): AppData {
   if (!app) {
     throw new Error('Unable to parse app.')
   }
 
-  return new App(
-    {
-      name: app.repoVersion?.repo.name,
-      isForwarder: app.isForwarder,
-      appId: app.appId,
-      address: app.address,
-      registryAddress: app.repoVersion?.repo?.registry?.address,
-      kernelAddress: app.organization?.address,
-      version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
-    },
-    connector
-  )
+  return {
+    name: app.repoVersion?.repo.name,
+    isForwarder: app.isForwarder,
+    appId: app.appId,
+    address: app.address,
+    registryAddress: app.repoVersion?.repo?.registry?.address,
+    kernelAddress: app.organization?.address,
+    version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
+  }
 }
 
 export function parseApps(
-  connector: ConnectorTheGraph,
   apps: AppDataGql[] | null | undefined
-): App[] {
+): AppData[] {
   if (!apps) {
     throw new Error('Unable to parse apps.')
   }
 
   return apps.map((app: AppDataGql) => {
-    return parseApp(connector, app)
+    return parseApp(app)
   })
 }

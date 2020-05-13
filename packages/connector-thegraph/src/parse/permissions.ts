@@ -1,20 +1,19 @@
 import { Permission as PermissionDataGql } from "../graphql/types";
-import { Permission, ConnectorTheGraph } from "plumbery-core";
+import { PermissionData } from "plumbery-core";
 
 export function parsePermissions(
-  connector: ConnectorTheGraph,
   permissions: PermissionDataGql[] | null | undefined
-): Permission[] {
+): PermissionData[] {
   if (!permissions) {
     throw new Error('Unable to parse permissions.')
   }
 
   return permissions.map((permission: PermissionDataGql) => {
-    return new Permission({
+    return {
       app: permission.app?.address,
       entity: permission.entity,
       role: permission.role.hash,
       id: permission.id
-    }, connector)
+    }
   })
 }
