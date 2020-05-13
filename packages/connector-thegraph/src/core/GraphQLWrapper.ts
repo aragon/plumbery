@@ -17,9 +17,9 @@ export default class ConnectorTheGraphBase {
     })
   }
 
-  protected _parseQuery(parser: ParseFunction, result: QueryResult, data: DataGql): any {
+  protected _parseQuery(parser: ParseFunction, result: QueryResult): any {
     try {
-      return parser(data)
+      return parser(result)
     } catch (error) {
       throw new Error(`${error.message} The query results where:\n${
         JSON.stringify(result, null, 2)
@@ -27,15 +27,16 @@ export default class ConnectorTheGraphBase {
     }
   }
 
-  protected async _performQuery(query: DocumentNode, vars: any =  {}): Promise<QueryResult> {
+  protected async _performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
     const results = await this.#client.query(
       query,
-      vars
+      args
     ).toPromise()
 
     if (results.error) {
       const queryStr = query.loc?.source.body
-      throw new Error(`Error while connecting to the subgraph at ${this.#client.url} with query: ${queryStr}\n Error: ${results.error}`)
+      const argsStr = JSON.stringify(args, null, 2)
+      throw new Error(`Error performing query.\nArguments:${argsStr}\nQuery: ${queryStr}\nSubgraph:${this.#client.url}`)
     }
 
     return results.data

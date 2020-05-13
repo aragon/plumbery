@@ -30,7 +30,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
       { roleId }
     )
 
-    const data = this._parseQuery(parseRole, result, result.role)
+    const data = this._parseQuery(parseRole, result)
 
     return new Role(data, this)
   }
@@ -41,7 +41,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
       { orgAddress }
     )
 
-    const datas = this._parseQuery(parsePermissions, result, result.organization?.permissions)
+    const datas = this._parseQuery(parsePermissions, result)
 
     return datas.map((data: PermissionData) => {
       return new Permission(data, this)
@@ -54,7 +54,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
       { orgAddress }
     )
 
-    const datas = this._parseQuery(parseApps, result, result.organization?.apps)
+    const datas = this._parseQuery(parseApps, result)
 
     return datas.map((data: AppData) => {
       return new App(data, this)
@@ -67,7 +67,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
       { appAddress }
     )
 
-    const data = this._parseQuery(parseApp, result, result.app)
+    const data = this._parseQuery(parseApp, result)
 
     return new App(data, this)
   }
@@ -78,7 +78,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
       { appAddress }
     )
 
-    const data = this._parseQuery(parseRepo, result, result.app?.repoVersion?.repo)
+    const data = this._parseQuery(parseRepo, result)
 
     return new Repo(data, this)
   }

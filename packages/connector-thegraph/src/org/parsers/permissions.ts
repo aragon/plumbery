@@ -1,9 +1,14 @@
+import { Organization as OrganizationDataGql } from "../queries/types";
 import { Permission as PermissionDataGql } from "../queries/types";
 import { PermissionData } from "plumbery-core";
+import { QueryResult } from "../../types";
 
 export function parsePermissions(
-  permissions: PermissionDataGql[] | null | undefined
+  data: QueryResult
 ): PermissionData[] {
+  const org = data.organization as OrganizationDataGql
+  const permissions = org?.permissions as PermissionDataGql[]
+
   if (!permissions) {
     throw new Error('Unable to parse permissions.')
   }
