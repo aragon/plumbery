@@ -1,4 +1,4 @@
-import { App as AppDataGql } from '../graphql/types'
+import { App as AppDataGql } from '../queries/types'
 import { AppData } from 'plumbery-core'
 
 export function parseApp(

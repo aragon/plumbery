@@ -1,4 +1,4 @@
-import { Role as RoleDataGql } from "../graphql/types";
+import { Role as RoleDataGql } from "../queries/types";
 import { RoleData } from "plumbery-core";
 
 export function parseRole(

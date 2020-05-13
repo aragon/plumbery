@@ -1,4 +1,4 @@
-import { Permission as PermissionDataGql } from "../graphql/types";
+import { Permission as PermissionDataGql } from "../queries/types";
 import { PermissionData } from "plumbery-core";
 
 export function parsePermissions(

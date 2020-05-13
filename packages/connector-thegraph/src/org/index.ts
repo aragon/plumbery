@@ -1,4 +1,4 @@
-import * as queries from './graphql/queries'
+import * as queries from './queries'
 import GraphQLWrapper from '../core/GraphQLWrapper'
 import {
   parseApp,
@@ -6,7 +6,7 @@ import {
   parsePermissions,
   parseRepo,
   parseRole
-} from './parse';
+} from './parsers';
 import {
   ConnectorInterface,
   Permission, PermissionData,
