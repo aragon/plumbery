@@ -44,18 +44,12 @@ async function main() {
 }
 
 function initConnection(): Connection {
-  // return aragonConnect({
-  //   connector: ['json', { data }],
-  //   signer: {},
-  // })
-
   return aragonConnect({
     connector: [
       'thegraph',
       {
         daoSubgraphUrl:
           'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        appSubgraphUrl: () => '',
       },
     ],
     signer: {},

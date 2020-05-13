@@ -23,21 +23,17 @@ type DataGql = any
 type ParseFunction = (connector: ConnectorTheGraph, data: DataGql) => {}
 
 export type ConnectorTheGraphConfig = {
-  appSubgraphUrl: (repoId: string) => string
   daoSubgraphUrl: string
 }
 
 class ConnectorTheGraph implements ConnectorInterface {
   #daoClient: Client
-  // #appClient: Client
 
-  constructor({ daoSubgraphUrl, appSubgraphUrl }: ConnectorTheGraphConfig) {
+  constructor(config: ConnectorTheGraphConfig) {
     this.#daoClient = new Client({
       maskTypename: true,
-      url: daoSubgraphUrl,
+      url: config.daoSubgraphUrl,
     })
-
-    // this.#appClient = createClient({ url: appSubgraphUrl('app_id') })
   }
 
   async roleById(roleId: string): Promise<Role> {
