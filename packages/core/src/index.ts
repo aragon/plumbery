@@ -3,6 +3,7 @@ export { default as ConnectorTheGraph } from 'plumbery-connector-thegraph'
 export { ConnectorInterface } from './ConnectorTypes'
 export { default as ConnectorJson } from './ConnectorJson'
 export { default as aragonConnect } from './aragonConnect'
+export { default as Connection } from './Connection'
 
 // TODO: Use index.ts in src/wrappers instead?
 export { default as Organization } from './wrappers/Organization'

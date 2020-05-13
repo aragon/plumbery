@@ -2,9 +2,9 @@
 import {
   aragonConnect,
   Permission,
-  App
+  App,
+  Connection
 } from 'plumbery-core'
-import Connection from 'plumbery-core/dist/Connection'
 
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
