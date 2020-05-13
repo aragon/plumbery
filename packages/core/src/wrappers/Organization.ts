@@ -1,8 +1,8 @@
 import App from './App'
-import TransactionPath from '../TransactionPath'
-import { SignerType } from '../SignerTypes'
-import { ConnectorInterface } from '../ConnectorTypes'
+import Intent from './Intent'
 import Permission from './Permission'
+import Role from './Role'
+import { ConnectorInterface } from '../ConnectorTypes'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/organization.md).
 // [x] Organization#apps()
@@ -26,18 +26,13 @@ import Permission from './Permission'
 export default class Organization {
   #address: string
   #connector: ConnectorInterface
-  #signer: SignerType
 
-  constructor(
-    address: string,
-    connector: ConnectorInterface,
-    signer: SignerType
-  ) {
+  constructor(address: string, connector: ConnectorInterface) {
     this.#address = address
     this.#connector = connector
-    this.#signer = signer
   }
 
+  ///////// APPS ///////////
   async apps(): Promise<App[]> {
     return this.#connector.appsForOrg!(this.#address)
   }
@@ -46,16 +41,78 @@ export default class Organization {
     return this.#connector.appByAddress!(appAddress)
   }
 
+  // async addApp(
+  //   repoName: string,
+  //   {
+  //     initFuncName,
+  //     initFuncArgs,
+  //     openPermissions,
+  //   }: {
+  //     initFuncName: string
+  //     initFuncArgs: string[]
+  //     openPermissions: boolean
+  //   }
+  // ): Promise<Intent> {
+  //   return []
+  // }
+
+  // async removeApp(appAddress: string): Promise<Intent> {
+  //   return []
+  // }
+
+  ///////// PERMISSIONS ///////////
   async permissions(): Promise<Permission[]> {
     return this.#connector.permissionsForOrg(this.#address)
   }
 
-  // Get the transaction paths that could work to execute something
-  async execPaths(
-    app: App,
-    method: string,
-    params: string[]
-  ): Promise<TransactionPath[]> {
-    return []
+  // async addPermissions(
+  //   grantee: string,
+  //   appAddress: string,
+  //   roleId: string
+  // ): Promise<Intent> {
+  //   return []
+  // }
+
+  // async removePermissions(
+  //   grantee: string,
+  //   appAddress: string,
+  //   roleId: string
+  // ): Promise<Intent> {
+  //   return []
+  // }
+
+  // async roleManager(roleId: string): Promise<string> {
+  //   const permissions: Permission[] = await this.permissions()
+
+  //   const permission = permissions.filter(
+  //     (permission: Permission) => permission.role === roleId
+  //   )[0]
+
+  //   const role: Role = await permission.getRole()
+
+  //   return role.manager
+  // }
+
+  // async setRoleManager(
+  //   grantee: string,
+  //   roleId: string
+  // ): Promise<Intent> {
+  //   return []
+  // }
+
+  ///////// INTENTS ///////////
+  async appIntent(
+    appAddress: string,
+    funcName: string,
+    funcArgs: string[]
+  ): Promise<Intent> {
+    return new Intent(
+      {
+        contractAddress: appAddress,
+        functionName: funcName,
+        functionArgs: funcArgs,
+      },
+      this.#connector
+    )
   }
 }
