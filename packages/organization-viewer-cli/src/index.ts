@@ -5,18 +5,28 @@ import {
   Permission,
   App
 } from 'plumbery-core'
-import Connection from 'plumbery-core/dist/Connection'
+import {
+  Voting,
+  Vote,
+  Cast
+} from 'plumbery-connector-thegraph'
 
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 
 async function main() {
-  const connection = initConnection()
-
-  await readOrg(connection)
-  // await readVoting(connection)
+  const votingApp = await inspectOrgAndGetVotingApp()
+  await interactWithVotingApp(votingApp)
 }
 
-async function readOrg(connection: Connection): Promise<void> {
+async function inspectOrgAndGetVotingApp(): Promise<App> {
+  const connection = aragonConnect({
+    connector: [
+      'thegraph',
+      { daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby' }
+    ],
+    signer: {},
+  })
+
   const org = connection.organization(ORG_ADDRESS)
 
   console.log('\nPermissions:')
@@ -46,52 +56,23 @@ async function readOrg(connection: Connection): Promise<void> {
   console.log('\nAn app from a permission:')
   const appFromPermission = await permissions[1].getApp()
   if (appFromPermission) { console.log(appFromPermission.toString()) }
+
+  return votingApp
 }
 
-// async function readVoting(connection: Connection): Promise<void> {
-//   const org = connection.organization(ORG_ADDRESS)
+async function interactWithVotingApp(app: App): Promise<void> {
+  const voting = new Voting(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
 
-//   console.log('\nApps:')
-//   const apps = await org.apps()
-//   apps.map((app: App) => console.log(app.toString()))
+  console.log('\nVotes:')
+  const votes = await voting.votes()
+  votes.map((vote: Vote) => console.log(vote.toString()))
 
-//   console.log('\nA voting app:')
-//   const voting = new Voting(
-//     apps.find((app: App) => app.name == 'voting')!
-//   )
-//   console.log(voting.toString())
-
-//   console.log('\nVotes:')
-//   const votes = await voting.votes()
-//   votes.map((vote: Vote) => console.log(vote.toString()))
-
-//   console.log('\nAnalysis of a vote:')
-//   const vote = votes[0]
-//   const casts = await vote.casts()
-//   const yeas = casts.filter((cast: Cast) => cast.supports).length
-//   const nays = casts.filter((cast: Cast) => !cast.supports).length
-//   console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${yeas} yeas and ${nays} nays.`)
-// }
-
-function initConnection(): Connection {
-  return aragonConnect({
-    connector: [
-      'thegraph',
-      {
-        daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
-      }
-      // {
-      //   modules: {
-      //     org: {
-      //     },
-      //     voting: {
-      //       subgraphUrl: 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
-      //     }
-      //   }
-      // },
-    ],
-    signer: {},
-  })
+  console.log('\nAnalysis of a vote:')
+  const vote = votes[0]
+  const casts = await vote.casts()
+  const yeas = casts.filter((cast: Cast) => cast.supports).length
+  const nays = casts.filter((cast: Cast) => !cast.supports).length
+  console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${yeas} yeas and ${nays} nays.`)
 }
 
 main()
