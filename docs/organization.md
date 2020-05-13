@@ -25,23 +25,23 @@ Fetch a specific app in the organization.
 
 Install a new app into the organization from a given [aragonPM repository](https://hack.aragon.org/docs/apm-intro).
 
-| Name                      | Type                        | Description                                                                                                   |
-| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `repoName`                | `String`                    | Repository name (e.g. `voting.aragonpm.eth`).                                                                 |
-| `options`                 | `Object`                    | Options object.                                                                                               |
-| `options.initFuncName`    | `String`                    | Name of the function that gets called to initialize the app. Set to `none` to skip. Defaults to `initialize`. |
-| `options.initFuncArgs`    | `Array<String>`             | Arguments passed to the function set as `options.initFuncName`. Defaults to `[]`.                             |
-| `options.openPermissions` | `Boolean`                   | Whether to set the permissions open on the app. Defaults to `false`.                                          |
-| returns                   | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance.                                                         |
+| Name                      | Type              | Description                                                                                                   |
+| ------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| `repoName`                | `String`          | Repository name (e.g. `voting.aragonpm.eth`).                                                                 |
+| `options`                 | `Object`          | Options object.                                                                                               |
+| `options.initFuncName`    | `String`          | Name of the function that gets called to initialize the app. Set to `none` to skip. Defaults to `initialize`. |
+| `options.initFuncArgs`    | `Array<String>`   | Arguments passed to the function set as `options.initFuncName`. Defaults to `[]`.                             |
+| `options.openPermissions` | `Boolean`         | Whether to set the permissions open on the app. Defaults to `false`.                                          |
+| returns                   | `Promise<Intent>` | A promise resolving to an `Intent` instance.                                                                  |
 
 ### Organization#removeApp(appAddress)
 
 Remove an app from the organization.
 
-| Name         | Type                        | Description                                           |
-| ------------ | --------------------------- | ----------------------------------------------------- |
-| `appAddress` | `String`                    | Address of the app instance.                          |
-| returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
+| Name         | Type              | Description                                  |
+| ------------ | ----------------- | -------------------------------------------- |
+| `appAddress` | `String`          | Address of the app instance.                 |
+| returns      | `Promise<Intent>` | A promise resolving to an `Intent` instance. |
 
 ### Organization#permissions()
 
@@ -55,23 +55,23 @@ Fetch the organization’s permissions.
 
 Add a new permission.
 
-| Name         | Type                        | Description                                           |
-| ------------ | --------------------------- | ----------------------------------------------------- |
-| `address`    | `String`                    | The entity being granted the permission to.           |
-| `appAddress` | `String`                    | Address of the app instance.                          |
-| `roleId`     | `String`                    | The role identifier.                                  |
-| returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
+| Name         | Type              | Description                                  |
+| ------------ | ----------------- | -------------------------------------------- |
+| `address`    | `String`          | The entity being granted the permission to.  |
+| `appAddress` | `String`          | Address of the app instance.                 |
+| `roleId`     | `String`          | The role identifier.                         |
+| returns      | `Promise<Intent>` | A promise resolving to an `Intent` instance. |
 
 ### Organization#removePermission(address, appAddress, roleId)
 
 Remove a specific permission.
 
-| Name         | Type                        | Description                                           |
-| ------------ | --------------------------- | ----------------------------------------------------- |
-| `address`    | `String`                    | The entity being granted the permission to.           |
-| `appAddress` | `String`                    | Address of the app instance.                          |
-| `roleId`     | `String`                    | The role identifier.                                  |
-| returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
+| Name         | Type              | Description                                  |
+| ------------ | ----------------- | -------------------------------------------- |
+| `address`    | `String`          | The entity being granted the permission to.  |
+| `appAddress` | `String`          | Address of the app instance.                 |
+| `roleId`     | `String`          | The role identifier.                         |
+| returns      | `Promise<Intent>` | A promise resolving to an `Intent` instance. |
 
 ### Organization#roleManager(appAddress, roleId)
 
@@ -87,23 +87,23 @@ Get the current manager of a role.
 
 Set the manager of a role.
 
-| Name         | Type                        | Description                                                 |
-| ------------ | --------------------------- | ----------------------------------------------------------- |
-| `address`    | `String`                    | The entity to set as a role manager. Pass `null` to remove. |
-| `appAddress` | `String`                    | Address of the app instance.                                |
-| `roleId`     | `String`                    | The role identifier.                                        |
-| returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance.       |
+| Name         | Type              | Description                                                 |
+| ------------ | ----------------- | ----------------------------------------------------------- |
+| `address`    | `String`          | The entity to set as a role manager. Pass `null` to remove. |
+| `appAddress` | `String`          | Address of the app instance.                                |
+| `roleId`     | `String`          | The role identifier.                                        |
+| returns      | `Promise<Intent>` | A promise resolving to an `Intent` instance.                |
 
 ### Organization#appIntent(appAddress, funcName, funcArgs)
 
 Execute a function on a given app.
 
-| Name         | Type                        | Description                                           |
-| ------------ | --------------------------- | ----------------------------------------------------- |
-| `appAddress` | `String`                    | Address of the app instance.                          |
-| `funcName`   | `String`                    | Name of the function to call.                         |
-| `funcArgs`   | `String`                    | Parameters to pass to the function.                   |
-| returns      | `Promise<TransactionPaths>` | A promise resolving to a `TransactionPaths` instance. |
+| Name         | Type              | Description                                  |
+| ------------ | ----------------- | -------------------------------------------- |
+| `appAddress` | `String`          | Address of the app instance.                 |
+| `funcName`   | `String`          | Name of the function to call.                |
+| `funcArgs`   | `String`          | Parameters to pass to the function.          |
+| returns      | `Promise<Intent>` | A promise resolving to an `Intent` instance. |
 
 ### Organization#appCall(appAddress, methodName, args)
 

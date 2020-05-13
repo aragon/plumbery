@@ -1,5 +1,38 @@
 # Plumbery (code name)
 
+## Usage
+
+```js
+// Connects to an organization.
+const org = await connect('org.aragonid.eth')
+
+// Intents can be converted in a transaction.
+const intent = await myOrg.removeApp('0x…')
+
+// Get the transactions for the intent with the current account
+const transactions = await intent.transactions(wallet.address)
+
+// Sign the generated transactions
+for (const transaction of transactions) {
+  await ethers.sendTransaction(transaction.toEthers())
+}
+```
+
+## Documentation
+
+| Name                                              | Description                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [App](docs/app.md)                                | App installed in an organization.                                                           |
+| [connect()](docs/connect.md)                      | Connect to organizations.                                                                   |
+| [Connectors](docs/connectors.md)                  | Connectors that fetch data from the chain.                                                  |
+| [Intent](docs/intent.md)                          | Intent to change anything on an organization or its apps.                                   |
+| [Organization](docs/organization.md)              | Aragon organization.                                                                        |
+| [Permission](docs/permission.md)                  | Permission represents the relation between an app role and an entity.                       |
+| [Repo](docs/repo.md)                              | App repository.                                                                             |
+| [Role](docs/role.md)                              | Single role, which can get assigned to create a permission.                                 |
+| [TransactionPath](docs/transaction-path.md)       | Single transaction path.                                                                    |
+| [TransactionRequest](docs/transaction-request.md) | Object describing a transaction that can get signed by a library like ethers.js or Web3.js. |
+
 ## Principles
 
 These are some principles that we can use to make decisions. They are only indicative and shouldn’t be seen as a strict set of rules.
@@ -15,53 +48,3 @@ These are some principles that we can use to make decisions. They are only indic
 - **Lightweight**: the bundle size should be as small as possible.
 - **Low reliance on external libraries**: external libraries should only be used when they provide a clear benefit over the costs they add in terms of size, maintainance, complexity, performances, etc.
 - **Extensible**: we should aim for a good level of extensibility if it doesn’t conflict with the other principles. For example, custom connectors can be injected but we also embed the most common ones.
-
-## Roadmap
-
-- [ ] API design
-  - [ ] Research
-  - [ ] Principles
-  - [ ] Core library specification
-  - [ ] React library specification
-  - [ ] Connectors interface
-- [ ] Core library
-  - [ ] Fetch data through connectors
-  - [ ] Subscribe through connectors
-  - [ ] Organization data
-  - [ ] Apps (and repos)
-  - [ ] App state
-  - [ ] Permissions (and roles)
-  - [ ] Transaction paths
-  - [ ] Sign transactions through Ethereum provider
-  - [ ] Deploy organization
-  - [ ] Documentation
-  - [ ] Unit tests
-- [ ] Connector: JSON
-  - [ ] Implementation
-  - [ ] Documentation
-  - [ ] Unit tests
-- [ ] Connector: TheGraph
-  - [ ] Implementation
-  - [ ] Documentation
-  - [ ] End-to-end tests
-- [ ] TheGraph subgraphs:
-  - [ ] Aragon subgraph
-  - [ ] Per-app subgraphs
-- [ ] Connector: Ethereum
-  - [ ] Fetch data
-  - [ ] App state reducer
-  - [ ] Documentation
-  - [ ] End-to-end tests
-- [ ] React library
-  - [ ] Implementation
-  - [ ] Documentation
-  - [ ] Unit tests
-- [ ] Examples:
-  - [ ] Org viewer − CLI
-  - [ ] Org viewer − React
-  - [ ] Org viewer − Web (no React)
-  - [ ] Transaction path chooser
-- [ ] Developer experience:
-  - [ ] README.md
-  - [ ] CONTRIBUTING.md
-  - [ ] Minimal steps to develop (e.g. `yarn && yarn dev`).
