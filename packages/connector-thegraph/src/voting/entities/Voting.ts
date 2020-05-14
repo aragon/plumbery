@@ -1,9 +1,9 @@
-import Entity from "./Entity";
+import VotingEntity from "./VotingEntity";
 import Vote from "./Vote";
 import VotingConnectorTheGraph from "..";
 import { App } from "plumbery-core";
 
-export default class Voting extends Entity {
+export default class Voting extends VotingEntity {
   readonly app: App
 
   constructor(app: App, subgraphUrl: string) {

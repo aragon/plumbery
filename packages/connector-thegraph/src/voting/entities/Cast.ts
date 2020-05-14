@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import VotingEntity from "./VotingEntity";
 import VotingConnectorTheGraph from "..";
 
 export interface CastData {
@@ -8,7 +8,7 @@ export interface CastData {
   supports: boolean
 }
 
-export default class Cast extends Entity implements CastData {
+export default class Cast extends VotingEntity implements CastData {
   readonly id!: string
   readonly voteId!: string
   readonly voter!: string

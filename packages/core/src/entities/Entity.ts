@@ -1,9 +1,9 @@
-import VotingConnectorTheGraph from "..";
+import { ConnectorInterface } from "../ConnectorTypes";
 
 export default class Entity {
-  protected _connector: VotingConnectorTheGraph
+  protected _connector: ConnectorInterface
 
-  constructor(connector: VotingConnectorTheGraph) {
+  constructor(connector: ConnectorInterface) {
     this._connector = connector
   }
 

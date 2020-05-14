@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import VotingEntity from "./VotingEntity";
 import Cast from './Cast'
 import VotingConnectorTheGraph from "..";
 
@@ -9,7 +9,7 @@ export interface VoteData {
   executed: boolean
 }
 
-export default class Vote extends Entity implements VoteData {
+export default class Vote extends VotingEntity implements VoteData {
   readonly id!: string
   readonly creator!: string
   readonly metadata!: string

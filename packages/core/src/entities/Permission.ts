@@ -1,4 +1,4 @@
-import Base from "./Base"
+import Entity from "./Entity"
 import App from './App'
 import Role from './Role'
 import { ConnectorInterface } from "../ConnectorTypes"
@@ -17,7 +17,7 @@ export interface PermissionData {
   id: string
 }
 
-export default class Permission extends Base implements PermissionData {
+export default class Permission extends Entity implements PermissionData {
   readonly app!: string
   readonly entity!: string
   readonly role!: string
