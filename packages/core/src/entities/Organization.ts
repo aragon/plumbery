@@ -3,6 +3,7 @@ import TransactionPath from '../TransactionPath'
 import { SignerType } from '../SignerTypes'
 import { ConnectorInterface } from '../ConnectorTypes'
 import Permission from './Permission'
+import Entity from './Entity'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/organization.md).
 // [x] Organization#apps()
@@ -23,9 +24,9 @@ import Permission from './Permission'
 // [ ] Organization#off()
 // [ ] Events...
 
-export default class Organization {
-  #address: string
-  #connector: ConnectorInterface
+export default class Organization extends Entity {
+  readonly address: string
+
   #signer: SignerType
 
   constructor(
@@ -33,21 +34,23 @@ export default class Organization {
     connector: ConnectorInterface,
     signer: SignerType
   ) {
-    this.#address = address
-    this.#connector = connector
+    super(connector)
+
+    this.address = address
+
     this.#signer = signer
   }
 
   async apps(): Promise<App[]> {
-    return this.#connector.appsForOrg!(this.#address)
+    return this._connector.appsForOrg!(this.address)
   }
 
   async app(appAddress: string): Promise<App> {
-    return this.#connector.appByAddress!(appAddress)
+    return this._connector.appByAddress!(appAddress)
   }
 
   async permissions(): Promise<Permission[]> {
-    return this.#connector.permissionsForOrg(this.#address)
+    return this._connector.permissionsForOrg(this.address)
   }
 
   // Get the transaction paths that could work to execute something

@@ -27,7 +27,9 @@ async function inspectOrgAndGetVotingApp(): Promise<App> {
     signer: {},
   })
 
+  console.log('\nOrganization:')
   const org = connection.organization(ORG_ADDRESS)
+  console.log(org.toString())
 
   console.log('\nPermissions:')
   const permissions = await org.permissions()
@@ -61,7 +63,9 @@ async function inspectOrgAndGetVotingApp(): Promise<App> {
 }
 
 async function interactWithVotingApp(app: App): Promise<void> {
+  console.log('\nVoting:')
   const voting = new Voting(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
+  console.log(voting.toString())
 
   console.log('\nVotes:')
   const votes = await voting.votes()
