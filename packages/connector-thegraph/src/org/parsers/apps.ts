@@ -3,15 +3,7 @@ import { Organization as OrganizationDataGql } from "../queries/types";
 import { AppData } from 'plumbery-core'
 import { QueryResult } from '../../types'
 
-export function parseApp(
-  data: QueryResult
-): AppData {
-  const app = data.app as AppDataGql
-
-  if (!app) {
-    throw new Error('Unable to parse app.')
-  }
-
+function _parseApp(app: AppDataGql): AppData {
   return {
     name: app.repoVersion?.repo.name,
     isForwarder: app.isForwarder,
@@ -23,10 +15,22 @@ export function parseApp(
   }
 }
 
+export function parseApp(
+  result: QueryResult
+): AppData {
+  const app = result.data.app as AppDataGql
+
+  if (!app) {
+    throw new Error('Unable to parse app.')
+  }
+
+  return _parseApp(app)
+}
+
 export function parseApps(
-  data: QueryResult
+  result: QueryResult
 ): AppData[] {
-  const org = data.organization as OrganizationDataGql
+  const org = result.data.organization as OrganizationDataGql
   const apps = org?.apps
 
   if (!apps) {
@@ -34,6 +38,6 @@ export function parseApps(
   }
 
   return apps.map((app: AppDataGql) => {
-    return parseApp({ app })
+    return _parseApp(app)
   })
 }

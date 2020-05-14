@@ -3,9 +3,9 @@ import { CastData } from '../entities/Cast'
 import { QueryResult } from '../../types'
 
 export function parseCasts(
-  data: QueryResult
+  result: QueryResult
 ): CastData[] {
-  const casts = data.casts
+  const casts = result.data.casts
 
   if (!casts) {
     throw new Error('Unable to parse casts.')

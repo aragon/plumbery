@@ -3,9 +3,9 @@ import { RoleData } from "plumbery-core";
 import { QueryResult } from "../../types";
 
 export function parseRole(
-  data: QueryResult
+  result: QueryResult
 ): RoleData {
-  const role = data.role as RoleDataGql
+  const role = result.data.role as RoleDataGql
 
   if (!role) {
     throw new Error('Unable to parse role.')

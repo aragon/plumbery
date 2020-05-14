@@ -3,8 +3,7 @@ import { Client } from '@urql/core'
 import { DocumentNode } from 'graphql';
 import {
   ParseFunction,
-  QueryResult,
-  DataGql
+  QueryResult
 } from '../types'
 
 export default class ConnectorTheGraphBase {
@@ -21,24 +20,29 @@ export default class ConnectorTheGraphBase {
     try {
       return parser(result)
     } catch (error) {
-      throw new Error(`${error.message} The query results where:\n${
-        JSON.stringify(result, null, 2)
-      }`)
+      throw new Error(`${error.message}${this._describeQueryResult(result)}`)
     }
   }
 
   protected async _performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
-    const results = await this.#client.query(
+    const result = await this.#client.query(
       query,
       args
     ).toPromise()
 
-    if (results.error) {
-      const queryStr = query.loc?.source.body
-      const argsStr = JSON.stringify(args, null, 2)
-      throw new Error(`Error performing query.\nArguments:${argsStr}\nQuery: ${queryStr}\nSubgraph:${this.#client.url}`)
+    if (result.error) {
+      throw new Error(`Error performing query.${this._describeQueryResult(result)}`)
     }
 
-    return results.data
+    return result
+  }
+
+  private _describeQueryResult(result: QueryResult): string {
+    const queryStr = result.operation.query.loc?.source.body
+    const dataStr = JSON.stringify(result.data, null, 2)
+    const argsStr = JSON.stringify(result.operation.variables, null, 2)
+    const subgraphUrl = result.operation.context.url
+
+    return `\nSubgraph: ${subgraphUrl}\nArguments: ${argsStr}\nQuery: ${queryStr}Returned data: ${dataStr}`
   }
 }

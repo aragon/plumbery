@@ -4,9 +4,9 @@ import { PermissionData } from "plumbery-core";
 import { QueryResult } from "../../types";
 
 export function parsePermissions(
-  data: QueryResult
+  result: QueryResult
 ): PermissionData[] {
-  const org = data.organization as OrganizationDataGql
+  const org = result.data.organization as OrganizationDataGql
   const permissions = org?.permissions as PermissionDataGql[]
 
   if (!permissions) {

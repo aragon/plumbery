@@ -3,9 +3,9 @@ import { VoteData } from '../entities/Vote'
 import { QueryResult } from '../../types'
 
 export function parseVotes(
-  data: QueryResult
+  result: QueryResult
 ): VoteData[] {
-  const votes = data.votes
+  const votes = result.data.votes
 
   if (!votes) {
     throw new Error('Unable to parse votes.')
@@ -15,7 +15,7 @@ export function parseVotes(
     return {
       id: vote.id,
       creator: vote.creator,
-      metadata: vote.metadata,
+      metaresult: vote.metadata,
       executed: vote.executed
     }
   })
