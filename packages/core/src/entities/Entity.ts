@@ -1,4 +1,4 @@
-import { ConnectorInterface } from "../ConnectorTypes";
+import { ConnectorInterface } from "../connections/ConnectorInterface";
 
 export default class Entity {
   protected _connector: ConnectorInterface

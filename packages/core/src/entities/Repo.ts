@@ -1,5 +1,5 @@
 import Entity from "./Entity"
-import { ConnectorInterface } from "../ConnectorTypes"
+import { ConnectorInterface } from "../connections/ConnectorInterface"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/repo.md).
 // [ ] author 	String 	Author of the app. E.g. "Aragon Association".

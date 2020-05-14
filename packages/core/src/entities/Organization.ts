@@ -1,7 +1,7 @@
 import App from './App'
 import TransactionPath from '../TransactionPath'
 import { SignerType } from '../SignerTypes'
-import { ConnectorInterface } from '../ConnectorTypes'
+import { ConnectorInterface } from '../connections/ConnectorInterface'
 import Permission from './Permission'
 import Entity from './Entity'
 

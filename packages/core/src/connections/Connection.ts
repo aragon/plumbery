@@ -1,5 +1,5 @@
-import Organization from './entities/Organization'
-import { ConnectorInterface } from './ConnectorTypes'
+import Organization from '../entities/Organization'
+import { ConnectorInterface } from './ConnectorInterface'
 
 export default class Connection {
   #connector: ConnectorInterface
