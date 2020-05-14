@@ -25,23 +25,23 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async roleById(roleId: string): Promise<Role> {
-    const result = await this._performQuery(
+    const result = await this.performQuery(
       queries.ROLE_BY_ID,
       { roleId }
     )
 
-    const data = this._parseQuery(parseRole, result)
+    const data = this.parseQueryResult(parseRole, result)
 
     return new Role(data, this)
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
-    const result = await this._performQuery(
+    const result = await this.performQuery(
       queries.ORGANIZATION_PERMISSIONS,
       { orgAddress }
     )
 
-    const datas = this._parseQuery(parsePermissions, result)
+    const datas = this.parseQueryResult(parsePermissions, result)
 
     return datas.map((data: PermissionData) => {
       return new Permission(data, this)
@@ -49,12 +49,12 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
-    const result = await this._performQuery(
+    const result = await this.performQuery(
       queries.ORGANIZATION_APPS,
       { orgAddress }
     )
 
-    const datas = this._parseQuery(parseApps, result)
+    const datas = this.parseQueryResult(parseApps, result)
 
     return datas.map((data: AppData) => {
       return new App(data, this)
@@ -62,23 +62,23 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async appByAddress(appAddress: string): Promise<App> {
-    const result = await this._performQuery(
+    const result = await this.performQuery(
       queries.APP_BY_ADDRESS,
       { appAddress }
     )
 
-    const data = this._parseQuery(parseApp, result)
+    const data = this.parseQueryResult(parseApp, result)
 
     return new App(data, this)
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
-    const result = await this._performQuery(
+    const result = await this.performQuery(
       queries.REPO_BY_APP_ADDRESS,
       { appAddress }
     )
 
-    const data = this._parseQuery(parseRepo, result)
+    const data = this.parseQueryResult(parseRepo, result)
 
     return new Repo(data, this)
   }

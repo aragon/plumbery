@@ -6,7 +6,7 @@ import {
   QueryResult
 } from '../types'
 
-export default class ConnectorTheGraphBase {
+export default class GraphQLWrapper {
   #client: Client
 
   constructor(subgraphUrl: string) {
@@ -16,15 +16,7 @@ export default class ConnectorTheGraphBase {
     })
   }
 
-  protected _parseQuery(parser: ParseFunction, result: QueryResult): any {
-    try {
-      return parser(result)
-    } catch (error) {
-      throw new Error(`${error.message}${this._describeQueryResult(result)}`)
-    }
-  }
-
-  protected async _performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
+  async performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
     const result = await this.#client.query(
       query,
       args
@@ -32,13 +24,21 @@ export default class ConnectorTheGraphBase {
     // console.log(this._describeQueryResult(result)) // Uncomment for debugging.
 
     if (result.error) {
-      throw new Error(`Error performing query.${this._describeQueryResult(result)}`)
+      throw new Error(`Error performing query.${this.describeQueryResult(result)}`)
     }
 
     return result
   }
 
-  private _describeQueryResult(result: QueryResult): string {
+  parseQueryResult(parser: ParseFunction, result: QueryResult): any {
+    try {
+      return parser(result)
+    } catch (error) {
+      throw new Error(`${error.message}${this.describeQueryResult(result)}`)
+    }
+  }
+
+  private describeQueryResult(result: QueryResult): string {
     const queryStr = result.operation.query.loc?.source.body
     const dataStr = JSON.stringify(result.data, null, 2)
     const argsStr = JSON.stringify(result.operation.variables, null, 2)
