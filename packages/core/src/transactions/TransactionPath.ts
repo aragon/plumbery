@@ -3,13 +3,13 @@ import App from '../wrappers/App'
 
 export interface TransactionPathData {
   apps: App[]
-  destination: string
+  destination: App
   transactions: TransactionRequest[]
 }
 
 export default class TransactionPath {
   readonly apps!: App[]
-  readonly destination!: string
+  readonly destination!: App
   readonly transactions!: TransactionRequest[]
 
   constructor(data: TransactionPathData) {

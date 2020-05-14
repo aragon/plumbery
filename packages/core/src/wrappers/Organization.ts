@@ -1,5 +1,5 @@
 import App from './App'
-import Intent from './Intent'
+import TransactionIntent from '../transactions/TransactionIntent'
 import Permission from './Permission'
 import Role from './Role'
 import { ConnectorInterface } from '../ConnectorTypes'
@@ -52,11 +52,11 @@ export default class Organization {
   //     initFuncArgs: string[]
   //     openPermissions: boolean
   //   }
-  // ): Promise<Intent> {
+  // ): Promise<TransactionIntent> {
   //   return []
   // }
 
-  // async removeApp(appAddress: string): Promise<Intent> {
+  // async removeApp(appAddress: string): Promise<TransactionIntent> {
   //   return []
   // }
 
@@ -69,7 +69,7 @@ export default class Organization {
   //   grantee: string,
   //   appAddress: string,
   //   roleId: string
-  // ): Promise<Intent> {
+  // ): Promise<TransactionIntent> {
   //   return []
   // }
 
@@ -77,7 +77,7 @@ export default class Organization {
   //   grantee: string,
   //   appAddress: string,
   //   roleId: string
-  // ): Promise<Intent> {
+  // ): Promise<TransactionIntent> {
   //   return []
   // }
 
@@ -96,7 +96,7 @@ export default class Organization {
   // async setRoleManager(
   //   grantee: string,
   //   roleId: string
-  // ): Promise<Intent> {
+  // ): Promise<TransactionIntent> {
   //   return []
   // }
 
@@ -105,14 +105,14 @@ export default class Organization {
     appAddress: string,
     funcName: string,
     funcArgs: string[]
-  ): Promise<Intent> {
-    return new Intent(
+  ): Promise<TransactionIntent> {
+    return new TransactionIntent(
       {
         contractAddress: appAddress,
         functionName: funcName,
         functionArgs: funcArgs,
       },
-      this.#connector
+      this
     )
   }
 }

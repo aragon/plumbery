@@ -1,7 +1,7 @@
-import Base from "./Base"
+import Base from './Base'
 import App from './App'
 import Role from './Role'
-import { ConnectorInterface } from "../ConnectorTypes"
+import { ConnectorInterface } from '../ConnectorTypes'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/permission.md).
 // [x] app 	String 	App address.
