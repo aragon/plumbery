@@ -12,11 +12,6 @@ export function parseVotes(
   }
 
   return votes.map((vote: VoteDataGql) => {
-    return {
-      id: vote.id,
-      creator: vote.creator,
-      metaresult: vote.metadata,
-      executed: vote.executed
-    }
+    return vote as VoteData
   })
 }

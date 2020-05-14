@@ -6,7 +6,16 @@ export const ALL_VOTES = gql`
       id
       creator
       metadata
+      open
       executed
+      startDate
+      snapshotBlock
+      supportRequiredPct
+      minAcceptQuorum
+      yea
+      nay
+      votingPower
+      script
     }
   }
 `

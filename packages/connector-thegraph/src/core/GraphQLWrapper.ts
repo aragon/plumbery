@@ -29,6 +29,7 @@ export default class ConnectorTheGraphBase {
       query,
       args
     ).toPromise()
+    // console.log(this._describeQueryResult(result)) // Uncomment for debugging.
 
     if (result.error) {
       throw new Error(`Error performing query.${this._describeQueryResult(result)}`)

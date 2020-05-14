@@ -29,7 +29,16 @@ export type Vote = {
   id: Scalars['ID']
   creator: Scalars['Bytes']
   metadata: Scalars['String']
+  open: Scalars['Boolean']
   executed: Scalars['Boolean']
+  startDate: Scalars['BigInt']
+  snapshotBlock: Scalars['BigInt']
+  supportRequiredPct: Scalars['BigInt']
+  minAcceptQuorum: Scalars['BigInt']
+  yea: Scalars['BigInt']
+  nay: Scalars['BigInt']
+  votingPower: Scalars['BigInt']
+  script: Scalars['Bytes']
   casts: Array<Cast>
 }
 
@@ -39,6 +48,7 @@ export type Cast = {
   voteId: Scalars['String']
   voter: Scalars['Bytes']
   supports: Scalars['Boolean']
-  voterStake: Scalars['String']
+  voterStake: Scalars['BigInt']
   vote: Vote
 }
+
