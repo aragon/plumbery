@@ -26,13 +26,13 @@ export interface AragonArtifactFunction {
 export const ANY_ENTITY = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF'
 
 export function addressesEqual(first: string, second: string): boolean {
-  first = first && first.toLowerCase()
-  second = second && second.toLowerCase()
+  first = first?.toLowerCase()
+  second = second?.toLowerCase()
   return first === second
 }
 
 // "Safer" version of [].includes() for addresses
-export function includesAddress(arr: any[], address: string): boolean {
+export function includesAddress(arr: string[], address: string): boolean {
   return arr.some((a) => addressesEqual(a, address))
 }
 
