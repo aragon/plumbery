@@ -11,7 +11,7 @@ export function parseCasts(
     throw new Error('Unable to parse casts.')
   }
 
-  return casts.map((cast: CastDataGql) => {
+  return casts.map((cast: CastDataGql): CastData => {
     return {
       id: cast.id,
       voteId: cast.voteId,

@@ -13,7 +13,7 @@ export function parsePermissions(
     throw new Error('Unable to parse permissions.')
   }
 
-  return permissions.map((permission: PermissionDataGql) => {
+  return permissions.map((permission: PermissionDataGql): PermissionData => {
     return {
       app: permission.app?.address,
       entity: permission.entity,

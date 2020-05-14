@@ -11,7 +11,9 @@ export function parseVotes(
     throw new Error('Unable to parse votes.')
   }
 
-  return votes.map((vote: VoteDataGql) => {
-    return vote as VoteData
+  // Note, this may seem redundant, but it makes sure
+  // types are enforced.
+  return votes.map((vote: VoteDataGql): VoteData => {
+    return vote
   })
 }
