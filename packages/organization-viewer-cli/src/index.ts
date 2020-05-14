@@ -108,7 +108,7 @@ async function inspectVotingLowLevel(org: Organization): Promise<void> {
     }
   `)
 
-  console.log(JSON.stringify(results.data))
+  console.log(JSON.stringify(results.data, null, 2))
 }
 
 main()
