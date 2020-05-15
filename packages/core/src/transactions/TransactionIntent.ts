@@ -1,19 +1,22 @@
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
-import { calculateTransactionPath } from './utils/simplePath'
+import { verifyTransactionPath } from './utils/verifyPath'
+import { calculateTransactionPath } from './utils/calculatePath2'
 import Organization from '../wrappers/Organization'
 
 export interface TransactionIntentData {
   contractAddress: string
   functionName: string
-  functionArgs: string[]
+  functionArgs: any[]
 }
 
 export default class TransactionIntent {
   readonly contractAddress!: string
   readonly functionName!: string
-  readonly functionArgs!: string[]
+  readonly functionArgs!: any[]
+
   #org: Organization
+  #finalForwarder?: string
 
   constructor(data: TransactionIntentData, org: Organization) {
     this.#org = org
@@ -25,15 +28,32 @@ export default class TransactionIntent {
     address: string,
     { as, path }: { as?: string; path?: string[] }
   ): Promise<TransactionPath[]> {
-    return calculateTransactionPath(
-      address,
-      this.contractAddress,
-      this.functionName,
-      this.functionArgs,
-      this.#org,
-      path,
-      as
-    )
+    const paths: TransactionPath[] = []
+    if (path) {
+      const transactionPath = verifyTransactionPath(
+        address,
+        path,
+        this.contractAddress,
+        this.functionName,
+        this.functionArgs,
+        this.#org
+      )
+
+      if (path) paths.push(transactionPath)
+    }
+
+    // TODO: support calculate transaction path
+    // paths = calculateTransactionPath(
+    //   address,
+    //   this.contractAddress,
+    //   this.functionName,
+    //   this.functionArgs,
+    //   this.#org,
+    //   path,
+    //   as
+    // )
+
+    return paths
   }
 
   async transactions(

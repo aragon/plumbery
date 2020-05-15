@@ -1,4 +1,5 @@
 export interface TransactionRequestData {
+  from: string
   chainId: number
   data?: string
   gasLimit: number
@@ -11,7 +12,8 @@ type TransactionRequestDataRpc = any
 type TransactionRequestDataWeb3 = any
 type TransactionRequestDataEthers = any
 
-export default class TransactionReques {
+export default class TransactionRequest {
+  readonly from!: string
   readonly chainId!: number
   readonly data?: string
   readonly gasLimit!: number

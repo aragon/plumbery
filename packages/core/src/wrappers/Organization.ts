@@ -97,7 +97,15 @@ export default class Organization {
   //   grantee: string,
   //   roleId: string
   // ): Promise<TransactionIntent> {
-  //   return []
+  //   return new TransactionIntent(
+  //     {
+  //       contractAddress: appAddress,
+  //       functionName: funcName,
+  //       functionArgs: funcArgs,
+  //       finalForwarder: 'aclAddress',
+  //     },
+  //     this
+  //   )
   // }
 
   ///////// INTENTS ///////////

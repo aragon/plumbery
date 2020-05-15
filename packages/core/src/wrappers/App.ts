@@ -1,6 +1,7 @@
 import Repo from './Repo'
 import Base from './Base'
 import { ConnectorInterface } from '../ConnectorTypes'
+import { Abi } from '../types'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [x] address 	String 	The address of the app proxy contract (never changes).
@@ -37,6 +38,7 @@ export interface AppData {
   registryAddress: string
   kernelAddress: string
   isForwarder: boolean
+  abi: Abi
 }
 
 export default class App extends Base implements AppData {
@@ -47,6 +49,7 @@ export default class App extends Base implements AppData {
   readonly registryAddress!: string
   readonly kernelAddress!: string
   readonly isForwarder!: boolean
+  readonly abi!: Abi
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
