@@ -25,25 +25,29 @@ const forwarderFeeAbi = [
 
 // Is the given method a full signature, e.g. 'foo(arg1,arg2,...)'
 export const isFullMethodSignature = (methodSignature: string): boolean => {
-  return Boolean(methodSignature) &&
-  methodSignature.includes('(') &&
-  methodSignature.includes(')')
+  return (
+    Boolean(methodSignature) &&
+    methodSignature.includes('(') &&
+    methodSignature.includes(')')
+  )
 }
 
 export interface directTransaction extends TransactionRequest {
   token?: {
-    address: string,
+    address: string
     value: string
     spender: string
   }
   pretransaction?: {
-    from: string,
+    from: string
     to: string
     data: string
   }
 }
 
-export async function applyPretransaction(directTransaction: directTransaction) {
+export async function applyPretransaction(
+  directTransaction: directTransaction
+) {
   // Token allowance pretransaction
   if (directTransaction.token) {
     const {
@@ -59,7 +63,7 @@ export async function applyPretransaction(directTransaction: directTransaction) 
     const provider = ethers.getDefaultProvider()
 
     const tokenContract = new ethers.Contract(tokenAddress, erc20ABI, provider)
-    const balance = await tokenContract.methods.balanceOf(from).call()
+    const balance = await tokenContract.balanceOf(from)
 
     const tokenValueBN = ethers.utils.bigNumberify(tokenValue)
 
@@ -69,9 +73,7 @@ export async function applyPretransaction(directTransaction: directTransaction) 
       )
     }
 
-    const allowance = await tokenContract.methods
-      .allowance(from, approveSpender)
-      .call()
+    const allowance = await tokenContract.allowance(from, approveSpender)
     const allowanceBN = ethers.utils.bigNumberify(allowance)
 
     // If allowance is already greater than or equal to amount, there is no need to do an approve transaction
@@ -87,9 +89,10 @@ export async function applyPretransaction(directTransaction: directTransaction) 
         // TODO: should we include transaction options?
         from,
         to: tokenAddress,
-        data: tokenContract.methods
-          .approve(approveSpender, tokenValue)
-          .encodeABI(),
+        // TODO: verify how to encode the function call
+        data: ethers.utils.RLP.encode(
+          await tokenContract.approve(approveSpender, tokenValue)
+        ),
       }
 
       directTransaction.pretransaction = tokenApproveTransaction
@@ -110,12 +113,12 @@ export async function applyForwardingFeePretransaction(
   const provider = ethers.getDefaultProvider()
 
   // Check if a token approval pretransaction is needed due to the forwarder requiring a fee
-  const forwardFee = new ethers.Contract(forwarder, forwarderFeeAbi, provider)
+  const forwarderFee = new ethers.Contract(forwarder, forwarderFeeAbi, provider)
 
   const feeDetails = { amount: ethers.constants.Zero }
   try {
     // Passing the EOA as `msg.sender` to the forwardFee call is useful for use cases where the fee differs relative to the account
-    const feeResult = await forwardFee().call({ from }) // forwardFee() returns (address, uint256)
+    const feeResult = await forwarderFee.forwardFee({ from }) // forwardFee() returns (address, uint256)
     feeDetails.tokenAddress = feeResult[0]
     feeDetails.amount = ethers.utils.bigNumberify(feeResult[1])
   } catch (err) {
@@ -141,7 +144,6 @@ export async function createDirectTransaction(
   methodJsonDescription: FunctionFragment,
   params: any[]
 ) {
-
   let transactionOptions = {}
 
   // If an extra parameter has been provided, it is the transaction options if it is an object
@@ -161,7 +163,7 @@ export async function createDirectTransaction(
     ...transactionOptions, // Options are overwriten by the values below
     from: sender,
     to: destination,
-    data: interface.functions[methodJsonDescription.name].encode(params)
+    data: interface.functions[methodJsonDescription.name].encode(params),
   }
 
   // Add any pretransactions specified
@@ -213,11 +215,7 @@ export async function createDirectTransactionForApp(
   )
 }
 
-export function createForwarderTransactionBuilder(
-  sender,
-  directTransaction
-) {
-
+export function createForwarderTransactionBuilder(sender, directTransaction) {
   // TODO: handle provider network
   const provider = ethers.getDefaultProvider()
 
@@ -229,7 +227,7 @@ export function createForwarderTransactionBuilder(
     from: sender,
     to: forwarderAddress,
     // TODO: verify how to encode the function call
-    data: ethers.utils.RLP.encode(forwarder.forward(script)),
+    data: ethers.utils.RLP.encode(await forwarder.forward(script)),
   })
 }
 
@@ -255,7 +253,6 @@ export async function getRecommendedGasLimit(
     return upperGasLimit
   }
 }
-
 
 /**
  * Encode a call script
@@ -304,11 +301,11 @@ export function encodeCallScript(actions) {
  * @return {Promise<bool>}
  */
 export function canForward(forwarder, sender, script) {
-  const canForward = new this.web3.eth.Contract(
-    getAbi('aragon/Forwarder'),
-    forwarder
-  ).methods['canForward']
+  // TODO: handle provider network
+  const provider = ethers.getDefaultProvider()
 
-  return canForward(sender, script)
-    .call()
-    .catch(() => false)
+  // Check if a token approval pretransaction is needed due to the forwarder requiring a fee
+  const forwarder = new ethers.Contract(forwarder, forwarderFeeAbi, provider)
+
+  return forwarder.canForward(sender, script).catch(() => false)
+}
