@@ -1,5 +1,5 @@
 import { Cast as CastDataGql } from '../queries/types'
-import { CastData } from '../entities/Cast'
+import { CastData } from '../entities/VotingCast'
 import { QueryResult } from '../../types'
 
 export function parseCasts(

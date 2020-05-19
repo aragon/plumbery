@@ -1,5 +1,5 @@
 import VotingEntity from "./VotingEntity";
-import Vote from "./Vote";
+import VotingVote from "./VotingVote";
 import VotingConnectorTheGraph from "..";
 import { App } from "plumbery-core";
 
@@ -12,7 +12,7 @@ export default class Voting extends VotingEntity {
     this.app = app
   }
 
-  async votes(): Promise<Vote[]> {
+  async votes(): Promise<VotingVote[]> {
     return this._connector.votesForApp(this.app.address)
   }
 }

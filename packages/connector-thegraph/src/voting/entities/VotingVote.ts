@@ -1,5 +1,5 @@
 import VotingEntity from "./VotingEntity";
-import Cast from './Cast'
+import VotingCast from './VotingCast'
 import VotingConnectorTheGraph from "..";
 
 export interface VoteData {
@@ -39,7 +39,7 @@ export default class Vote extends VotingEntity implements VoteData {
     Object.assign(this, data)
   }
 
-  async casts(): Promise<Cast[]> {
+  async casts(): Promise<VotingCast[]> {
     return this._connector.castsForVote(this.id)
   }
 }

@@ -1,5 +1,5 @@
 import { Vote as VoteDataGql } from '../queries/types'
-import { VoteData } from '../entities/Vote'
+import { VoteData } from '../entities/VotingVote'
 import { QueryResult } from '../../types'
 
 export function parseVotes(
