@@ -6,8 +6,8 @@ import ConnectorTheGraph, {
 } from 'plumbery-connector-thegraph'
 import Connection from './Connection'
 import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'
-import { ConnectorInterface } from './ConnectorTypes'
-import { SignerType } from './SignerTypes'
+import { ConnectorInterface } from './ConnectorInterface'
+import { SignerType } from '../SignerTypes'
 
 declare global {
   interface Window {

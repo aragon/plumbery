@@ -1,5 +1,5 @@
-import Base from "./Base"
-import { ConnectorInterface } from "../ConnectorTypes"
+import Entity from "./Entity"
+import { ConnectorInterface } from "../connections/ConnectorInterface"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/repo.md).
 // [ ] author 	String 	Author of the app. E.g. "Aragon Association".
@@ -18,7 +18,7 @@ export interface RepoData {
   address: string
 }
 
-export default class Repo extends Base implements RepoData {
+export default class Repo extends Entity implements RepoData {
   readonly name!: string
   readonly address!: string
 

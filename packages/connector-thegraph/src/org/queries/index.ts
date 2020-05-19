@@ -4,6 +4,7 @@ import * as fragments from './fragments'
 export const ORGANIZATION_PERMISSIONS = gql`
   query Organization($orgAddress: String!) {
     organization(id: $orgAddress) {
+      address
       permissions {
         id
         app {

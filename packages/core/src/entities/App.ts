@@ -1,6 +1,6 @@
 import Repo from "./Repo"
-import Base from "./Base"
-import { ConnectorInterface } from "../ConnectorTypes"
+import Entity from "./Entity"
+import { ConnectorInterface } from "../connections/ConnectorInterface"
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [x] address 	String 	The address of the app proxy contract (never changes).
@@ -39,7 +39,7 @@ export interface AppData {
   isForwarder: boolean
 }
 
-export default class App extends Base implements AppData {
+export default class App extends Entity implements AppData {
   readonly name?: string
   readonly address!: string
   readonly appId!: string
