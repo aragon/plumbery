@@ -1,6 +1,15 @@
+# Node modules
 node_modules/
 
 dist/
+
+# Compilation output
+build/
+
+# Production subgraph
+types
+subgraph.yaml
+src/helpers/ens.ts
 
 .yarn/*
 !.yarn/releases
@@ -10,6 +19,5 @@ dist/
 tsconfig.tsbuildinfo
 
 # IDE specific
-schema.graphql
 .graphqlconfig
 .vscode
