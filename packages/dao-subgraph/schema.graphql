@@ -1,0 +1,106 @@
+type RegistryFactory @entity {
+  id: ID!
+  address: Bytes!
+  registryCount: Int!
+  registries: [Registry!]!
+}
+
+type Registry @entity {
+  id: ID!
+  address: Bytes! # Registry address
+  name: String! # Registry name
+  node: Bytes! # Registry ENS node
+  repoCount: Int!
+  repos: [Repo!]
+  factory: RegistryFactory! @derivedFrom(field: "registries")
+}
+
+type Repo @entity {
+  id: ID! # Repo ENS address
+  address: Bytes! # Repo address
+  name: String! # Repo name
+  node: Bytes! # Repo ENS
+  lastVersion: Version # Last Version
+  versions: [Version!] # List of versions
+  registry: Registry! @derivedFrom(field: "repos")
+}
+
+type Version @entity {
+  id: ID! # ID concat codeAddress & semanticVersion
+  semanticVersion: String! # Semantic version
+  codeAddress: Bytes! # App implementation address
+  contentUri: String! # Content URI
+  repoName: String! # Repo name
+  repoAddress: Bytes! # Repo address
+  repoNamehash: Bytes! # Repo ENS node
+  artifact: String # Artifact.json metadata
+  manifest: String # Manifest.json metadata
+  apps: [App!] @derivedFrom(field: "version")
+}
+
+type OrgFactory @entity {
+  id: ID!
+  address: Bytes!
+  orgCount: Int!
+  organizations: [Organization!]
+}
+
+type Organization @entity {
+  id: ID! # Kernel proxy address
+  address: Bytes! # Kernel address
+  acl: Bytes! # Acl address
+  recoveryVault: Bytes! # Address of the recovery Vault instance
+  apps: [App!] # List of apps
+  permissions: [Permission!] # List of permissions
+  factory: OrgFactory! @derivedFrom(field: "organizations")
+}
+
+type App @entity {
+  id: ID! # App proxy address
+  address: Bytes! # App address
+  appId: String! # ENS namehash of the aragonPM repo
+  isForwarder: Boolean # Whether the app is Forwarder
+  isUpgradeable: Boolean # Whether the app is upgradeable
+  implementation: Implementation! # Implementation entity
+  version: Version # Repo Version entity
+  repo: Repo # Repo entity
+  repoName: String # Repo name
+  repoAddress: Bytes # Repo address
+  roles: [Role!] # List of roles
+  organization: Organization! @derivedFrom(field: "apps")
+}
+
+type Implementation @entity {
+  id: ID! # ID concat namespace and appId
+  address: Bytes! # App address
+}
+
+type Role @entity {
+  id: ID! # ID concat of app address and role hash
+  nameHash: Bytes! # Role name hash
+  manager: Bytes # Role manager address
+  appAddress: Bytes! # App address
+  grantees: [Permission!] # List of permissions
+}
+
+type Permission @entity {
+  id: ID! # ID concat of app, role and entity
+  appAddress: Bytes! # App address
+  roleHash: Bytes! # Role name hash
+  entityAddress: Bytes! # Address assigned the permissions
+  params: [Param!] # List of params
+}
+
+type Param @entity {
+  id: ID! # ID
+  argumentId: Int! # Argument id (uint8)
+  operationType: Int! # Operation type (uint8)
+  argumentValue: BigInt! # Argument Value (uint240)
+}
+
+# We keep a registry of the hash that were not resolved to try fetch them again
+
+type IpfsHash @entity {
+  id: ID! # ID
+  hash: String
+}
