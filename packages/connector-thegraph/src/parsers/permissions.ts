@@ -1,7 +1,7 @@
 import { Organization as OrganizationDataGql } from "../queries/types";
 import { Permission as PermissionDataGql } from "../queries/types";
 import { PermissionData } from "plumbery-core";
-import { QueryResult } from "../../types";
+import { QueryResult } from "../types";
 
 export function parsePermissions(
   result: QueryResult

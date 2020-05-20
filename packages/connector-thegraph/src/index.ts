@@ -1,8 +1,8 @@
 export { default as GraphQLWrapper } from './core/GraphQLWrapper'
 
-export { ConnectorTheGraphConfig } from './org'
+export { ConnectorTheGraphConfig } from './connector'
 
-import ConnectorTheGraph from './org'
+import ConnectorTheGraph from './connector'
 export default ConnectorTheGraph
 
 export * from './types'
