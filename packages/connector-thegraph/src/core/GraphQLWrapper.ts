@@ -8,12 +8,15 @@ import {
 
 export default class GraphQLWrapper {
   #client: Client
+  #verbose: boolean
 
-  constructor(subgraphUrl: string) {
+  constructor(subgraphUrl: string, verbose = false) {
     this.#client = new Client({
       maskTypename: true,
       url: subgraphUrl,
     })
+
+    this.#verbose = verbose
   }
 
   async performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
@@ -21,7 +24,10 @@ export default class GraphQLWrapper {
       query,
       args
     ).toPromise()
-    // console.log(this._describeQueryResult(result)) // Uncomment for debugging.
+
+    if (this.#verbose) {
+      console.log(this.describeQueryResult(result)) // Uncomment for debugging.
+    }
 
     if (result.error) {
       throw new Error(`Error performing query.${this.describeQueryResult(result)}`)

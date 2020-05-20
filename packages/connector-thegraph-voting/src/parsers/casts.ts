@@ -1,5 +1,5 @@
 import { Cast as CastDataGql } from '../queries/types'
-import { CastData } from '../entities/VotingCast'
+import { CastData } from '../entities/Cast'
 import { QueryResult } from 'plumbery-connector-thegraph'
 
 export function parseCasts(

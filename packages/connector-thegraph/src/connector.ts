@@ -17,11 +17,12 @@ import {
 
 export type ConnectorTheGraphConfig = {
   daoSubgraphUrl: string
+  verbose?: boolean
 }
 
 export default class ConnectorTheGraph extends GraphQLWrapper implements ConnectorInterface {
   constructor(config: ConnectorTheGraphConfig) {
-    super(config.daoSubgraphUrl)
+    super(config.daoSubgraphUrl, config.verbose)
   }
 
   async roleById(roleId: string): Promise<Role> {

@@ -1,6 +1,6 @@
 import * as queries from './queries'
-import VotingVote, { VoteData } from "./entities/VotingVote";
-import VotingCast, { CastData } from "./entities/VotingCast";
+import Vote, { VoteData } from "./entities/Vote";
+import Cast, { CastData } from "./entities/Cast";
 import { GraphQLWrapper } from "plumbery-connector-thegraph";
 import {
   parseVotes,
@@ -8,7 +8,7 @@ import {
 } from './parsers';
 
 export default class VotingConnectorTheGraph extends GraphQLWrapper {
-  async votesForApp(appAddress: string): Promise<VotingVote[]> {
+  async votesForApp(appAddress: string): Promise<Vote[]> {
     const result = await this.performQuery(
       queries.ALL_VOTES,
       { appAddress }
@@ -17,11 +17,11 @@ export default class VotingConnectorTheGraph extends GraphQLWrapper {
     const datas = this.parseQueryResult(parseVotes, result)
 
     return datas.map((data: VoteData) => {
-      return new VotingVote(data, this)
+      return new Vote(data, this)
     })
   }
 
-  async castsForVote(voteId: string): Promise<VotingCast[]> {
+  async castsForVote(voteId: string): Promise<Cast[]> {
     const result = await this.performQuery(
       queries.CASTS_FOR_VOTE,
       { voteId }
@@ -30,7 +30,7 @@ export default class VotingConnectorTheGraph extends GraphQLWrapper {
     const datas = this.parseQueryResult(parseCasts, result)
 
     return datas.map((data: CastData) => {
-      return new VotingCast(data, this)
+      return new Cast(data, this)
     })
   }
 }

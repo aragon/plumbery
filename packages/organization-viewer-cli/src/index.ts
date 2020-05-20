@@ -13,6 +13,11 @@ import {
   VotingVote,
   VotingCast
 } from 'plumbery-connector-thegraph-voting'
+import {
+  TokenManager,
+  Token,
+  TokenHolder
+} from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
@@ -20,17 +25,22 @@ const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 async function main() {
   const org = await initAndGetOrg()
 
-  await inspectOrg(org)
+  // await inspectOrg(org)
 
-  await inspectVotingHighLevel(org)
-  await inspectVotingLowLevel(org)
+  // await inspectVotingHighLevel(org)
+  // await inspectVotingLowLevel(org)
+
+  await inspectTokenManager(org)
 }
 
 async function initAndGetOrg(): Promise<Organization> {
   const connection = aragonConnect({
     connector: [
       'thegraph',
-      { daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby' }
+      {
+        daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
+        verbose: true
+      }
     ],
     signer: {},
   })
@@ -70,6 +80,23 @@ async function inspectOrg(org: Organization): Promise<void> {
   console.log('\nAn app from a permission:')
   const appFromPermission = await permissions[1].getApp()
   if (appFromPermission) { console.log(appFromPermission.toString()) }
+}
+
+async function inspectTokenManager(org: Organization): Promise<void> {
+  const apps = await org.apps()
+  const app = apps.find((app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844')!
+
+  console.log('\nTokenManager:')
+  const tokenManager = new TokenManager(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager')
+  console.log(tokenManager.toString())
+
+  console.log('\nToken:')
+  const token = await tokenManager.token()
+  console.log(token)
+
+  console.log('\nHolders:')
+  const holders = await token.holders()
+  console.log(holders)
 }
 
 async function inspectVotingHighLevel(org: Organization): Promise<void> {

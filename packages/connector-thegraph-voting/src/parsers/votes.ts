@@ -1,5 +1,5 @@
 import { Vote as VoteDataGql } from '../queries/types'
-import { VoteData } from '../entities/VotingVote'
+import { VoteData } from '../entities/Vote'
 import { QueryResult } from 'plumbery-connector-thegraph'
 
 export function parseVotes(
