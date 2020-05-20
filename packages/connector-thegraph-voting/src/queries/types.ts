@@ -1,6 +1,6 @@
 // Generated with https://graphql-code-generator.com/#live-demo
 
-// 1. Get schema from Voting subgraph (https://github.com/aragon/dao-subgraph)
+// 1. Get schema from subgraph
 // 2. Paste in generator (https://graphql-code-generator.com/#live-demo)
 // 3. Add on top:
 /*
