@@ -1,11 +1,8 @@
 export { default as GraphQLWrapper } from './core/GraphQLWrapper'
 
-export { ConnectorTheGraphConfig } from "./org";
+export { ConnectorTheGraphConfig } from './org'
 
-import ConnectorTheGraph from "./org";
+import ConnectorTheGraph from './org'
 export default ConnectorTheGraph
 
-export { default as VotingConnectorTheGraphConfig } from "./voting";
-export { default as Voting } from './voting/entities/Voting'
-export { default as VotingVote } from './voting/entities/VotingVote'
-export { default as VotingCast } from './voting/entities/VotingCast'
+export * from './types'

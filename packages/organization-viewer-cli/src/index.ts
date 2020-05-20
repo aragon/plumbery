@@ -1,4 +1,3 @@
-
 // import data from './org-data.json'
 import {
   aragonConnect,
@@ -7,11 +6,13 @@ import {
   Organization
 } from 'plumbery-core'
 import {
-  Voting,
-  Vote,
-  Cast,
   GraphQLWrapper
 } from 'plumbery-connector-thegraph'
+import {
+  Voting,
+  VotingVote,
+  VotingCast
+} from 'plumbery-connector-thegraph-voting'
 import gql from 'graphql-tag'
 
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
@@ -81,16 +82,16 @@ async function inspectVotingHighLevel(org: Organization): Promise<void> {
 
   console.log('\nVotes:')
   const votes = await voting.votes()
-  votes.map((vote: Vote) => console.log(vote.toString()))
+  votes.map((vote: VotingVote) => console.log(vote.toString()))
 
   console.log('\nCasts:')
   const vote = votes[0]
   const casts = await vote.casts()
-  casts.map((cast: Cast) => console.log(cast.toString()))
+  casts.map((cast: VotingCast) => console.log(cast.toString()))
 
   console.log('\nAnalysis of a vote:')
   console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${vote.yea} yeas and ${vote.nay} nays.`)
-  const voters = casts.map((cast: Cast) => cast.voter)
+  const voters = casts.map((cast: VotingCast) => cast.voter)
   console.log('Voters:', voters)
 }
 
