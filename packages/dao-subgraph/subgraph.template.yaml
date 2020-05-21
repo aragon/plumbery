@@ -47,8 +47,6 @@ templates:
       eventHandlers:
         - event: NewRepo(bytes32,string,address)
           handler: handleNewRepo
-        - event: NewAppProxy(address,bool,bytes32)
-          handler: handleNewProxyApp
       file: ./src/mappings/registry.ts
   - kind: ethereum/contract
     name: Organization

@@ -1,4 +1,4 @@
-import {BigInt} from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 
 // Import entity types from the schema
 import {
@@ -24,7 +24,7 @@ export function handleSetPermission(event: SetPermissionEvent): void {
 
   const appAddress = event.params.app
   const roleHash = event.params.role
-  const entityAddress = event.params.entity
+  const granteeAddress = event.params.entity
 
   const allowed = event.params.allowed
 
@@ -49,7 +49,7 @@ export function handleSetPermission(event: SetPermissionEvent): void {
     .concat('-')
     .concat(roleHash.toHexString())
     .concat('-')
-    .concat(entityAddress.toHexString())
+    .concat(granteeAddress.toHexString())
 
   if (allowed) {
     // if no Permission yet create new one
@@ -58,7 +58,7 @@ export function handleSetPermission(event: SetPermissionEvent): void {
       permission = new PermissionEntity(permissionId) as PermissionEntity
       permission.appAddress = appAddress
       permission.roleHash = roleHash
-      permission.entityAddress = event.params.entity
+      permission.granteeAddress = event.params.entity
     }
 
     // update org permissions
@@ -85,7 +85,7 @@ export function handleSetPermission(event: SetPermissionEvent): void {
 }
 
 export function handleChangePermissionManager(
-  event: ChangePermissionManagerEvent,
+  event: ChangePermissionManagerEvent
 ): void {
   const appAddress = event.params.app
   const roleHash = event.params.role
@@ -111,7 +111,7 @@ export function handleChangePermissionManager(
 }
 
 export function handleSetPermissionParams(
-  event: SetPermissionParamsEvent,
+  event: SetPermissionParamsEvent
 ): void {
   const acl = AclContract.bind(event.address)
   const orgAddress = acl.kernel()
@@ -120,7 +120,7 @@ export function handleSetPermissionParams(
 
   const appAddress = event.params.app
   const roleHash = event.params.role
-  const entityAddress = event.params.entity
+  const granteeAddress = event.params.entity
 
   // get permission id and load from store
   const permissionId = appAddress
@@ -128,7 +128,7 @@ export function handleSetPermissionParams(
     .concat('-')
     .concat(roleHash.toHexString())
     .concat('-')
-    .concat(entityAddress.toHexString())
+    .concat(granteeAddress.toHexString())
 
   let permission = PermissionEntity.load(permissionId)
   if (permission == null) {
@@ -137,7 +137,7 @@ export function handleSetPermissionParams(
 
   // get params length
   const paramsLength = acl
-    .getPermissionParamsLength(entityAddress, appAddress, roleHash)
+    .getPermissionParamsLength(granteeAddress, appAddress, roleHash)
     .toI32()
 
   const paramHash = event.params.paramsHash
@@ -145,10 +145,10 @@ export function handleSetPermissionParams(
   // iterate getting the params
   for (let index = 0; index < paramsLength; index++) {
     const paramData = acl.getPermissionParam(
-      entityAddress,
+      granteeAddress,
       appAddress,
       roleHash,
-      BigInt.fromI32(index),
+      BigInt.fromI32(index)
     )
 
     // get param id and create new entity

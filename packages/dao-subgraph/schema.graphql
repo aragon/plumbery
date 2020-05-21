@@ -87,7 +87,7 @@ type Permission @entity {
   id: ID! # ID concat of app, role and entity
   appAddress: Bytes! # App address
   roleHash: Bytes! # Role name hash
-  entityAddress: Bytes! # Address assigned the permissions
+  granteeAddress: Bytes! # Address assigned the permissions
   params: [Param!] # List of params
 }
 
