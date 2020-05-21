@@ -25,10 +25,10 @@ const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
 async function main() {
   const org = await initAndGetOrg()
 
-  // await inspectOrg(org)
+  await inspectOrg(org)
 
-  // await inspectVotingHighLevel(org)
-  // await inspectVotingLowLevel(org)
+  await inspectVotingHighLevel(org)
+  await inspectVotingLowLevel(org)
 
   await inspectTokenManager(org)
 }
@@ -39,7 +39,7 @@ async function initAndGetOrg(): Promise<Organization> {
       'thegraph',
       {
         daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
-        verbose: true
+        verbose: false
       }
     ],
     signer: {},
