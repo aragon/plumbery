@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-
 export type ParamType = {
   name?: string
   type: string
@@ -27,7 +25,7 @@ export type FunctionFragment = {
 
 export type Abi = (EventFragment | FunctionFragment)[]
 
-export interface AragonArtifactFunction {
+export interface AppIntent {
   roles: string[]
   sig: string
   /**
@@ -78,12 +76,12 @@ export interface AragonArtifact extends AragonAppJson {
    * Includes metadata needed for radspec and transaction pathing
    * initialize() function should also be included for completeness
    */
-  functions: AragonArtifactFunction[]
+  functions: AppIntent[]
   /**
    * Functions that are no longer available at `version`
    */
   deprecatedFunctions: {
-    [version: string]: AragonArtifactFunction[]
+    [version: string]: AppIntent[]
   }
   /**
    * The flaten source code of the contracts must be included in

@@ -8,16 +8,7 @@ import {
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/repo.md).
-// [x] author 	String 	Author of the app. E.g. "Aragon Association".
 // [ ] changelogUrl 	String 	URL of the app versions changelog.
-// [x] descriptionUrl 	String 	URL pointing to the long description of the app.
-// [x] description 	String 	Description of the app. E.g. "Manage an organization’s token supply and distribution.".
-// [x] environments 	{ [chainId]: { registry: String, appName: String, chainId: String } } 	Environments supported by the app.
-// [ ] icons 	{ src: String, sizes: String }[] 	Icons of the app (follows the web app manifest icons format).
-// [x] name 	String 	Name of the app. E.g. "Tokens".
-// [ ] roles 	Role[] 	Roles supported by the app.
-// [ ] screenshots 	String[] 	Array of screenshots for the app.
-// [ ] sourceUrl 	String 	URL for the source code of the app.
 
 export interface RepoData {
   address: string
@@ -40,28 +31,39 @@ export default class Repo extends Entity implements RepoData {
   readonly screenshots?: { src: string }[]
   readonly sourceUrl?: string
 
-  constructor(data: RepoData, connector: ConnectorInterface) {
+  constructor(
+    { artifact, manifest, ...data }: RepoData,
+    connector: ConnectorInterface
+  ) {
     super(connector)
-    Object.assign(this, data)
 
     // TODO: If no metadata, fallback to resolve ourselves with ipfs
 
-    if (data.artifact) {
-      const artifact: AragonArtifact = JSON.parse(data.artifact)
+    if (artifact) {
+      const { environments, roles }: AragonArtifact = JSON.parse(artifact)
 
-      this.environments = artifact.environments
-      this.roles = artifact.roles
+      this.environments = environments
+      this.roles = roles
     }
 
-    if (data.manifest) {
-      const manifest: AragonManifest = JSON.parse(data.manifest)
+    if (manifest) {
+      const {
+        author,
+        description,
+        details_url: descriptionUrl,
+        icons,
+        screenshots,
+        source_url: sourceUrl,
+      }: AragonManifest = JSON.parse(manifest)
 
-      this.author = manifest.author
-      this.description = manifest.description
-      this.descriptionUrl = manifest.details_url
-      this.icons = manifest.icons
-      this.screenshots = manifest.screenshots
-      this.sourceUrl = manifest.source_url
+      this.author = author
+      this.description = description
+      this.descriptionUrl = descriptionUrl
+      this.icons = icons
+      this.screenshots = screenshots
+      this.sourceUrl = sourceUrl
     }
+
+    Object.assign(this, data)
   }
 }

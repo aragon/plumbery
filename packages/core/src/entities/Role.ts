@@ -17,18 +17,19 @@ export default class Role extends Entity implements RoleData {
   readonly manager?: string
   readonly params?: string
 
-  constructor(data: RoleData, connector: ConnectorInterface) {
+  constructor({ artifact, ...data }: RoleData, connector: ConnectorInterface) {
     super(connector)
-    Object.assign(this, data)
 
     // TODO: If no metadata, fallback to resolve ourselves with ipfs
 
-    if (data.artifact) {
-      const artifact: AragonArtifact = JSON.parse(data.artifact)
+    if (artifact) {
+      const { roles }: AragonArtifact = JSON.parse(artifact)
 
-      const role = artifact.roles.find((role) => role.bytes === this.bytes)
+      const role = roles.find((role) => role.bytes === this.bytes)
 
       Object.assign(this, role)
     }
+
+    Object.assign(this, data)
   }
 }

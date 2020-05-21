@@ -32,7 +32,7 @@ export const ROLE_FRAGMENT = gql`
 export const VERSION_FRAGMENT = gql`
   fragment Version_version on Version {
     semanticVersion
-    contractAddress
+    codeAddress
     contentUri
     artifact
     manifest

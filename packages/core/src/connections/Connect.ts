@@ -31,19 +31,27 @@ function getConnector(connector: ConnectorDeclaration): ConnectorInterface {
 }
 
 type ResolveIpfs = (ipfsIdentifier: string, path: string) => string
-type ResolveOrganization = (location: string) => Organization
+// type ResolveOrganization = (location: string) => Organization
 
 export function Connect(
-  { connector, ipfs }: { connector: ConnectorDeclaration; ipfs?: ResolveIpfs },
-  location?: string
-): Organization | ResolveOrganization {
-  // TODO: Handle ENS names
-  if (location) {
-    return new Organization(location, getConnector(connector))
+  location: string,
+  {
+    connector,
+    ipfs,
+    ensRegistry,
+  }: {
+    connector: ConnectorDeclaration
+    ipfs?: ResolveIpfs
+    ensRegistry?: string
   }
+): Organization {
+  // TODO: Handle ENS names
 
-  return (location: string): Organization =>
-    new Organization(location, getConnector(connector))
+  return new Organization(location, getConnector(connector))
+
+  // TODO: support several connections
+  // return (location: string): Organization =>
+  //   new Organization(location, getConnector(connector))
 }
 
 export default Connect

@@ -21,6 +21,7 @@ async function main() {
 
 async function initAndGetOrg(): Promise<Organization> {
   const org = Connect(
+    ORG_ADDRESS, // location,
     {
       connector: [
         'thegraph',
@@ -29,8 +30,7 @@ async function initAndGetOrg(): Promise<Organization> {
             'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging',
         },
       ],
-    },
-    ORG_ADDRESS // location
+    }
   ) as Organization
 
   console.log('\nOrganization initialized')
@@ -51,7 +51,9 @@ async function inspectOrg(org: Organization): Promise<void> {
 
   console.log('\nApps:')
   const apps = await org.apps()
-  apps.map((app: App) => console.log(app.toString()))
+  apps.map((app: App) => {
+    console.log(app.toString())
+  })
 
   console.log('\nA voting app:')
   const votingApp = apps.find((app: App) => app.name == 'voting')!
