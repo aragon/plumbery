@@ -1,5 +1,6 @@
-import Entity from "./Entity"
-import { ConnectorInterface } from "../connections/ConnectorInterface"
+import Entity from './Entity'
+import Role from './Role'
+import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/repo.md).
 // [ ] author 	String 	Author of the app. E.g. "Aragon Association".
@@ -14,17 +15,31 @@ import { ConnectorInterface } from "../connections/ConnectorInterface"
 // [ ] sourceUrl 	String 	URL for the source code of the app.
 
 export interface RepoData {
-  name: string
   address: string
+  artifact?: string | null
+  contentUri?: string
+  name: string
+  manifest?: string | null
 }
 
 export default class Repo extends Entity implements RepoData {
-  readonly name!: string
   readonly address!: string
+  readonly author?: string
+  readonly changelogUrl?: string
+  readonly descriptionUrl?: string
+  readonly description?: string
+  readonly environments?: {
+    networkId: { registry: string; appName: string; chainId: string }
+  }
+  readonly icons?: { src: string; sizes: string }[]
+  readonly name!: string
+  readonly roles?: Role[]
+  readonly screenshots?: string
+  readonly sourceUrl?: string
 
   constructor(data: RepoData, connector: ConnectorInterface) {
     super(connector)
-
     Object.assign(this, data)
+    // parse artifact and manifest data
   }
 }

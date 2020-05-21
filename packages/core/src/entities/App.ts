@@ -1,6 +1,7 @@
-import Repo from "./Repo"
-import Entity from "./Entity"
-import { ConnectorInterface } from "../connections/ConnectorInterface"
+import Repo from './Repo'
+import Role from './Role'
+import Entity from './Entity'
+import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [x] address 	String 	The address of the app proxy contract (never changes).
@@ -25,36 +26,73 @@ import { ConnectorInterface } from "../connections/ConnectorInterface"
 // [x] isForwarder 	Boolean 	Whether the app can act as a forwarder.
 // [ ] tags 	String[] 	Tags associated with the app.
 // [x] App#repo()
+// [x] App#roles()
 // [ ] App#abi()
 // [ ] App#intents()
 // [ ] App#deprecatedIntents()
 
 export interface AppData {
-  name?: string
   address: string
   appId: string
-  version?: string
-  registryAddress: string
+  artifact?: string | null
+  codeAddress: string
+  contentUri?: string
+  isForwarder?: boolean | null
+  isUpgradeable?: boolean | null
   kernelAddress: string
-  isForwarder: boolean
+  manifest?: string | null
+  name?: string
+  registryAddress: string
+  repoAddress?: string
+  version?: string
 }
 
 export default class App extends Entity implements AppData {
-  readonly name?: string
   readonly address!: string
   readonly appId!: string
-  readonly version?: string
-  readonly registryAddress!: string
+  readonly appName?: string
+  readonly author?: string
+  readonly artifact?: string | null
+  readonly chainId?: string
+  readonly codeAddress!: string
+  readonly contentUri?: string
+  readonly contentUrl?: string
+  readonly contractPath?: string
+  readonly description?: string
+  readonly htmlPath?: string
+  readonly htmlUrl?: string
+  readonly icons?: { src: string; sizes: string }[]
+  readonly isForwarder?: boolean | null
+  readonly isUpgradeable?: boolean | null
   readonly kernelAddress!: string
-  readonly isForwarder!: boolean
+  readonly manifest?: string | null
+  readonly name?: string
+  readonly registryAddress!: string
+  readonly registry?: string
+  readonly repoAddress?: string
+  readonly sourceUrl?: string
+  readonly tags?: string[]
+  readonly version?: string
 
   constructor(data: AppData, connector: ConnectorInterface) {
     super(connector)
-
     Object.assign(this, data)
+    // parse artifact and manifest data
   }
 
   async repo(): Promise<Repo> {
     return this._connector.repoForApp!(this.address)
   }
+
+  async roles(): Promise<Role[]> {
+    return this._connector.rolesByAddress!(this.address)
+  }
+
+  // async abi(): Promise<Abi> {
+  //   return
+  // }
+
+  // async intents(): Promise<Abi> {
+  //   return
+  // }
 }
