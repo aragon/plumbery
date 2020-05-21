@@ -1,7 +1,7 @@
 import App from '../entities/App'
-import Permission from '../entities/Permission';
-import Repo from '../entities/Repo';
-import Role from '../entities/Role';
+import Permission from '../entities/Permission'
+import Repo from '../entities/Repo'
+import Role from '../entities/Role'
 
 // TODO: No functions should be optional.
 // Made optional for now, so that we can develop one connector at a time.
@@ -13,5 +13,5 @@ export interface ConnectorInterface {
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>
   appByAddress?(appAddress: string): Promise<App>
-  roleById?(roleId: string): Promise<Role>
+  rolesByAddress?(appAddress: string): Promise<Role[]>
 }

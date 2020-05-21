@@ -2,8 +2,7 @@ export { default as ConnectorEthereum } from 'plumbery-connector-ethereum'
 export { default as ConnectorTheGraph } from 'plumbery-connector-thegraph'
 export { ConnectorInterface } from './connections/ConnectorInterface'
 export { default as ConnectorJson } from './connections/ConnectorJson'
-export { default as aragonConnect } from './connections/aragonConnect'
-export { default as Connection } from './connections/Connection'
+export { default as Connect } from './connections/Connect'
 
 // TODO: Use index.ts in src/wrappers instead?
 export { default as Organization } from './entities/Organization'
