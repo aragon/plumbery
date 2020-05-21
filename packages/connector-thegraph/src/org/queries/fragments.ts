@@ -1,14 +1,30 @@
 import gql from 'graphql-tag'
 
-export const REPO_FRAGMENT = gql`
-  fragment Repo_repo on Repo {
-    address
-    name
-    lastVersion {
-      semanticVersion
+export const PERMISSION_FRAGMENT = gql`
+  fragment Permission_permission on Permission {
+    appAddress
+    granteeAddress
+    roleHash
+    params {
+      argumentId
+      operationType
+      argumentValue
     }
-    registry {
-      address
+  }
+`
+
+export const ROLE_FRAGMENT = gql`
+  fragment Role_role on Role {
+    nameHash
+    manager
+    appAddress
+    grantees {
+      granteeAddress
+      params {
+        argumentId
+        operationType
+        argumentValue
+      }
     }
   }
 `
@@ -17,12 +33,28 @@ export const VERSION_FRAGMENT = gql`
   fragment Version_version on Version {
     semanticVersion
     contractAddress
-    content
-    repo {
-      ...Repo_repo
+    contentUri
+    artifact
+    manifest
+  }
+`
+
+export const REPO_FRAGMENT = gql`
+  fragment Repo_repo on Repo {
+    address
+    name
+    node
+    registry {
+      address
+    }
+    lastVersion {
+      ...Version_version
+    }
+    versions {
+      ...Version_version
     }
   }
-  ${REPO_FRAGMENT}
+  ${VERSION_FRAGMENT}
 `
 
 export const APP_FRAGMENT = gql`
@@ -30,12 +62,24 @@ export const APP_FRAGMENT = gql`
     address
     appId
     isForwarder
+    isUpgradeable
+    implementation {
+      address
+    }
     organization {
       address
     }
-    repoVersion {
+    version {
       ...Version_version
+    }
+    repo {
+      ...Repo_repo
+    }
+    roles {
+      ...Role_role
     }
   }
   ${VERSION_FRAGMENT}
+  ${REPO_FRAGMENT}
+  ${ROLE_FRAGMENT}
 `
