@@ -11,7 +11,9 @@
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "plumbery-core": "*"
+    "plumbery-core": "*",
+    "plumbery-connector-thegraph-voting": "*",
+    "plumbery-connector-thegraph-token-manager": "*"
   },
   "devDependencies": {
     "typescript": "^3.8.3"
