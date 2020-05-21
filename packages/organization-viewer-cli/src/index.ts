@@ -20,15 +20,20 @@ import {
 } from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
+const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby'
+const ALL_VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
+const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+
 const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
+const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
 
 async function main() {
   const org = await initAndGetOrg()
 
   await inspectOrg(org)
 
-  await inspectVotingHighLevel(org)
-  await inspectVotingLowLevel(org)
+  await inspectVotingHighLevel(VOTING_APP_ADDRESS)
+  await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
   await inspectTokenManager(org)
 }
@@ -38,7 +43,7 @@ async function initAndGetOrg(): Promise<Organization> {
     connector: [
       'thegraph',
       {
-        daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby',
+        daoSubgraphUrl: DAO_SUBGRAPH_URL,
         verbose: false
       }
     ],
@@ -87,7 +92,7 @@ async function inspectTokenManager(org: Organization): Promise<void> {
   const app = apps.find((app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844')!
 
   console.log('\nTokenManager:')
-  const tokenManager = new TokenManager(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager')
+  const tokenManager = new TokenManager(app, SINGLE_TOKEN_MANAGER_SUBGRAPH_URL)
   console.log(tokenManager.toString())
 
   console.log('\nToken:')
@@ -99,36 +104,39 @@ async function inspectTokenManager(org: Organization): Promise<void> {
   console.log(holders)
 }
 
-async function inspectVotingHighLevel(org: Organization): Promise<void> {
-  const apps = await org.apps()
-  const app = apps.find((app: App) => app.name == 'voting')!
-
+async function inspectVotingHighLevel(appAddress: string): Promise<void> {
   console.log('\nVoting:')
-  const voting = new Voting(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
+  const voting = new Voting(appAddress, ALL_VOTING_SUBGRAPH_URL)
   console.log(voting.toString())
 
   console.log('\nVotes:')
   const votes = await voting.votes()
   votes.map((vote: VotingVote) => console.log(vote.toString()))
 
-  console.log('\nCasts:')
-  const vote = votes[0]
-  const casts = await vote.casts()
-  casts.map((cast: VotingCast) => console.log(cast.toString()))
+  if (votes.length == 0) {
+    return
+  }
 
   console.log('\nAnalysis of a vote:')
+  const vote = votes[0]
   console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${vote.yea} yeas and ${vote.nay} nays.`)
+
+  console.log('\nCasts:')
+  const casts = await vote.casts()
+  casts.map((cast: VotingCast) => console.log(cast.toString()))
   const voters = casts.map((cast: VotingCast) => cast.voter)
   console.log('Voters:', voters)
 }
 
-async function inspectVotingLowLevel(org: Organization): Promise<void> {
+async function inspectVotingLowLevel(appAddress: string): Promise<void> {
   console.log('\nLow-level inspection of a voting app:')
-  const wrapper = new GraphQLWrapper('https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
+  const wrapper = new GraphQLWrapper(ALL_VOTING_SUBGRAPH_URL)
 
   const results = await wrapper.performQuery(gql`
     query {
-      votes {
+      votes(where:{
+        appAddress: "${appAddress}"
+      }) {
         id
         metadata
         creator
