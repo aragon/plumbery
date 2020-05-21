@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Arguments
-NAME=$1
-NETWORK=$2
+USER=$1
+NAME=$2
+NETWORK=$3
 
 # Build manifest
 echo ''
@@ -15,7 +16,7 @@ echo '> Generating types'
 graph codegen
 
 # Prepare subgraph name
-FULLNAME=aragon/aragon-$NAME-$NETWORK
+FULLNAME=$USER/aragon-$NAME-$NETWORK
 if [ "$STAGING" ]; then
   FULLNAME=$FULLNAME-staging
 fi

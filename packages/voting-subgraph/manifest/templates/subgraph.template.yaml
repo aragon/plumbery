@@ -1,31 +1,17 @@
 specVersion: 0.0.2
-description: Subgraph template for aragon apps.
-repository: https://github.com/ajsantander/aragon-voting-subgraph
+description: {{description}}
+repository: {{repository}}
 schema:
   file: ./schema.graphql
 dataSources:
-{{#daoFactoryDataSources}}
-  {{> daoFactory.template.yaml}}
-{{/daoFactoryDataSources}}
+{{#DAOFactoryDataSources}}
+  {{> DAOFactory.template.yaml}}
+{{/DAOFactoryDataSources}}
+{{#KernelDataSources}}
+  {{> Kernel.template.yaml}}
+{{/KernelDataSources}}
 templates:
-  - kind: ethereum/contract
-    name: Kernel
-    network: {{network}}
-    source:
-      abi: Kernel
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.1
-      language: wasm/assemblyscript
-      entities:
-        - Organization
-      abis:
-        - name: Kernel
-          file: ./abis/Kernel.json
-      eventHandlers:
-        - event: NewAppProxy(address,bool,bytes32)
-          handler: handleNewAppProxy
-      file: ./src/mappings/aragon/App.ts
+  {{> Kernel.template.yaml}}
   - kind: ethereum/contract
     name: Voting
     network: {{network}}

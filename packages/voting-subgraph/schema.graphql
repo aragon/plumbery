@@ -25,9 +25,3 @@ type Cast @entity {
   voterStake: BigInt!
   vote: Vote! @derivedFrom(field: "casts")
 }
-
-type Meta @entity {
-  id: ID!
-  orgDataSources: [String]!
-}
-

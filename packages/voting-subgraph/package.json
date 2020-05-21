@@ -5,8 +5,8 @@
     "codegen": "rm -rf generated; graph codegen",
     "manifest-rinkeby": "scripts/build-manifest.sh rinkeby",
     "manifest-rinkeby-staging": "env STAGING=true scripts/build-manifest.sh rinkeby",
-    "deploy-rinkeby": "scripts/deploy.sh voting rinkeby",
-    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh voting rinkeby"
+    "deploy-rinkeby": "scripts/deploy.sh ajsantander voting rinkeby",
+    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh ajsantander voting rinkeby"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",
