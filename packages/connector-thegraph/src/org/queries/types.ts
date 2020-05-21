@@ -137,7 +137,7 @@ export type Permission = {
   id: Scalars['ID']
   appAddress: Scalars['Bytes']
   roleHash: Scalars['Bytes']
-  granteeAddres: Scalars['Bytes']
+  granteeAddress: Scalars['Bytes']
   params?: Maybe<Array<Param>>
 }
 

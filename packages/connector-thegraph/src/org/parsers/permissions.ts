@@ -16,7 +16,7 @@ export function parsePermissions(result: QueryResult): PermissionData[] {
     (permission: PermissionDataGql): PermissionData => {
       return {
         appAddress: permission.appAddress,
-        granteeAddres: permission.granteeAddres,
+        granteeAddress: permission.granteeAddress,
         params:
           permission.params?.map((param: ParamDataGql) => {
             return {

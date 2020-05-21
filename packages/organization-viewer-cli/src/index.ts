@@ -1,20 +1,14 @@
-
 // import data from './org-data.json'
-import {
-  aragonConnect,
-  Permission,
-  App,
-  Organization
-} from 'plumbery-core'
+import { Connect, Permission, App, Organization } from 'plumbery-core'
 import {
   Voting,
-  Vote,
-  Cast,
-  GraphQLWrapper
+  VotingVote,
+  VotingCast,
+  GraphQLWrapper,
 } from 'plumbery-connector-thegraph'
 import gql from 'graphql-tag'
 
-const ORG_ADDRESS = '0x00e45b9918297037fe6585c2a1e53e8801f562f4'
+const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
 
 async function main() {
   const org = await initAndGetOrg()
@@ -26,17 +20,20 @@ async function main() {
 }
 
 async function initAndGetOrg(): Promise<Organization> {
-  const connection = aragonConnect({
-    connector: [
-      'thegraph',
-      { daoSubgraphUrl: 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-rinkeby' }
-    ],
-    signer: {},
-  })
+  const org = Connect(
+    {
+      connector: [
+        'thegraph',
+        {
+          daoSubgraphUrl:
+            'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging',
+        },
+      ],
+    },
+    ORG_ADDRESS // location
+  ) as Organization
 
-  console.log('\nOrganization:')
-  const org = connection.organization(ORG_ADDRESS)
-  console.log(org.toString())
+  console.log('\nOrganization initialized')
 
   return org
 }
@@ -44,11 +41,13 @@ async function initAndGetOrg(): Promise<Organization> {
 async function inspectOrg(org: Organization): Promise<void> {
   console.log('\nPermissions:')
   const permissions = await org.permissions()
-  permissions.map((permission: Permission) => console.log(permission.toString()))
+  permissions.map((permission: Permission) =>
+    console.log(permission.toString())
+  )
 
   console.log('\nA role from a permission:')
   const role = await permissions[4].getRole()
-  console.log(role.toString())
+  console.log(role?.toString())
 
   console.log('\nApps:')
   const apps = await org.apps()
@@ -68,7 +67,9 @@ async function inspectOrg(org: Organization): Promise<void> {
 
   console.log('\nAn app from a permission:')
   const appFromPermission = await permissions[1].getApp()
-  if (appFromPermission) { console.log(appFromPermission.toString()) }
+  if (appFromPermission) {
+    console.log(appFromPermission.toString())
+  }
 }
 
 async function inspectVotingHighLevel(org: Organization): Promise<void> {
@@ -76,27 +77,36 @@ async function inspectVotingHighLevel(org: Organization): Promise<void> {
   const app = apps.find((app: App) => app.name == 'voting')!
 
   console.log('\nVoting:')
-  const voting = new Voting(app, 'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
+  const voting = new Voting(
+    app,
+    'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
+  )
   console.log(voting.toString())
 
   console.log('\nVotes:')
   const votes = await voting.votes()
-  votes.map((vote: Vote) => console.log(vote.toString()))
+  votes.map((vote: VotingVote) => console.log(vote.toString()))
 
   console.log('\nCasts:')
   const vote = votes[0]
   const casts = await vote.casts()
-  casts.map((cast: Cast) => console.log(cast.toString()))
+  casts.map((cast: VotingCast) => console.log(cast.toString()))
 
   console.log('\nAnalysis of a vote:')
-  console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${vote.yea} yeas and ${vote.nay} nays.`)
-  const voters = casts.map((cast: Cast) => cast.voter)
+  console.log(
+    `Vote for "${vote.metadata}" was ${
+      vote.executed ? 'executed' : 'not executed'
+    }, with ${vote.yea} yeas and ${vote.nay} nays.`
+  )
+  const voters = casts.map((cast: VotingCast) => cast.voter)
   console.log('Voters:', voters)
 }
 
 async function inspectVotingLowLevel(org: Organization): Promise<void> {
   console.log('\nLow-level inspection of a voting app:')
-  const wrapper = new GraphQLWrapper('https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph')
+  const wrapper = new GraphQLWrapper(
+    'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
+  )
 
   const results = await wrapper.performQuery(gql`
     query {
@@ -113,7 +123,7 @@ async function inspectVotingLowLevel(org: Organization): Promise<void> {
 
 main()
   .then(() => process.exit(0))
-  .catch(err => {
+  .catch((err) => {
     console.log(`err`, err)
     process.exit(1)
   })

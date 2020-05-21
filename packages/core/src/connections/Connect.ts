@@ -34,7 +34,7 @@ type ResolveIpfs = (ipfsIdentifier: string, path: string) => string
 type ResolveOrganization = (location: string) => Organization
 
 export function Connect(
-  { connector, ipfs }: { connector: ConnectorDeclaration; ipfs: ResolveIpfs },
+  { connector, ipfs }: { connector: ConnectorDeclaration; ipfs?: ResolveIpfs },
   location?: string
 ): Organization | ResolveOrganization {
   // TODO: Handle ENS names

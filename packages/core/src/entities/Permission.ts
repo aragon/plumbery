@@ -11,14 +11,14 @@ export interface ParamData {
 
 export interface PermissionData {
   appAddress: string
-  granteeAddres: string
+  granteeAddress: string
   params: ParamData[]
   roleHash: string
 }
 
 export default class Permission extends Entity implements PermissionData {
   readonly appAddress!: string
-  readonly granteeAddres!: string
+  readonly granteeAddress!: string
   readonly params!: ParamData[]
   readonly roleHash!: string
 

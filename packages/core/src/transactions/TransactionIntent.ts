@@ -1,7 +1,7 @@
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
-import { verifyTransactionPath } from '../utils/verifyPath'
-import { calculateTransactionPath } from '../utils/calculatePath'
+// import { verifyTransactionPath } from '../utils/verifyPath'
+// import { calculateTransactionPath } from '../utils/calculatePath'
 import Organization from '../entities/Organization'
 
 export interface TransactionIntentData {

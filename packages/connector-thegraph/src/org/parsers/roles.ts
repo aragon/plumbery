@@ -3,16 +3,17 @@ import { Role as RoleDataGql } from '../queries/types'
 import { RoleData } from 'plumbery-core'
 import { QueryResult } from '../../types'
 
-function _parseRole(role: RoleDataGql): RoleData {
+function _parseRole(role: RoleDataGql, artifact?: string | null): RoleData {
   return {
     appAddress: role.appAddress,
     manager: role.manager,
     bytes: role.nameHash,
+    artifact,
   }
 }
 
 export function parseRole(result: QueryResult): RoleData {
-  const role = result.data.app as RoleDataGql
+  const role = result.data.role as RoleDataGql
 
   if (!role) {
     throw new Error('Unable to parse role.')
@@ -30,6 +31,6 @@ export function parseRoles(result: QueryResult): RoleData[] {
   }
 
   return roles.map((role: RoleDataGql) => {
-    return _parseRole(role)
+    return _parseRole(role, app.version?.artifact)
   })
 }
