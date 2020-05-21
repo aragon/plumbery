@@ -1,0 +1,10 @@
+{
+  "network": "rinkeby",
+  "daoFactoryDataSources": [
+    {
+      "name": "DAOFactory",
+      "address": "0xad4d106b43b480faa3ef7f98464ffc27fc1faa96",
+      "startBlock": "5026118"
+    }
+  ]
+}

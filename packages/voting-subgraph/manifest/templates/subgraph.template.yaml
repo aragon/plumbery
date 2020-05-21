@@ -1,0 +1,51 @@
+specVersion: 0.0.2
+description: Subgraph template for aragon apps.
+repository: https://github.com/ajsantander/aragon-voting-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+{{#daoFactoryDataSources}}
+  {{> daoFactory.template.yaml}}
+{{/daoFactoryDataSources}}
+templates:
+  - kind: ethereum/contract
+    name: Kernel
+    network: {{network}}
+    source:
+      abi: Kernel
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - Organization
+      abis:
+        - name: Kernel
+          file: ./abis/Kernel.json
+      eventHandlers:
+        - event: NewAppProxy(address,bool,bytes32)
+          handler: handleNewAppProxy
+      file: ./src/mappings/aragon/App.ts
+  - kind: ethereum/contract
+    name: Voting
+    network: {{network}}
+    source:
+      abi: Voting
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - Vote
+        - Cast
+      abis:
+        - name: Voting
+          file: ./abis/Voting.json
+      eventHandlers:
+        - event: StartVote(indexed uint256,indexed address,string)
+          handler: handleStartVote
+        - event: CastVote(indexed uint256,indexed address,bool,uint256)
+          handler: handleCastVote
+        - event: ExecuteVote(indexed uint256)
+          handler: handleExecuteVote
+      file: ./src/mappings/Voting.ts
