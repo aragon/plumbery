@@ -1,27 +1,34 @@
-import Entity from "./Entity"
-import { ConnectorInterface } from "../connections/ConnectorInterface"
-
-// TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/role.md).
-// [ ] name 	String 	Name of the role. E.g. "Mint tokens".
-// [ ] id 	String 	Identifier of the role. E.g. "MINT_ROLE".
-// [ ] params 	String[] 	Params associated to the role. E.g. [ "Receiver", "Token amount" ].
-// [ ] bytes 	String 	Encoded identifier for the role.
+import Entity from './Entity'
+import { AragonArtifact } from '../types'
+import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 export interface RoleData {
-  name: string
-  id: string
-  params: string
+  appAddress: string
+  artifact?: string | null
   bytes: string
+  manager?: string
 }
 
 export default class Role extends Entity implements RoleData {
-  readonly name!: string
-  readonly id!: string
-  readonly params!: string
+  readonly appAddress!: string
   readonly bytes!: string
+  readonly id?: string
+  readonly name?: string
+  readonly manager?: string
+  readonly params?: string
 
-  constructor(data: RoleData, connector: ConnectorInterface) {
+  constructor({ artifact, ...data }: RoleData, connector: ConnectorInterface) {
     super(connector)
+
+    // TODO: If no metadata, fallback to resolve ourselves with ipfs
+
+    if (artifact) {
+      const { roles }: AragonArtifact = JSON.parse(artifact)
+
+      const role = roles.find((role) => role.bytes === this.bytes)
+
+      Object.assign(this, role)
+    }
 
     Object.assign(this, data)
   }

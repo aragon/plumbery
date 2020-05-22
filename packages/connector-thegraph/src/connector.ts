@@ -5,14 +5,17 @@ import {
   parseApps,
   parsePermissions,
   parseRepo,
-  parseRole
-} from './parsers';
+  parseRoles,
+} from './parsers'
 import {
   ConnectorInterface,
-  Permission, PermissionData,
-  App, AppData,
+  Permission,
+  PermissionData,
+  App,
+  AppData,
   Repo,
-  Role
+  Role,
+  RoleData,
 } from 'plumbery-core'
 
 export type ConnectorTheGraphConfig = {
@@ -20,27 +23,28 @@ export type ConnectorTheGraphConfig = {
   verbose?: boolean
 }
 
-export default class ConnectorTheGraph extends GraphQLWrapper implements ConnectorInterface {
+export default class ConnectorTheGraph extends GraphQLWrapper
+  implements ConnectorInterface {
   constructor(config: ConnectorTheGraphConfig) {
     super(config.daoSubgraphUrl, config.verbose)
   }
 
-  async roleById(roleId: string): Promise<Role> {
-    const result = await this.performQuery(
-      queries.ROLE_BY_ID,
-      { roleId }
-    )
+  async rolesForAddress(appAddress: string): Promise<Role[]> {
+    const result = await this.performQuery(queries.ROLE_BY_APP_ADDRESS, {
+      appAddress,
+    })
 
-    const data = this.parseQueryResult(parseRole, result)
+    const datas = this.parseQueryResult(parseRoles, result)
 
-    return new Role(data, this)
+    return datas.map((data: RoleData) => {
+      return new Role(data, this)
+    })
   }
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
-    const result = await this.performQuery(
-      queries.ORGANIZATION_PERMISSIONS,
-      { orgAddress }
-    )
+    const result = await this.performQuery(queries.ORGANIZATION_PERMISSIONS, {
+      orgAddress,
+    })
 
     const datas = this.parseQueryResult(parsePermissions, result)
 
@@ -50,10 +54,9 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
-    const result = await this.performQuery(
-      queries.ORGANIZATION_APPS,
-      { orgAddress }
-    )
+    const result = await this.performQuery(queries.ORGANIZATION_APPS, {
+      orgAddress,
+    })
 
     const datas = this.parseQueryResult(parseApps, result)
 
@@ -63,10 +66,9 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async appByAddress(appAddress: string): Promise<App> {
-    const result = await this.performQuery(
-      queries.APP_BY_ADDRESS,
-      { appAddress }
-    )
+    const result = await this.performQuery(queries.APP_BY_ADDRESS, {
+      appAddress,
+    })
 
     const data = this.parseQueryResult(parseApp, result)
 
@@ -74,10 +76,9 @@ export default class ConnectorTheGraph extends GraphQLWrapper implements Connect
   }
 
   async repoForApp(appAddress: string): Promise<Repo> {
-    const result = await this.performQuery(
-      queries.REPO_BY_APP_ADDRESS,
-      { appAddress }
-    )
+    const result = await this.performQuery(queries.REPO_BY_APP_ADDRESS, {
+      appAddress,
+    })
 
     const data = this.parseQueryResult(parseRepo, result)
 
