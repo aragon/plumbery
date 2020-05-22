@@ -2,7 +2,9 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
+  devtool: 'inline-source-map',
+  target: 'web',
   module: {
     rules: [
       {
@@ -14,6 +16,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    mainFields: ['module', 'main'],
   },
   output: {
     filename: 'bundle.js',
@@ -23,5 +26,5 @@ module.exports = {
     contentBase: path.join(__dirname, 'dist'),
     port: 1234,
   },
-  plugins: [new HtmlWebpackPlugin({ title: '' })],
+  plugins: [new HtmlWebpackPlugin({ title: 'Org Viewer' })],
 }
