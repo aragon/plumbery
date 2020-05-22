@@ -1,6 +1,13 @@
 node_modules/
 
+# Compilation output
+build/
 dist/
+packages/dao-subgraph/src/helpers/ens.ts
+
+# Production subgraph
+types
+subgraph.yaml
 
 .yarn/*
 !.yarn/releases
@@ -10,6 +17,5 @@ dist/
 tsconfig.tsbuildinfo
 
 # IDE specific
-schema.graphql
 .graphqlconfig
 .vscode

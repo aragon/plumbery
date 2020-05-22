@@ -8,13 +8,14 @@ This file documents the exports of the library.
 
 Connects and returns an `Organization` for `location`.
 
-| Name               | Type                                               | Description                                                                                                                        |
-| ------------------ | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `location`         | `String`                                           | The Ethereum address or ENS domain of an Aragon organization.                                                                      |
-| `config`           | `Object`                                           | The optional configuration object.                                                                                                 |
-| `config.connector` | `Connector \| [String, Object] \| String`          | Accepts a `Connector` instance, and either a string or a tuple for embedded connectors and their config. Defaults to `"thegraph"`. |
-| `config.ipfs`      | `(ipfsIdentifier: String, path: String) => String` | A function that resolves an IPFS identifier and a path into an HTTP URL. Defaults to gateway.ipfs.io.                              |
-| returns            | `Promise<Organization>`                            | An `Organization` instance.                                                                                                        |
+| Name                 | Type                                               | Description                                                                                                                        |
+| -------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `location`           | `String`                                           | The Ethereum address or ENS domain of an Aragon organization.                                                                      |
+| `config`             | `Object`                                           | The optional configuration object.                                                                                                 |
+| `config.connector`   | `Connector \| [String, Object] \| String`          | Accepts a `Connector` instance, and either a string or a tuple for embedded connectors and their config. Defaults to `"thegraph"`. |
+| `config.ipfs`        | `(ipfsIdentifier: String, path: String) => String` | A function that resolves an IPFS identifier and a path into an HTTP URL. Defaults to gateway.ipfs.io.                              |
+| `config.ensRegistry` | `String`                                           | The address of the ENS registry to use as resolver.                                                                                |
+| returns              | `Promise<Organization>`                            | An `Organization` instance.                                                                                                        |
 
 ### Errors
 
