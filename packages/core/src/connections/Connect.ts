@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 import ConnectorEthereum, {
   ConnectorEthereumConfig,
 } from 'plumbery-connector-ethereum'
@@ -37,21 +39,23 @@ export function Connect(
   location: string,
   {
     connector,
+    provider,
     ipfs,
     ensRegistry,
   }: {
     connector: ConnectorDeclaration
+    provider?: ethers.providers.Provider
     ipfs?: ResolveIpfs
     ensRegistry?: string
   }
 ): Organization {
   // TODO: Handle ENS names
 
-  return new Organization(location, getConnector(connector))
+  return new Organization(location, getConnector(connector), provider)
 
   // TODO: support several connections
   // return (location: string): Organization =>
-  //   new Organization(location, getConnector(connector))
+  //   new Organization(location, getConnector(connector), provider)
 }
 
 export default Connect

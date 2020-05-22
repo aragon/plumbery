@@ -1,5 +1,6 @@
 import Entity from './Entity'
 import { AragonArtifact } from '../types'
+import { parseMetadata } from '../utils/parseMetadata'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 export interface RoleData {
@@ -23,7 +24,7 @@ export default class Role extends Entity implements RoleData {
     // TODO: If no metadata, fallback to resolve ourselves with ipfs
 
     if (artifact) {
-      const { roles }: AragonArtifact = JSON.parse(artifact)
+      const { roles }: AragonArtifact = parseMetadata(artifact, 'artifact.json')
 
       const role = roles.find((role) => role.bytes === this.bytes)
 

@@ -2,8 +2,8 @@ export interface TransactionRequestData {
   from: string
   chainId: number
   data?: string
-  gas: string
-  gasLimit: number
+  gas: BigInt
+  gasLimit: BigInt
   gasPrice: string
   to: string
   value?: string

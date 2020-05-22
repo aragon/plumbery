@@ -8,11 +8,11 @@ import {
   AragonEnvironment,
   AragonManifest,
 } from '../types'
+import { parseMetadata } from '../utils/parseMetadata'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [ ] (ipfs) contentUrl 	String 	The HTTP URL of the app content. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/ (ContentUri passing through the resolver)
-// [ ] registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
 
 export interface AppData {
   address: string
@@ -26,6 +26,7 @@ export interface AppData {
   manifest?: string | null
   name?: string
   registryAddress: string
+  registry: string
   repoAddress?: string
   version?: string
 }
@@ -52,7 +53,7 @@ export default class App extends Entity implements AppData {
   readonly kernelAddress!: string
   readonly name?: string
   readonly registryAddress!: string
-  readonly registry?: string
+  readonly registry!: string
   readonly repoAddress?: string
   readonly sourceUrl?: string
   readonly tags?: string[]
@@ -73,7 +74,7 @@ export default class App extends Entity implements AppData {
         functions,
         deprecatedFunctions,
         abi,
-      }: AragonArtifact = JSON.parse(artifact)
+      }: AragonArtifact = parseMetadata(artifact, 'artifact.json')
 
       this.appName = appName
       this.contractPath = path
@@ -89,7 +90,7 @@ export default class App extends Entity implements AppData {
         start_url: htmlPath,
         icons,
         source_url: sourceUrl,
-      }: AragonManifest = JSON.parse(manifest)
+      }: AragonManifest = parseMetadata(manifest, 'manifest.json')
 
       this.author = author
       this.description = description

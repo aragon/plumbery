@@ -5,6 +5,7 @@ import {
   AragonEnvironments,
   AragonArtifactRole,
 } from '../types'
+import { parseMetadata } from '../utils/parseMetadata'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 export interface RepoData {
@@ -37,7 +38,10 @@ export default class Repo extends Entity implements RepoData {
     // TODO: If no metadata, fallback to resolve ourselves with ipfs
 
     if (artifact) {
-      const { environments, roles }: AragonArtifact = JSON.parse(artifact)
+      const { environments, roles }: AragonArtifact = parseMetadata(
+        artifact,
+        'artifact.json'
+      )
 
       this.environments = environments
       this.roles = roles
@@ -52,7 +56,7 @@ export default class Repo extends Entity implements RepoData {
         icons,
         screenshots,
         source_url: sourceUrl,
-      }: AragonManifest = JSON.parse(manifest)
+      }: AragonManifest = parseMetadata(manifest, 'manifest.json')
 
       this.author = author
       this.changelogUrl = changelogUrl

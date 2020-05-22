@@ -1,8 +1,9 @@
+import { ethers } from 'ethers'
+
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
-// import { verifyTransactionPath } from '../utils/verifyPath'
-// import { calculateTransactionPath } from '../utils/calculatePath'
 import Organization from '../entities/Organization'
+import { verifyTransactionPath } from '../utils/verifyPath'
 
 export interface TransactionIntentData {
   contractAddress: string
@@ -16,10 +17,15 @@ export default class TransactionIntent {
   readonly functionArgs!: any[]
 
   #org: Organization
-  #finalForwarder?: string
+  #provider: ethers.providers.Provider | undefined
 
-  constructor(data: TransactionIntentData, org: Organization) {
+  constructor(
+    data: TransactionIntentData,
+    org: Organization,
+    provider?: ethers.providers.Provider
+  ) {
     this.#org = org
+    this.#provider = provider
 
     Object.assign(this, data)
   }
@@ -29,29 +35,21 @@ export default class TransactionIntent {
     { as, path }: { as?: string; path?: string[] }
   ): Promise<TransactionPath[]> {
     const paths: TransactionPath[] = []
-    // if (path) {
-    //   const transactionPath = verifyTransactionPath(
-    //     address,
-    //     path,
-    //     this.contractAddress,
-    //     this.functionName,
-    //     this.functionArgs,
-    //     this.#org
-    //   )
+    if (path) {
+      const transactionPath = await verifyTransactionPath(
+        address,
+        path,
+        this.contractAddress,
+        this.functionName,
+        this.functionArgs,
+        this.#org,
+        this.#provider
+      )
 
-    //   if (path) paths.push(transactionPath)
-    // }
+      paths.push(transactionPath)
+    }
 
     // TODO: support calculate transaction path
-    // paths = calculateTransactionPath(
-    //   address,
-    //   this.contractAddress,
-    //   this.functionName,
-    //   this.functionArgs,
-    //   this.#org,
-    //   path,
-    //   as
-    // )
 
     return paths
   }

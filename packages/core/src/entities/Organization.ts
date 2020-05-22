@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 import App from './App'
 import TransactionIntent from '../transactions/TransactionIntent'
 import Permission from './Permission'
@@ -26,10 +28,20 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 export default class Organization {
   #address: string
   #connector: ConnectorInterface
+  #provider: ethers.providers.Provider | undefined
 
-  constructor(address: string, connector: ConnectorInterface) {
+  readonly network: string
+
+  constructor(
+    address: string,
+    connector: ConnectorInterface,
+    provider?: ethers.providers.Provider
+  ) {
     this.#address = address
     this.#connector = connector
+    this.#provider = provider
+
+    this.network = connector.network || 'homestead'
   }
 
   ///////// APPS ///////////
@@ -120,7 +132,8 @@ export default class Organization {
         functionName: funcName,
         functionArgs: funcArgs,
       },
-      this
+      this,
+      this.#provider
     )
   }
 }

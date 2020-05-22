@@ -1,15 +1,21 @@
-import { AragonArtifactFunction } from '../../types'
+import { ethers } from 'ethers'
+
+import { AppIntent } from '../types'
+import App from '../entities/App'
+import Organization from '../entities/Organization'
+import TransactionPath from '../transactions/TransactionPath'
+import TransactionRequest, {
+  TransactionRequestData,
+} from '../transactions/TransactionRequest'
+import { canForward } from '../utils/canForward'
+import { encodeCallScript } from '../utils/encodeCallScript'
+import { isFullMethodSignature } from '../utils/isFullMethodSignature'
 import {
   createDirectTransactionForApp,
   createForwarderTransactionBuilder,
-  canForward,
-  encodeCallScript,
-  isFullMethodSignature,
-} from './transactions'
-import TransactionPath from '../TransactionPath'
-import TransactionRequest from '../TransactionRequest'
-import App from '../../wrappers/App'
-import Organization from '../../wrappers/Organization'
+  applyForwardingFeePretransaction,
+  applyTransactionGas,
+} from '../utils/transactions'
 
 const getAppsFromPath = (orgApps: App[], path: string[]): App[] =>
   orgApps.filter((app) => path.some((address) => address === app.address))
@@ -20,7 +26,7 @@ async function validateData(
   methodSignature: string
 ): Promise<{
   app: App
-  method: AragonArtifactFunction
+  method: AppIntent
 }> {
   // Get the destination app
   const app = await org.app(destination)
@@ -30,7 +36,7 @@ async function validateData(
     )
   }
 
-  const methods: AragonArtifactFunction[] = app.functions
+  const methods = app.intents
   if (!methods) {
     throw new Error(`No functions specified in artifact for ${destination}`)
   }
@@ -53,9 +59,9 @@ async function validateData(
 }
 
 /**
- * Calculates the transaction path for a transaction to `destination`
+ * Calculate the transaction path for a transaction to `destination`
  * that invokes `methodSignature` with `params`.
- * @return {Promise<TransactionPath>} An array of Ethereum transactions that describes each step in the path
+ * @return {Promise<TransactionPath>} An array of Ethereum transactions that describe each step in the path
  */
 export async function verifyTransactionPath(
   sender: string,
@@ -63,24 +69,20 @@ export async function verifyTransactionPath(
   destination: string,
   methodSignature: string,
   params: any[],
-  org: Organization
+  org: Organization,
+  provider?: ethers.providers.Provider
 ): Promise<TransactionPath> {
-  const transactions: TransactionRequest[] = []
+  const transactions = []
 
   // Make sure the destination app exists and the method signature is correct
   const { app, method } = await validateData(org, destination, methodSignature)
 
-  const directTransaction = await createDirectTransactionForApp(
+  const directTransaction = createDirectTransactionForApp(
     sender,
     app,
     method.sig,
     params
   )
-
-  // TODO: handle pretransactions specified in the intent
-  // This is difficult to do generically, as some pretransactions
-  // (e.g. token approvals) only work if they're for a specific target
-  delete directTransaction.pretransaction
 
   const createForwarderTransaction = createForwarderTransactionBuilder(
     sender,
@@ -90,18 +92,19 @@ export async function verifyTransactionPath(
   // Assign the directTransaction as the first transaction to be encoded
   let transaction = directTransaction
 
-  // Iterate on the path provided making sure the canForward property holds true
-  // between steps on the path. On every step we create a forwarder
+  // Iterate on the path provided making sure the canForward hold true
+  // betwen steps on the path. On every step we create a forwarder
   // transaction adding it to the transactions list encoding the previous one
   for (let index = 1; index < path.length; index++) {
     const forwarder = path[index]
     const previousForwarder = path[index - 1]
 
-    const script = encodeCallScript(transaction)
+    const script = encodeCallScript([transaction])
 
     if (canForward(previousForwarder, forwarder, script)) {
-      transaction = createForwarderTransaction(forwarder, script)
-      transactions.push[transaction]
+      const forwarderTransaction = createForwarderTransaction(forwarder, script)
+
+      transactions.push(forwarderTransaction)
     } else {
       throw new Error(
         `Can not forward action from ${previousForwarder} to ${forwarder}. Do you have the right permissions?`
@@ -111,19 +114,32 @@ export async function verifyTransactionPath(
 
   try {
     const transactionWithFee = await applyForwardingFeePretransaction(
-      transactions[0]
+      transactions[0],
+      org.network,
+      provider
     )
     // `applyTransactionGas` can throw if the transaction will fail
     // If that happens, we give up as we should've been able to perform the action with this
     // forwarding path
-    transactions[0] = await applyTransactionGas(transactionWithFee, true)
+    transactions[0] = await applyTransactionGas(
+      transactionWithFee,
+      true,
+      org.network,
+      provider
+    )
+
+    const transactionRequests: TransactionRequest[] = transactions.map(
+      (transaction) => {
+        new TransactionRequest(transaction)
+      }
+    )
 
     const apps = await org.apps()
 
     return new TransactionPath({
       apps: getAppsFromPath(apps, path),
       destination: app,
-      transactions,
+      transactions: transactionRequests,
     })
   } catch (error) {
     // TODO: Check if still the case with TransactionRequest
