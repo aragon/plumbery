@@ -1,23 +1,27 @@
 import { App as AppDataGql } from '../queries/types'
-import { Organization as OrganizationDataGql } from "../queries/types";
+import { Organization as OrganizationDataGql } from '../queries/types'
 import { AppData } from 'plumbery-core'
 import { QueryResult } from '../types'
 
 function _parseApp(app: AppDataGql): AppData {
   return {
-    name: app.repoVersion?.repo.name,
-    isForwarder: app.isForwarder,
-    appId: app.appId,
     address: app.address,
-    registryAddress: app.repoVersion?.repo?.registry?.address,
+    appId: app.appId,
+    artifact: app.version?.artifact,
+    codeAddress: app.implementation.address,
+    contentUri: app.version?.contentUri,
+    isForwarder: app.isForwarder,
+    isUpgradeable: app.isUpgradeable,
     kernelAddress: app.organization?.address,
-    version: app.repoVersion?.semanticVersion.replace(/,/g, '.'),
+    manifest: app.version?.manifest,
+    name: app.repo?.name,
+    registryAddress: app.repo?.registry?.address,
+    repoAddress: app.repo?.address,
+    version: app.version?.semanticVersion.replace(/,/g, '.'),
   }
 }
 
-export function parseApp(
-  result: QueryResult
-): AppData {
+export function parseApp(result: QueryResult): AppData {
   const app = result.data.app as AppDataGql
 
   if (!app) {
@@ -27,9 +31,7 @@ export function parseApp(
   return _parseApp(app)
 }
 
-export function parseApps(
-  result: QueryResult
-): AppData[] {
+export function parseApps(result: QueryResult): AppData[] {
   const org = result.data.organization as OrganizationDataGql
   const apps = org?.apps
 
