@@ -14,12 +14,13 @@ type Vote @entity {
   nay: BigInt!
   votingPower: BigInt!
   script: Bytes!
+  voteNum: BigInt!
   casts: [Cast!]!
 }
 
 type Cast @entity {
   id: ID!
-  voteId: String!
+  voteNum: BigInt!
   voter: Bytes!
   supports: Boolean!
   voterStake: BigInt!

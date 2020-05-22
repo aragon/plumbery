@@ -168,6 +168,15 @@ export class Vote extends Entity {
     this.set("script", Value.fromBytes(value));
   }
 
+  get voteNum(): BigInt {
+    let value = this.get("voteNum");
+    return value.toBigInt();
+  }
+
+  set voteNum(value: BigInt) {
+    this.set("voteNum", Value.fromBigInt(value));
+  }
+
   get casts(): Array<string> {
     let value = this.get("casts");
     return value.toStringArray();
@@ -208,13 +217,13 @@ export class Cast extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get voteId(): string {
-    let value = this.get("voteId");
-    return value.toString();
+  get voteNum(): BigInt {
+    let value = this.get("voteNum");
+    return value.toBigInt();
   }
 
-  set voteId(value: string) {
-    this.set("voteId", Value.fromString(value));
+  set voteNum(value: BigInt) {
+    this.set("voteNum", Value.fromBigInt(value));
   }
 
   get voter(): Bytes {
