@@ -1,11 +1,16 @@
 // import data from './org-data.json'
 import { Connect, Permission, App, Organization } from 'plumbery-core'
+import { GraphQLWrapper } from 'plumbery-connector-thegraph'
 import {
   Voting,
   VotingVote,
   VotingCast,
-  GraphQLWrapper,
-} from 'plumbery-connector-thegraph'
+} from 'plumbery-connector-thegraph-voting'
+import {
+  TokenManager,
+  Token,
+  TokenHolder,
+} from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
 const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
@@ -17,6 +22,8 @@ async function main() {
 
   await inspectVotingHighLevel(org)
   await inspectVotingLowLevel(org)
+
+  await inspectTokenManager(org)
 }
 
 async function initAndGetOrg(): Promise<Organization> {
@@ -72,6 +79,28 @@ async function inspectOrg(org: Organization): Promise<void> {
   if (appFromPermission) {
     console.log(appFromPermission.toString())
   }
+}
+
+async function inspectTokenManager(org: Organization): Promise<void> {
+  const apps = await org.apps()
+  const app = apps.find(
+    (app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844'
+  )!
+
+  console.log('\nTokenManager:')
+  const tokenManager = new TokenManager(
+    app,
+    'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+  )
+  console.log(tokenManager.toString())
+
+  console.log('\nToken:')
+  const token = await tokenManager.token()
+  console.log(token)
+
+  console.log('\nHolders:')
+  const holders = await token.holders()
+  console.log(holders)
 }
 
 async function inspectVotingHighLevel(org: Organization): Promise<void> {
