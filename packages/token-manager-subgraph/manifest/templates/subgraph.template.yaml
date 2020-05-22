@@ -10,36 +10,6 @@ dataSources:
 {{#KernelDataSources}}
   {{> Kernel.template.yaml}}
 {{/KernelDataSources}}
-  - kind: ethereum/contract
-    name: MiniMeToken
-    network: rinkeby
-    source:
-      address: "0xADB40e7a8B55D9409E068098C10F146e549e60Da" # MiniMeToken
-      abi: MiniMeToken
-      startBlock: 5952243
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Token
-        - TokenHolder
-        - Approval
-      abis:
-        - name: MiniMeToken
-          file: ./abis/MiniMeToken.json
-        - name: TokenManager
-          file: ./abis/TokenManager.json
-      eventHandlers:
-        - event: ClaimedTokens(indexed address,indexed address,uint256)
-          handler: handleClaimedTokens
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-        - event: NewCloneToken(indexed address,uint256)
-          handler: handleNewCloneToken
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-      file: ./src/MiniMeToken.ts
 templates:
   {{> Kernel.template.yaml}}
   - kind: ethereum/contract
@@ -60,6 +30,9 @@ templates:
           file: ./abis/MiniMeToken.json
         - name: TokenManager
           file: ./abis/TokenManager.json
+      callHandlers:
+        - function: initialize()
+          handler: handleProxyInitialize
       eventHandlers:
         - event: NewVesting(indexed address,uint256,uint256)
           handler: handleNewVesting
