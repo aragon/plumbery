@@ -90,8 +90,8 @@ export async function verifyTransactionPath(
   // Assign the directTransaction as the first transaction to be encoded
   let transaction = directTransaction
 
-  // Iterate on the path provided making sure the canForward hold true
-  // betwen steps on the path. On every step we create a forwarder
+  // Iterate on the path provided making sure the canForward property holds true
+  // between steps on the path. On every step we create a forwarder
   // transaction adding it to the transactions list encoding the previous one
   for (let index = 1; index < path.length; index++) {
     const forwarder = path[index]
