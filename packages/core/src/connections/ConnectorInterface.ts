@@ -13,5 +13,5 @@ export interface ConnectorInterface {
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>
   appByAddress?(appAddress: string): Promise<App>
-  rolesByAddress?(appAddress: string): Promise<Role[]>
+  rolesForAddress?(appAddress: string): Promise<Role[]>
 }

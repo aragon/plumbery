@@ -11,11 +11,8 @@ import {
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
-// [ ] chainId 	String 	Chain ID for this app. -> Is this the Aragon environment name?
-// [ ] (ipfs) htmlUrl 	String 	The HTTP URL of the app HTML page. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/index.html
-// [ ] (ipfs) contentUrl 	String 	The HTTP URL of the app content. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/
+// [ ] (ipfs) contentUrl 	String 	The HTTP URL of the app content. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/ (ContentUri passing through the resolver)
 // [ ] registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
-// [ ] tags 	String[] 	Tags associated with the app.
 
 export interface AppData {
   address: string
@@ -109,6 +106,6 @@ export default class App extends Entity implements AppData {
   }
 
   async roles(): Promise<Role[]> {
-    return this._connector.rolesByAddress!(this.address)
+    return this._connector.rolesForAddress!(this.address)
   }
 }

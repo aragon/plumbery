@@ -33,7 +33,7 @@ export default class Permission extends Entity implements PermissionData {
   }
 
   async getRole(): Promise<Role | undefined> {
-    const roles = await this._connector.rolesByAddress!(this.appAddress)
+    const roles = await this._connector.rolesForAddress!(this.appAddress)
     return roles.find((role) => role.bytes === this.roleHash)
   }
 }

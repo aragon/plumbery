@@ -2,15 +2,12 @@ export interface TransactionRequestData {
   from: string
   chainId: number
   data?: string
+  gas: string
   gasLimit: number
   gasPrice: string
   to: string
   value?: string
 }
-
-type TransactionRequestDataRpc = any
-type TransactionRequestDataWeb3 = any
-type TransactionRequestDataEthers = any
 
 export default class TransactionRequest {
   readonly from!: string
@@ -23,17 +20,5 @@ export default class TransactionRequest {
 
   constructor(data: TransactionRequestData) {
     Object.assign(this, data)
-  }
-
-  toRpc(): TransactionRequestDataRpc {
-    return
-  }
-
-  toWeb3(): TransactionRequestDataWeb3 {
-    return
-  }
-
-  toEthers(): TransactionRequestDataEthers {
-    return
   }
 }

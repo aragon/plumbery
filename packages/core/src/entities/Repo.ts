@@ -7,9 +7,6 @@ import {
 } from '../types'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
-// TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/repo.md).
-// [ ] changelogUrl 	String 	URL of the app versions changelog.
-
 export interface RepoData {
   address: string
   artifact?: string | null
@@ -49,6 +46,7 @@ export default class Repo extends Entity implements RepoData {
     if (manifest) {
       const {
         author,
+        changelog_url: changelogUrl,
         description,
         details_url: descriptionUrl,
         icons,
@@ -57,6 +55,7 @@ export default class Repo extends Entity implements RepoData {
       }: AragonManifest = JSON.parse(manifest)
 
       this.author = author
+      this.changelogUrl = changelogUrl
       this.description = description
       this.descriptionUrl = descriptionUrl
       this.icons = icons

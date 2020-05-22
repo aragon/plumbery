@@ -29,7 +29,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper
     super(config.daoSubgraphUrl, config.verbose)
   }
 
-  async rolesByAddress(appAddress: string): Promise<Role[]> {
+  async rolesForAddress(appAddress: string): Promise<Role[]> {
     const result = await this.performQuery(queries.ROLE_BY_APP_ADDRESS, {
       appAddress,
     })
