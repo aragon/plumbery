@@ -1,4 +1,4 @@
-import { aragonConnect } from 'plumbery-core'
+import { aragonConnect } from '@aragon/connect'
 
 const ORG_ADDRESS = '0x0146414e5a819240963450332f647dfb7c722af4'
 

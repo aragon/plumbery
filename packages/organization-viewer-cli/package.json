@@ -11,10 +11,10 @@
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "plumbery-core": "*",
-    "plumbery-connector-thegraph": "*",
-    "plumbery-connector-thegraph-voting": "*",
-    "plumbery-connector-thegraph-token-manager": "*"
+    "@aragon/connect": "*",
+    "@aragon/connect-thegraph": "*",
+    "@aragon/connect-thegraph-voting": "*",
+    "@aragon/connect-thegraph-token-manager": "*"
   },
   "devDependencies": {
     "typescript": "^3.8.3"

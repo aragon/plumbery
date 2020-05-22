@@ -9,7 +9,7 @@
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "plumbery-react": "*"
+    "@aragon/connect-react": "*"
   },
   "devDependencies": {
     "html-webpack-plugin": "^4.3.0",

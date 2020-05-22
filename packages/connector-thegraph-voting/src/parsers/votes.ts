@@ -1,10 +1,8 @@
 import { Vote as VoteDataGql } from '../queries/types'
 import { VoteData } from '../entities/Vote'
-import { QueryResult } from 'plumbery-connector-thegraph'
+import { QueryResult } from '@aragon/connect-thegraph'
 
-export function parseVotes(
-  result: QueryResult
-): VoteData[] {
+export function parseVotes(result: QueryResult): VoteData[] {
   const votes = result.data.votes
 
   if (!votes) {
@@ -13,7 +11,9 @@ export function parseVotes(
 
   // Note, this may seem redundant, but it makes sure
   // types are enforced.
-  return votes.map((vote: VoteDataGql): VoteData => {
-    return vote
-  })
+  return votes.map(
+    (vote: VoteDataGql): VoteData => {
+      return vote
+    }
+  )
 }

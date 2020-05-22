@@ -1,6 +1,6 @@
+import { AppData } from '@aragon/connect'
 import { App as AppDataGql } from '../queries/types'
 import { Organization as OrganizationDataGql } from '../queries/types'
-import { AppData } from 'plumbery-core'
 import { QueryResult } from '../types'
 
 function _parseApp(app: AppDataGql): AppData {

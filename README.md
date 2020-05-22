@@ -1,4 +1,4 @@
-# Plumbery (code name)
+# Aragon Connect
 
 ## Usage
 

@@ -1,9 +1,9 @@
 import ConnectorEthereum, {
   ConnectorEthereumConfig,
-} from 'plumbery-connector-ethereum'
+} from '@aragon/connector-ethereum'
 import ConnectorTheGraph, {
   ConnectorTheGraphConfig,
-} from 'plumbery-connector-thegraph'
+} from '@aragon/connector-thegraph'
 import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'
 import Organization from '../entities/Organization'
 import { ConnectorInterface } from './ConnectorInterface'

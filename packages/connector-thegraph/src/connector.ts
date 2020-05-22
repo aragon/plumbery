@@ -1,12 +1,3 @@
-import * as queries from './queries'
-import GraphQLWrapper from './core/GraphQLWrapper'
-import {
-  parseApp,
-  parseApps,
-  parsePermissions,
-  parseRepo,
-  parseRoles,
-} from './parsers'
 import {
   ConnectorInterface,
   Permission,
@@ -16,7 +7,16 @@ import {
   Repo,
   Role,
   RoleData,
-} from 'plumbery-core'
+} from '@aragon/connect'
+import * as queries from './queries'
+import GraphQLWrapper from './core/GraphQLWrapper'
+import {
+  parseApp,
+  parseApps,
+  parsePermissions,
+  parseRepo,
+  parseRoles,
+} from './parsers'
 
 export type ConnectorTheGraphConfig = {
   daoSubgraphUrl: string

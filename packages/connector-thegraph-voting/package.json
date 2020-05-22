@@ -1,5 +1,5 @@
 {
-  "name": "plumbery-connector-thegraph-voting",
+  "name": "@aragon/connect-thegraph-voting",
   "version": "1.0.0",
   "license": "AGPL-3.0",
   "main": "dist/index.js",
@@ -26,7 +26,6 @@
     "graphql-tag": "^2.10.3",
     "isomorphic-unfetch": "^3.0.0",
     "node-fetch": "^2.6.0",
-    "plumbery-core": "*",
-    "wonka": "^4.0.9"
+    "@aragon/connect": "*"
   }
 }

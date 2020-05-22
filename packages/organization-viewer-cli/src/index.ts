@@ -1,16 +1,12 @@
 // import data from './org-data.json'
-import { Connect, Permission, App, Organization } from 'plumbery-core'
-import { GraphQLWrapper } from 'plumbery-connector-thegraph'
-import {
-  Voting,
-  VotingVote,
-  VotingCast,
-} from 'plumbery-connector-thegraph-voting'
+import { Connect, Permission, App, Organization } from '@aragon/connect'
+import { GraphQLWrapper } from '@aragon/connect-thegraph'
+import { Voting, VotingVote, VotingCast } from '@aragon/connect-thegraph-voting'
 import {
   TokenManager,
   Token,
   TokenHolder,
-} from 'plumbery-connector-thegraph-token-manager'
+} from '@aragon/connect-thegraph-token-manager'
 import gql from 'graphql-tag'
 
 const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
@@ -154,7 +150,7 @@ async function inspectVotingLowLevel(org: Organization): Promise<void> {
 
 main()
   .then(() => process.exit(0))
-  .catch((err) => {
+  .catch(err => {
     console.log(`err`, err)
     process.exit(1)
   })

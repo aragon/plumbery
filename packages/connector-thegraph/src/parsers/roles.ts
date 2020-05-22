@@ -1,6 +1,6 @@
+import { RoleData } from '@aragon/connect'
 import { App as AppDataGql } from '../queries/types'
 import { Role as RoleDataGql } from '../queries/types'
-import { RoleData } from 'plumbery-core'
 import { QueryResult } from '../types'
 
 function _parseRole(role: RoleDataGql, artifact?: string | null): RoleData {

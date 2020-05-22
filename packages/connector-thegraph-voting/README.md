@@ -1,12 +1,14 @@
-# The Graph Connector for Aragon Plumbery
+# The Graph Connector for Aragon Connect
 
 ## Usage
 
 ```js
-const connection = new AragonPlumbery({
+const myorg = await connect('myorg', {
   connector: new ConnectorTheGraph({
     daoSubgraphUrl: 'http://…',
-    appSubgraphUrl: repoId => { return 'http://…' },
+    appSubgraphUrl: repoId => {
+      return 'http://…'
+    },
   }),
 })
 ```

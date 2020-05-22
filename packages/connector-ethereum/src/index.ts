@@ -1,4 +1,4 @@
-import { ConnectorInterface, Permission } from 'plumbery-core'
+import { ConnectorInterface, Permission } from '@aragon/connect'
 
 export type ConnectorEthereumConfig = object
 

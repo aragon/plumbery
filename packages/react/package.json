@@ -1,5 +1,5 @@
 {
-  "name": "plumbery-react",
+  "name": "@aragon/connect-react",
   "main": "dist/index.js",
   "version": "1.0.0",
   "scripts": {
@@ -12,6 +12,6 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "plumbery-core": "*"
+    "@aragon/connect": "*"
   }
 }

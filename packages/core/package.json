@@ -1,5 +1,5 @@
 {
-  "name": "plumbery-core",
+  "name": "@aragon/connect",
   "version": "1.0.0",
   "license": "AGPL-3.0",
   "main": "dist/index.js",
@@ -19,8 +19,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "plumbery-connector-ethereum": "*",
-    "plumbery-connector-thegraph": "*",
-    "wonka": "^4.0.9"
+    "@aragon/connect-ethereum": "*",
+    "@aragon/connect-thegraph": "*"
   }
 }
