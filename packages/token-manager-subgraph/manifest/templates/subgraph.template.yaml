@@ -1,0 +1,100 @@
+specVersion: 0.0.2
+description: {{description}}
+repository: {{repository}}
+schema:
+  file: ./schema.graphql
+dataSources:
+{{#DAOFactoryDataSources}}
+  {{> DAOFactory.template.yaml}}
+{{/DAOFactoryDataSources}}
+{{#KernelDataSources}}
+  {{> Kernel.template.yaml}}
+{{/KernelDataSources}}
+  - kind: ethereum/contract
+    name: MiniMeToken
+    network: rinkeby
+    source:
+      address: "0xADB40e7a8B55D9409E068098C10F146e549e60Da" # MiniMeToken
+      abi: MiniMeToken
+      startBlock: 5952243
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - TokenHolder
+        - Approval
+      abis:
+        - name: MiniMeToken
+          file: ./abis/MiniMeToken.json
+        - name: TokenManager
+          file: ./abis/TokenManager.json
+      eventHandlers:
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handleClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handleNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/MiniMeToken.ts
+templates:
+  {{> Kernel.template.yaml}}
+  - kind: ethereum/contract
+    name: TokenManager
+    network: rinkeby
+    source:
+      abi: TokenManager
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - TokenHolder
+        - Approval
+      abis:
+        - name: MiniMeToken
+          file: ./abis/MiniMeToken.json
+        - name: TokenManager
+          file: ./abis/TokenManager.json
+      eventHandlers:
+        - event: NewVesting(indexed address,uint256,uint256)
+          handler: handleNewVesting
+        - event: RevokeVesting(indexed address,uint256,uint256)
+          handler: handleRevokeVesting
+        - event: ScriptResult(indexed address,bytes,bytes,bytes)
+          handler: handleScriptResult
+        - event: RecoverToVault(indexed address,indexed address,uint256)
+          handler: handleRecoverToVault
+      file: ./src/TokenManager.ts
+  - kind: ethereum/contract
+    name: MiniMeToken
+    network: rinkeby
+    source:
+      abi: MiniMeToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - TokenHolder
+        - Approval
+      abis:
+        - name: MiniMeToken
+          file: ./abis/MiniMeToken.json
+        - name: TokenManager
+          file: ./abis/TokenManager.json
+      eventHandlers:
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handleClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handleNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/MiniMeToken.ts
