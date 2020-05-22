@@ -55,7 +55,7 @@ async function validateData(
 /**
  * Calculates the transaction path for a transaction to `destination`
  * that invokes `methodSignature` with `params`.
- * @return {Promise<TransactionPath>} An array of Ethereum transactions that describe each step in the path
+ * @return {Promise<TransactionPath>} An array of Ethereum transactions that describes each step in the path
  */
 export async function verifyTransactionPath(
   sender: string,
