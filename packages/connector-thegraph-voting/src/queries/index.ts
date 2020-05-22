@@ -1,9 +1,13 @@
 import gql from 'graphql-tag'
 
 export const ALL_VOTES = gql`
-  query {
-    votes {
+  query Votes($appAddress: String!) {
+    votes(where: {
+      appAddress: $appAddress
+    }) {
       id
+      appAddress
+      orgAddress
       creator
       metadata
       open
