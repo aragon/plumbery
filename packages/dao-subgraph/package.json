@@ -1,0 +1,31 @@
+{
+  "name": "@aragon/dao-subgraph",
+  "version": "1.0.0",
+  "repository": "https://github.com/graphprotocol/aragon-network",
+  "license": "MIT",
+  "scripts": {
+    "build": "graph build",
+    "codegen": "graph codegen --output-dir src/types/",
+    "draw-schema": "./scripts/draw-schema.sh",
+    "create:rpc": "graph create dao-subgraph --node http://127.0.0.1:8020",
+    "deploy:rpc": "graph deploy dao-subgraph --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
+    "deploy:mainnet": "graph deploy --debug dao-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ 0xGabi/dao-subgraph",
+    "deploy:rinkeby": "graph deploy --debug dao-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ 0xGabi/dao-subgraph-rinkeby",
+    "deploy:ropste": "graph deploy --debug dao-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ 0xGabi/dao-subgraph-ropsten",
+    "deploy:staging": "graph deploy --debug dao-subgraph --ipfs https://api.thegraph.com/ipfs/  --node https://api.thegraph.com/deploy/ 0xGabi/dao-subgraph-staging",
+    "watch-local": "graph deploy dao-subgraph --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001",
+    "prepare:rpc": "mustache -p orgDataSource.template.yaml config/rpc.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:mainnet": "mustache -p orgDataSource.template.yaml config/mainnet.json subgraph.template.yaml > subgraph.yaml && mustache config/mainnet.json src/helpers/ens.template.ts > src/helpers/ens.ts",
+    "prepare:rinkeby": "mustache -p orgDataSource.template.yaml config/rinkeby.json subgraph.template.yaml > subgraph.yaml && mustache config/rinkeby.json src/helpers/ens.template.ts > src/helpers/ens.ts",
+    "prepare:ropsten": "mustache -p orgDataSource.template.yaml config/ropsten.json subgraph.template.yaml > subgraph.yaml && mustache config/ropsten.json src/helpers/ens.template.ts > src/helpers/ens.ts",
+    "prepare:staging": "mustache -p orgDataSource.template.yaml config/staging.json subgraph.template.yaml > subgraph.yaml && mustache config/staging.json src/helpers/ens.template.ts > src/helpers/ens.ts"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.1",
+    "mustache": "^4.0.1"
+  },
+  "dependencies": {
+    "graphqlviz": "^3.1.0"
+  }
+}

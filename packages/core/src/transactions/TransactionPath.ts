@@ -1,5 +1,5 @@
 import TransactionRequest from './TransactionRequest'
-import App from '../wrappers/App'
+import App from '../entities/App'
 
 export interface TransactionPathData {
   apps: App[]

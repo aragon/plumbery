@@ -1,8 +1,8 @@
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
-import { verifyTransactionPath } from './utils/verifyPath'
-import { calculateTransactionPath } from './utils/calculatePath2'
-import Organization from '../wrappers/Organization'
+// import { verifyTransactionPath } from '../utils/verifyPath'
+// import { calculateTransactionPath } from '../utils/calculatePath'
+import Organization from '../entities/Organization'
 
 export interface TransactionIntentData {
   contractAddress: string
@@ -29,18 +29,18 @@ export default class TransactionIntent {
     { as, path }: { as?: string; path?: string[] }
   ): Promise<TransactionPath[]> {
     const paths: TransactionPath[] = []
-    if (path) {
-      const transactionPath = verifyTransactionPath(
-        address,
-        path,
-        this.contractAddress,
-        this.functionName,
-        this.functionArgs,
-        this.#org
-      )
+    // if (path) {
+    //   const transactionPath = verifyTransactionPath(
+    //     address,
+    //     path,
+    //     this.contractAddress,
+    //     this.functionName,
+    //     this.functionArgs,
+    //     this.#org
+    //   )
 
-      if (path) paths.push(transactionPath)
-    }
+    //   if (path) paths.push(transactionPath)
+    // }
 
     // TODO: support calculate transaction path
     // paths = calculateTransactionPath(
