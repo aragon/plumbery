@@ -1,9 +1,9 @@
 import ConnectorEthereum, {
   ConnectorEthereumConfig,
-} from '@aragon/connector-ethereum'
+} from '@aragon/connect-ethereum'
 import ConnectorTheGraph, {
   ConnectorTheGraphConfig,
-} from '@aragon/connector-thegraph'
+} from '@aragon/connect-thegraph'
 import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'
 import Organization from '../entities/Organization'
 import { ConnectorInterface } from './ConnectorInterface'

@@ -1,5 +1,5 @@
 {
-  "name": "aragon-voting-subgraph",
+  "name": "@aragon/connect-app-subgraph",
   "version": "0.1.0",
   "scripts": {
     "codegen": "rm -rf generated; graph codegen",
