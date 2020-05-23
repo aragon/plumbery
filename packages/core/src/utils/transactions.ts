@@ -23,7 +23,7 @@ const forwarderFeeAbi = [
   'function forwardFee() external view returns (address, uint256)',
 ]
 
-export interface transactionWithTokeData extends TransactionRequestData {
+export interface transactionWithTokenData extends TransactionRequestData {
   token: {
     address: string
     value: string
@@ -130,7 +130,7 @@ export function createForwarderTransactionBuilder(
 }
 
 export async function applyPretransaction(
-  transaction: transactionWithTokeData,
+  transaction: transactionWithTokenData,
   provider: ethers.providers.Provider
 ) {
   // Token allowance pretransaction
@@ -211,7 +211,7 @@ export async function applyForwardingFeePretransaction(
 
   if (feeDetails.tokenAddress && feeDetails.amount.gt(ethers.constants.Zero)) {
     // Needs a token approval pretransaction
-    const forwardingTxWithTokenData: transactionWithTokeData = {
+    const forwardingTxWithTokenData: transactionWithTokenData = {
       ...forwardingTransaction,
       token: {
         address: feeDetails.tokenAddress,
@@ -245,11 +245,11 @@ export async function getRecommendedGasLimit(
   if (estimatedGasLimit.gt(upperGasLimit)) {
     // TODO: Consider whether we should throw an error rather than returning with a high gas limit
     return estimatedGasLimit
-  } else if (bufferedGasLimit.lt(upperGasLimit)) {
-    return bufferedGasLimit
-  } else {
-    return upperGasLimit
   }
+  if (bufferedGasLimit.lt(upperGasLimit)) {
+    return bufferedGasLimit
+  }
+  return upperGasLimit
 }
 
 /**
