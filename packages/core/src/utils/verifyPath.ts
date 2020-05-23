@@ -70,8 +70,11 @@ export async function verifyTransactionPath(
   methodSignature: string,
   params: any[],
   org: Organization,
-  provider?: ethers.providers.Provider
+  givenProvider?: ethers.providers.Provider
 ): Promise<TransactionPath> {
+  const provider =
+    givenProvider || new ethers.providers.InfuraProvider(org.chainId)
+
   const transactions = []
 
   // Make sure the destination app exists and the method signature is correct
@@ -101,7 +104,7 @@ export async function verifyTransactionPath(
 
     const script = encodeCallScript([transaction])
 
-    if (canForward(previousForwarder, forwarder, script)) {
+    if (canForward(previousForwarder, forwarder, script, provider)) {
       const forwarderTransaction = createForwarderTransaction(forwarder, script)
 
       transactions.push(forwarderTransaction)
@@ -115,7 +118,6 @@ export async function verifyTransactionPath(
   try {
     const transactionWithFee = await applyForwardingFeePretransaction(
       transactions[0],
-      org.chainId,
       provider
     )
     // `applyTransactionGas` can throw if the transaction will fail
@@ -124,7 +126,6 @@ export async function verifyTransactionPath(
     const { gas, gasLimit, gasPrice } = await applyTransactionGas(
       transactionWithFee,
       true,
-      org.chainId,
       provider
     )
 

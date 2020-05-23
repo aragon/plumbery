@@ -131,11 +131,8 @@ export function createForwarderTransactionBuilder(
 
 export async function applyPretransaction(
   transaction: transactionWithTokeData,
-  chainId: number,
-  givenProvider?: ethers.providers.Provider
+  provider: ethers.providers.Provider
 ) {
-  const provider = givenProvider || new ethers.providers.InfuraProvider(chainId)
-
   // Token allowance pretransaction
   const {
     from,
@@ -189,11 +186,8 @@ export async function applyPretransaction(
 
 export async function applyForwardingFeePretransaction(
   forwardingTransaction: TransactionRequestData,
-  chainId: number,
-  givenProvider?: ethers.providers.Provider
+  provider: ethers.providers.Provider
 ) {
-  const provider = givenProvider || new ethers.providers.InfuraProvider(chainId)
-
   const { to: forwarderAddress, from } = forwardingTransaction
 
   const forwarderFee = new ethers.Contract(
@@ -225,7 +219,7 @@ export async function applyForwardingFeePretransaction(
         value: feeDetails.amount.toString(),
       },
     }
-    return applyPretransaction(forwardingTxWithTokenData, chainId, provider)
+    return applyPretransaction(forwardingTxWithTokenData, provider)
   }
 
   return forwardingTransaction
@@ -233,12 +227,9 @@ export async function applyForwardingFeePretransaction(
 
 export async function getRecommendedGasLimit(
   estimatedGasLimit: ethers.types.BigNumber,
-  chainId: number,
-  givenProvider?: ethers.providers.Provider,
+  provider: ethers.providers.Provider,
   { gasFuzzFactor = DEFAULT_GAS_FUZZ_FACTOR } = {}
 ) {
-  const provider = givenProvider || new ethers.providers.InfuraProvider(chainId)
-
   const latestBlockNumber = await provider.getBlockNumber()
   const latestBlock = await provider.getBlock(latestBlockNumber)
   const latestBlockGasLimit = latestBlock.gasLimit
@@ -273,11 +264,8 @@ export async function getRecommendedGasLimit(
 export async function applyTransactionGas(
   transaction: txWithPreTransaction,
   isForwarding = false,
-  chainId: number,
-  givenProvider?: ethers.providers.Provider
+  provider: ethers.providers.Provider
 ) {
-  const provider = givenProvider || new ethers.providers.InfuraProvider(chainId)
-
   // If a pretransaction is required for the main transaction to be performed,
   // performing web3.eth.estimateGas could fail until the pretransaction is mined
   // Example: erc20 approve (pretransaction) + deposit to vault (main transaction)
@@ -286,7 +274,6 @@ export async function applyTransactionGas(
     transaction.pretransaction = await applyTransactionGas(
       transaction.pretransaction,
       false,
-      chainId,
       provider
     )
     // Note: for transactions with pretransactions gas limit and price cannot be calculated
@@ -303,7 +290,6 @@ export async function applyTransactionGas(
   const estimatedGasLimit = await provider.estimateGas(transaction)
   const recommendedGasLimit = await getRecommendedGasLimit(
     estimatedGasLimit,
-    chainId,
     provider
   )
 
