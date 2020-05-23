@@ -70,11 +70,8 @@ export async function verifyTransactionPath(
   methodSignature: string,
   params: any[],
   org: Organization,
-  givenProvider?: ethers.providers.Provider
+  provider: ethers.providers.Provider
 ): Promise<TransactionPath> {
-  const provider =
-    givenProvider || new ethers.providers.InfuraProvider(org.chainId)
-
   const transactions = []
 
   // Make sure the destination app exists and the method signature is correct
@@ -93,7 +90,7 @@ export async function verifyTransactionPath(
   )
 
   // Assign the directTransaction as the first transaction to be encoded
-  let transaction = directTransaction
+  const transaction = directTransaction
 
   // Iterate on the path provided making sure the canForward hold true
   // betwen steps on the path. On every step we create a forwarder
@@ -129,11 +126,13 @@ export async function verifyTransactionPath(
       provider
     )
 
+    const chainId = (await provider.getNetwork()).chainId
+
     const transactionRequests: TransactionRequest[] = transactions.map(
       (transaction) => {
         return new TransactionRequest({
           ...transaction,
-          chainId: org.chainId,
+          chainId,
           gas,
           gasLimit,
           gasPrice,

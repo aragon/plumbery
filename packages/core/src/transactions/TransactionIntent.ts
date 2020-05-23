@@ -17,12 +17,12 @@ export default class TransactionIntent {
   readonly functionArgs!: any[]
 
   #org: Organization
-  #provider: ethers.providers.Provider | undefined
+  #provider: ethers.providers.Provider
 
   constructor(
     data: TransactionIntentData,
     org: Organization,
-    provider?: ethers.providers.Provider
+    provider: ethers.providers.Provider
   ) {
     this.#org = org
     this.#provider = provider

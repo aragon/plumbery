@@ -22,7 +22,7 @@ export type FunctionFragment = {
   outputs: Array<ParamType>
   payable: boolean
   stateMutability: string
-  gas?: ethers.types.BigNumber
+  gas?: string
 }
 
 export type Abi = (EventFragment | FunctionFragment)[]

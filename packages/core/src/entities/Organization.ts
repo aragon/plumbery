@@ -28,9 +28,7 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 export default class Organization {
   #address: string
   #connector: ConnectorInterface
-  #provider: ethers.providers.Provider | undefined
-
-  readonly chainId: number
+  #provider: ethers.providers.Provider
 
   constructor(
     address: string,
@@ -40,9 +38,9 @@ export default class Organization {
   ) {
     this.#address = address
     this.#connector = connector
-    this.#provider = provider
-
-    this.chainId = chainId || connector.chainId || 1
+    this.#provider =
+      provider ||
+      new ethers.providers.InfuraProvider(chainId || connector.chainId || 1)
   }
 
   ///////// APPS ///////////

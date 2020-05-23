@@ -26,7 +26,7 @@ export interface AppData {
   manifest?: string | null
   name?: string
   registryAddress: string
-  registry: string
+  registry?: string
   repoAddress?: string
   version?: string
 }
@@ -53,7 +53,7 @@ export default class App extends Entity implements AppData {
   readonly kernelAddress!: string
   readonly name?: string
   readonly registryAddress!: string
-  readonly registry!: string
+  readonly registry?: string
   readonly repoAddress?: string
   readonly sourceUrl?: string
   readonly tags?: string[]

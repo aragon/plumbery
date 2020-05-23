@@ -1,12 +1,10 @@
-import { ethers } from 'ethers'
-
 export interface TransactionRequestData {
   chainId?: number
   data?: string
   from: string
-  gas?: ethers.types.BigNumber
-  gasLimit?: ethers.types.BigNumber
-  gasPrice?: ethers.types.BigNumber
+  gas?: string
+  gasLimit?: string
+  gasPrice?: string
   to: string
   value?: string
 }
@@ -15,9 +13,9 @@ export default class TransactionRequest {
   readonly chainId!: number
   readonly data?: string
   readonly from!: string
-  readonly gas!: ethers.types.BigNumber
-  readonly gasLimit!: ethers.types.BigNumber
-  readonly gasPrice!: ethers.types.BigNumber
+  readonly gas!: string
+  readonly gasLimit!: string
+  readonly gasPrice!: string
   readonly to!: string
   readonly value?: string
 

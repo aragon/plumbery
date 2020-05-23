@@ -1,27 +1,13 @@
 import { ethers } from 'ethers'
 
 import { Abi, FunctionFragment } from '../types'
+import { erc20ABI, forwarderAbi, forwarderFeeAbi } from './abis'
 import { isFullMethodSignature } from './isFullMethodSignature'
 import App from '../entities/App'
 import { TransactionRequestData } from '../transactions/TransactionRequest'
 
 const DEFAULT_GAS_FUZZ_FACTOR = 1.5
 const PREVIOUS_BLOCK_GAS_LIMIT_FACTOR = 0.95
-
-const erc20ABI = [
-  'function balanceOf(address _who) public view returns (uint256)',
-  'function allowance(address _owner, address _spender) public view returns (uint256)',
-  'function approve(address _spender, uint256 _value) public returns (bool)',
-]
-
-const forwarderAbi = [
-  'function forward(bytes evmCallScript) public',
-  'function isForwarder() external pure returns (bool)',
-]
-
-const forwarderFeeAbi = [
-  'function forwardFee() external view returns (address, uint256)',
-]
 
 export interface transactionWithTokenData extends TransactionRequestData {
   token: {
@@ -53,7 +39,7 @@ export function createDirectTransaction(
     transactionOptions = { ...transactionOptions, ...options }
   }
 
-  const ethersInterface = new ethers.Interface(abi)
+  const ethersInterface = new ethers.utils.Interface(abi)
 
   // The direct transaction we eventually want to perform
   const directTransaction = {
@@ -119,7 +105,7 @@ export function createForwarderTransactionBuilder(
   sender: string,
   directTransaction: TransactionRequestData
 ) {
-  const forwarder = new ethers.Interface(forwarderAbi)
+  const forwarder = new ethers.utils.Interface(forwarderAbi)
 
   return (forwarderAddress: string, script: string) => ({
     ...directTransaction, // Options are overwriten by the values below
@@ -145,26 +131,26 @@ export async function applyPretransaction(
 
   const tokenContract = new ethers.Contract(tokenAddress, erc20ABI, provider)
   const balance = await tokenContract.balanceOf(from)
-  const tokenValueBN = ethers.utils.bigNumberify(tokenValue)
+  const tokenValueBN = BigInt(tokenValue)
 
-  if (ethers.utils.bigNumberify(balance).lt(tokenValueBN)) {
+  if (BigInt(balance) < tokenValueBN) {
     throw new Error(
       `Balance too low. ${from} balance of ${tokenAddress} token is ${balance} (attempting to send ${tokenValue})`
     )
   }
 
   const allowance = await tokenContract.allowance(from, approveSpender)
-  const allowanceBN = ethers.utils.bigNumberify(allowance)
+  const allowanceBN = BigInt(allowance)
   // If allowance is already greater than or equal to amount, there is no need to do an approve transaction
-  if (allowanceBN.lt(tokenValueBN)) {
-    if (allowanceBN.gt(ethers.constants.Zero)) {
+  if (allowanceBN < tokenValueBN) {
+    if (allowanceBN > BigInt(0)) {
       // TODO: Actually handle existing approvals (some tokens fail when the current allowance is not 0)
       console.warn(
         `${from} already approved ${approveSpender}. In some tokens, approval will fail unless the allowance is reset to 0 before re-approving again.`
       )
     }
 
-    const erc20 = new ethers.Interface(erc20ABI)
+    const erc20 = new ethers.utils.Interface(erc20ABI)
 
     const tokenApproveTransaction = {
       // TODO: should we include transaction options?
@@ -196,7 +182,7 @@ export async function applyForwardingFeePretransaction(
     provider
   )
 
-  const feeDetails = { amount: ethers.constants.Zero, tokenAddress: '' }
+  const feeDetails = { amount: BigInt(0), tokenAddress: '' }
   try {
     const overrides = {
       from,
@@ -204,12 +190,12 @@ export async function applyForwardingFeePretransaction(
     // Passing the EOA as `msg.sender` to the forwardFee call is useful for use cases where the fee differs relative to the account
     const returnValues = await forwarderFee.forwardFee(overrides) // forwardFee() returns (address, uint256)
     feeDetails.tokenAddress = returnValues.tokenAddress
-    feeDetails.amount = ethers.utils.bigNumberify(returnValues.amount)
+    feeDetails.amount = BigInt(returnValues.amount)
   } catch (err) {
     // Not all forwarders implement the `forwardFee()` interface
   }
 
-  if (feeDetails.tokenAddress && feeDetails.amount.gt(ethers.constants.Zero)) {
+  if (feeDetails.tokenAddress && feeDetails.amount > BigInt(0)) {
     // Needs a token approval pretransaction
     const forwardingTxWithTokenData: transactionWithTokenData = {
       ...forwardingTransaction,
@@ -226,7 +212,7 @@ export async function applyForwardingFeePretransaction(
 }
 
 export async function getRecommendedGasLimit(
-  estimatedGasLimit: ethers.types.BigNumber,
+  estimatedGasLimit: ethers.utils.BigNumber,
   provider: ethers.providers.Provider,
   { gasFuzzFactor = DEFAULT_GAS_FUZZ_FACTOR } = {}
 ) {
@@ -297,15 +283,16 @@ export async function applyTransactionGas(
   // when forwarding as it requires more gas and otherwise the transaction would go out of gas
   if (
     !transaction.gas ||
-    (isForwarding && transaction.gas.lt(recommendedGasLimit))
+    (isForwarding &&
+      ethers.utils.bigNumberify(transaction.gas).lt(recommendedGasLimit))
   ) {
-    transaction.gas = recommendedGasLimit
-    transaction.gasLimit = recommendedGasLimit
+    transaction.gas = recommendedGasLimit.toString()
+    transaction.gasLimit = recommendedGasLimit.toString()
   }
 
   if (!transaction.gasPrice) {
     // TODO: consider supporting an estimation function like aragon wrapper does
-    transaction.gasPrice = await provider.getGasPrice()
+    transaction.gasPrice = (await provider.getGasPrice()).toString()
   }
 
   return transaction

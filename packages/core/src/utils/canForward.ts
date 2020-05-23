@@ -1,8 +1,6 @@
 import { ethers } from 'ethers'
 
-const forwarderAbi = [
-  'function canForward(address sender, bytes evmCallScript) public view returns (bool)',
-]
+import { forwarderAbi } from './abis'
 
 /**
  * Whether the `sender` can use the `forwarder` to invoke `script`.
