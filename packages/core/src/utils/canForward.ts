@@ -1,17 +1,24 @@
+import { ethers } from 'ethers'
+
+const forwarderAbi = [
+  'function canForward(address sender, bytes evmCallScript) public view returns (bool)',
+]
+
 /**
  * Whether the `sender` can use the `forwarder` to invoke `script`.
- *
- * @param  {string} forwarder
- * @param  {string} sender
- * @param  {string} script
- * @return {Promise<bool>}
  */
-export function canForward(forwarder, sender, script) {
-  // TODO: handle provider network
-  const provider = ethers.getDefaultProvider()
-
+export function canForward(
+  forwarderAddress: string,
+  sender: string,
+  script: string,
+  provider: ethers.providers.Provider
+): Promise<boolean> {
   // Check if a token approval pretransaction is needed due to the forwarder requiring a fee
-  const forwarder = new ethers.Contract(forwarder, forwarderFeeAbi, provider)
+  const forwarder = new ethers.Contract(
+    forwarderAddress,
+    forwarderAbi,
+    provider
+  )
 
   return forwarder.canForward(sender, script).catch(() => false)
 }

@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 const CALLSCRIPT_ID = '0x00000001'
 
 interface CallScriptAction {
@@ -27,10 +29,11 @@ interface CallScriptAction {
  */
 export function encodeCallScript(actions: CallScriptAction[]) {
   return actions.reduce((script: string, { to, data }) => {
-    const address = abi.encodeParameter('address', to)
-    const dataLength = abi
-      .encodeParameter('uint256', (data.length - 2) / 2)
-      .toString('hex')
+    const address = ethers.utils.defaultAbiCoder.encode(['address'], [to])
+    const dataLength = ethers.utils.defaultAbiCoder.encode(
+      ['uint256'],
+      [(data.length - 2) / 2]
+    )
 
     return script + address.slice(26) + dataLength.slice(58) + data.slice(2)
   }, CALLSCRIPT_ID)

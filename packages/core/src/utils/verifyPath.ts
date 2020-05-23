@@ -115,22 +115,28 @@ export async function verifyTransactionPath(
   try {
     const transactionWithFee = await applyForwardingFeePretransaction(
       transactions[0],
-      org.network,
+      org.chainId,
       provider
     )
     // `applyTransactionGas` can throw if the transaction will fail
     // If that happens, we give up as we should've been able to perform the action with this
     // forwarding path
-    transactions[0] = await applyTransactionGas(
+    const { gas, gasLimit, gasPrice } = await applyTransactionGas(
       transactionWithFee,
       true,
-      org.network,
+      org.chainId,
       provider
     )
 
     const transactionRequests: TransactionRequest[] = transactions.map(
       (transaction) => {
-        new TransactionRequest(transaction)
+        return new TransactionRequest({
+          ...transaction,
+          chainId: org.chainId,
+          gas,
+          gasLimit,
+          gasPrice,
+        })
       }
     )
 

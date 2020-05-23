@@ -9,7 +9,7 @@ import Role from '../entities/Role'
 //   * remove non-null assertions from Organization.ts (e.g. this.#connector.apps!(...)).
 //   * remove similar non-null assertions all wrappers.
 export interface ConnectorInterface {
-  network?: string
+  chainId?: number
   permissionsForOrg(orgAddress: string): Promise<Permission[]>
   appsForOrg?(orgAddress: string): Promise<App[]>
   repoForApp?(appAddress: string): Promise<Repo>

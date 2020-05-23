@@ -30,18 +30,19 @@ export default class Organization {
   #connector: ConnectorInterface
   #provider: ethers.providers.Provider | undefined
 
-  readonly network: string
+  readonly chainId: number
 
   constructor(
     address: string,
     connector: ConnectorInterface,
-    provider?: ethers.providers.Provider
+    provider?: ethers.providers.Provider,
+    chainId?: number
   ) {
     this.#address = address
     this.#connector = connector
     this.#provider = provider
 
-    this.network = connector.network || 'homestead'
+    this.chainId = chainId || connector.chainId || 1
   }
 
   ///////// APPS ///////////

@@ -39,19 +39,26 @@ export function Connect(
   location: string,
   {
     connector,
-    provider,
+    readProvider,
+    chainId,
     ipfs,
     ensRegistry,
   }: {
     connector: ConnectorDeclaration
-    provider?: ethers.providers.Provider
+    readProvider?: ethers.providers.Provider
+    chainId?: number
     ipfs?: ResolveIpfs
     ensRegistry?: string
   }
 ): Organization {
   // TODO: Handle ENS names
 
-  return new Organization(location, getConnector(connector), provider)
+  return new Organization(
+    location,
+    getConnector(connector),
+    readProvider,
+    chainId
+  )
 
   // TODO: support several connections
   // return (location: string): Organization =>
