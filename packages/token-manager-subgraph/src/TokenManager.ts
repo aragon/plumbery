@@ -7,7 +7,7 @@ import { TokenManager as TokenManagerContract } from '../generated/templates/Tok
 import { TokenManager as TokenManagerEntity } from '../generated/schema'
 import { MiniMeToken as MiniMeTokenTemplate } from '../generated/templates'
 
-export function onTemplateCreated(proxyAddress: Address): void {
+export function initializeTokenManager(proxyAddress: Address): void {
   let tokenManagerEntity = new TokenManagerEntity(proxyAddress.toHexString())
   tokenManagerEntity.save()
 

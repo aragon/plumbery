@@ -1,14 +1,13 @@
 import { DataSourceTemplate } from '@graphprotocol/graph-ts'
 import { NewAppProxy as NewAppProxyEvent } from '../../generated/templates/Kernel/Kernel'
-import * as config from '../config'
+import * as hooks from '../hooks'
 
 export function handleNewAppProxy(event: NewAppProxyEvent): void {
-  if (event.params.appId.toHexString() == config.APP_ID) {
+  if (event.params.appId.toHexString() == hooks.getAppId()) {
     let proxyAddress = event.params.proxy
 
-    DataSourceTemplate.create(config.APP_TEMPLATE_NAME, [proxyAddress.toHex()]);
+    DataSourceTemplate.create(hooks.getAppTemplateName(), [proxyAddress.toHex()]);
 
-    // config.onAppTemplateCreated(event.address, proxyAddress)
-    config.TEMPLATE_CREATED_HOOK(proxyAddress)
+    hooks.onAppTemplateCreated(proxyAddress)
   }
 }
