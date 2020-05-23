@@ -1,17 +1,19 @@
+import { Address } from '@graphprotocol/graph-ts'
 import { NewVesting as NewVestingEvent } from '../generated/templates/TokenManager/TokenManager'
 import { RevokeVesting as RevokeVestingEvent } from '../generated/templates/TokenManager/TokenManager'
 import { ScriptResult as ScriptResultEvent } from '../generated/templates/TokenManager/TokenManager'
 import { RecoverToVault as RecoverToVaultEvent } from '../generated/templates/TokenManager/TokenManager'
-import { MiniMeToken as MiniMeTokenTemplate } from '../generated/templates'
-import { InitializeCall } from '../generated/templates/TokenManager/TokenManager'
 import { TokenManager as TokenManagerContract } from '../generated/templates/TokenManager/TokenManager'
+import { TokenManager as TokenManagerEntity } from '../generated/schema'
+import { MiniMeToken as MiniMeTokenTemplate } from '../generated/templates'
 
-export function handleProxyInitialize(call: InitializeCall): void {
-  let tokenManagerAddress = call.to
+export function onTemplateCreated(proxyAddress: Address): void {
+  let tokenManagerEntity = new TokenManagerEntity(proxyAddress.toHexString())
+  tokenManagerEntity.save()
 
-  let tokenManagerContract = TokenManagerContract.bind(tokenManagerAddress)
-  let tokenAddress = tokenManagerContract.token()
+  let tokenManager = TokenManagerContract.bind(proxyAddress)
 
+  let tokenAddress = tokenManager.token()
   MiniMeTokenTemplate.create(tokenAddress)
 }
 

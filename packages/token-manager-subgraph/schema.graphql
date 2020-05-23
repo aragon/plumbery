@@ -1,25 +1,37 @@
-type Token @entity {
+type TokenManager @entity {
   id: ID!
-  address: Bytes!
-  totalSupply: BigInt!
-  transferable: Boolean!
-  name: String!
-  symbol: String!
-  holders: [TokenHolder!]!
+  # address: Bytes!
+  # orgAddress: Bytes!
+  # token: MiniMeToken!
+}
+
+type MiniMeToken @entity {
+  id: ID!
+#   address: Bytes!
+#   totalSupply: BigInt!
+#   transferable: Boolean!
+#   name: String!
+#   symbol: String!
+#   appAddress: Bytes!
+#   orgAddress: Bytes!
+#   manager: TokenManager! @derivedFrom(field: "token")
+#   holders: [TokenHolder!]!
 }
 
 type TokenHolder @entity {
   id: ID!
-  address: Bytes!
-  balance: BigInt!
-  approvals: [Approval!]!
+#   address: Bytes!
+#   appAddress: Bytes!
+#   orgAddress: Bytes!
+#   balance: BigInt!
+#   approvals: [Approval!]!
 }
 
 type Approval @entity {
   id: ID!
-  owner: Bytes!
-  spender: Bytes!
-  amount: BigInt!
-  txHash: Bytes!
+#   owner: Bytes!
+#   spender: Bytes!
+#   amount: BigInt!
+#   txHash: Bytes!
 }
 

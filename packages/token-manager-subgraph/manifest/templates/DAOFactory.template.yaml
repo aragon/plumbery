@@ -17,4 +17,4 @@
     eventHandlers:
       - event: DeployDAO(address)
         handler: handleDeployDAO
-    file: ./src/base/AragonOrg.ts
+    file: ./src/base/DAOFactory.ts

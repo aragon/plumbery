@@ -7,6 +7,8 @@ export function handleNewAppProxy(event: NewAppProxyEvent): void {
     let proxyAddress = event.params.proxy
 
     DataSourceTemplate.create(config.APP_TEMPLATE_NAME, [proxyAddress.toHex()]);
+
+    // config.onAppTemplateCreated(event.address, proxyAddress)
+    config.TEMPLATE_CREATED_HOOK(proxyAddress)
   }
 }
-

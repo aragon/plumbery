@@ -30,9 +30,6 @@ templates:
           file: ./abis/MiniMeToken.json
         - name: TokenManager
           file: ./abis/TokenManager.json
-      callHandlers:
-        - function: initialize()
-          handler: handleProxyInitialize
       eventHandlers:
         - event: NewVesting(indexed address,uint256,uint256)
           handler: handleNewVesting
