@@ -23,22 +23,31 @@ In this subgraph template, we merely hook up a bunch of Aragon related data sour
 
 The way we handle data sources in these subgraphs is a bit sophisticated, so the subgraph.yaml file at the root is actually a generated file and should not be edited.
 
-Instead, edit manifest/subgraph.template.yaml. You'll notice that there's a bunch of mustache tags all over the place. This is stuff that you shouldn't have to worry about. The part that matters to you is the templates section. This is the template that will be used whenever the data sources detect that an instance of your app was created.
+Instead, edit manifest/subgraph.template.yaml. You'll notice that there's a bunch of mustache tags all over the place. This is stuff that you shouldn't have to worry about. The part that matters to you is whatever is not a mustache tag. Here, you can define static data sources in the "dataSources" section, and dynamic datasources in the "templates" section. Your app's data source specification should go in the latter, since it's instances will be detected dynamically.
 
 ## Setting up the app's reducers
 
-In src/mappings/config.ts, you need to define the appId (hash of the ens name of the app, e.g. "voting.aragonpm.eth") and the name of the template you set up in "Setting up the subgraph.yaml manifest". Whenever we detect that an app proxy was created, we check if the proxy's appId matches what you specified, and if it does, we instantiate the data source template that you specified.
+In src/hooks.ts, you need to define the appId (hash of the ens name of the app, e.g. "voting.aragonpm.eth") and the name of the template you set up in "Setting up the subgraph.yaml manifest". Whenever we detect that an app proxy was created, we check if the proxy's appId matches what you specified, and if it does, we instantiate the data source template that you specified. This hooks file also allows you to call a function whenever your apps data source template is created, which is handy for example in case you wanted to instantiate second data source. See the token-manager subgraph for an example.
 
-To define the reducers for this data source, simply replace src/mappings/Voting.ts with a file as specified in your template's file path in config/manifest/subgraph.template.yaml.
+To define the reducers for this data source, simply replace src/Voting.ts with a file, as specified in your template's file path in config/manifest/subgraph.template.yaml.
 
 ## Defining your data sources
 
 When generating the final subgraph.yaml manifest file, mustache uses the data views specified in manifest/data. Here, we specify 2 files per network. For example, in mainnet.json, we define all the known DAOFactories, and hence catch every single app instantiation. When using these data sources, expect subgraphs to take > 10hs to sync.
 
-In mainnet-staging.json, we only define a single org as a data source. This is ideal for development, since subgraphs take ~1m to sync.
+In mainnet-staging.json, we only define a single org as a data source. This is ideal for development, since subgraphs take ~1m to sync if you pick the targets right.
 
 ## Deploying and testing your graph
 
 To deploy your subgraph, simply run `yarn deploy`. This will generate the subgraph.yaml file, and deploy the graph. If you want to deploy a staging version, run `yarn deploy-staging` instead. If you want to target a network other than mainnet, use `yarn deploy-<network>` and `yarn deploy-<network>-staging`.
 
 Keep in mind that you need to have a graph created in your TheGraph dashboard, and that its naming must comply with: "Aragon AppName NetworkName [Staging]". For instance, running `yarn deploy-rinkeby-staging` will target the subgraph "your_username/aragon-app_name-rinkeby-staging", named "Aragon AppName Rinkeby Staging".
+
+## Getting Aragon ABIs
+
+// TODO
+
+## Troubleshooting
+
+* I'm getting errors about missing ABIs when the subgraph is indexing
+When a reducer is run, it's run in the context of the data source that defined it. For example, hooks are triggered by src/base/Kernel.ts when the NewAppProxy event is detected in an Organization. You need to include the missing ABI in manifest/templates/Kernel.template.yaml for it to be available in this reducer.
