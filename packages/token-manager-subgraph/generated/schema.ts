@@ -154,6 +154,15 @@ export class MiniMeToken extends Entity {
     this.set("orgAddress", Value.fromBytes(value));
   }
 
+  get appAddress(): Bytes {
+    let value = this.get("appAddress");
+    return value.toBytes();
+  }
+
+  set appAddress(value: Bytes) {
+    this.set("appAddress", Value.fromBytes(value));
+  }
+
   get tokenManager(): string {
     let value = this.get("tokenManager");
     return value.toString();

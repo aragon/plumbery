@@ -17,7 +17,7 @@ export function initializeTokenManager(orgAddress: Address, proxyAddress: Addres
   let tokenManagerContract = TokenManagerContract.bind(proxyAddress)
   let tokenAddress = tokenManagerContract.token()
   if (tokenAddress.toHexString() != '0x0000000000000000000000000000000000000000') {
-    initializeMiniMeToken(tokenManagerEntity.id, orgAddress, tokenAddress)
+    initializeMiniMeToken(tokenManagerEntity.id, proxyAddress, orgAddress, tokenAddress)
   }
 
   tokenManagerEntity.save()

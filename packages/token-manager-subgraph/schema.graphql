@@ -13,6 +13,7 @@ type MiniMeToken @entity {
   name: String!
   symbol: String!
   orgAddress: Bytes!
+  appAddress: Bytes!
   tokenManager: TokenManager!
   holders: [TokenHolder!]!
 }

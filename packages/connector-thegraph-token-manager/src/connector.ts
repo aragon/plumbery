@@ -1,5 +1,5 @@
 import * as queries from './queries'
-import Token, { TokenData } from "./entities/Token";
+import Token from "./entities/Token";
 import TokenHolder, { TokenHolderData } from "./entities/TokenHolder";
 import { GraphQLWrapper } from "plumbery-connector-thegraph";
 import {
@@ -8,10 +8,10 @@ import {
 } from './parsers';
 
 export default class TokenManagerConnectorTheGraph extends GraphQLWrapper {
-  async token(): Promise<Token> {
+  async token(tokenManagerAddress: string): Promise<Token> {
     const result = await this.performQuery(
       queries.TOKEN,
-      {}
+      { tokenManagerAddress }
     )
 
     const data = this.parseQueryResult(parseToken, result)
@@ -19,10 +19,10 @@ export default class TokenManagerConnectorTheGraph extends GraphQLWrapper {
     return new Token(data, this)
   }
 
-  async tokenHolders(): Promise<TokenHolder[]> {
+  async tokenHolders(tokenAddress: string): Promise<TokenHolder[]> {
     const result = await this.performQuery(
       queries.TOKEN_HOLDERS,
-      {}
+      { tokenAddress }
     )
 
     const datas = this.parseQueryResult(parseTokenHolders, result)

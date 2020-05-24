@@ -9,6 +9,7 @@ import { MiniMeToken as MiniMeTokenContract } from '../generated/templates/MiniM
 
 export function initializeMiniMeToken(
   tokenManagerId: string,
+  tokenManagerAddress: Address,
   orgAddress: Address,
   tokenAddress: Address
 ): void {
@@ -21,6 +22,7 @@ export function initializeMiniMeToken(
   miniMeTokenEntity.address = tokenAddress
   miniMeTokenEntity.tokenManager = tokenManagerId
   miniMeTokenEntity.orgAddress = orgAddress
+  miniMeTokenEntity.appAddress = tokenManagerAddress
 
   let tokenContract = MiniMeTokenContract.bind(tokenAddress)
 
