@@ -4,11 +4,11 @@ import {
   CastVote as CastVoteEvent,
   ExecuteVote as ExecuteVoteEvent,
   Voting as VotingContract
-} from '../../generated/templates/Voting/Voting'
+} from '../generated/templates/Voting/Voting'
 import {
   Vote as VoteEntity,
   Cast as CastEntity
-} from '../../generated/schema'
+} from '../generated/schema'
 
 /* --------------------- REDUCERS --------------------- */
 

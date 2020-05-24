@@ -19,7 +19,7 @@
     apiVersion: 0.0.1
     language: wasm/assemblyscript
     entities:
-      - Organization
+      - NoEnt
     abis:
       - name: Kernel
         file: ./abis/Kernel.json

@@ -10,7 +10,7 @@
     apiVersion: 0.0.1
     language: wasm/assemblyscript
     entities:
-      - Organization
+      - NoEnt
     abis:
       - name: DAOFactory
         file: ./abis/DAOFactory.json
