@@ -254,7 +254,7 @@ export async function applyTransactionGas(
 ) {
   // If a pretransaction is required for the main transaction to be performed,
   // performing web3.eth.estimateGas could fail until the pretransaction is mined
-  // Example: erc20 approve (pretransaction) + deposit to vault (main transaction)
+  // Example: erc20 approve (pretransaction) + deposit to vault (main transaction)`
   if (transaction.pretransaction) {
     // Calculate gas settings for pretransaction
     transaction.pretransaction = await applyTransactionGas(
@@ -273,7 +273,10 @@ export async function applyTransactionGas(
   // since `eth_call` returns `0x` if the call fails and if the call returns nothing.
   // So yeah...
 
-  const estimatedGasLimit = await provider.estimateGas(transaction)
+  const estimatedGasLimit = await provider.estimateGas({
+    to: transaction.to,
+    data: transaction.data,
+  })
   const recommendedGasLimit = await getRecommendedGasLimit(
     estimatedGasLimit,
     provider

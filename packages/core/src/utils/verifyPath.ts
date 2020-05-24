@@ -83,6 +83,7 @@ export async function verifyTransactionPath(
     method.sig,
     params
   )
+  transactions.push(directTransaction)
 
   const createForwarderTransaction = createForwarderTransactionBuilder(
     sender,

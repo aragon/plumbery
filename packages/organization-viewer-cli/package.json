@@ -11,10 +11,11 @@
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "plumbery-core": "*",
+    "ethers": "^4.0.47",
     "plumbery-connector-thegraph": "*",
+    "plumbery-connector-thegraph-token-manager": "*",
     "plumbery-connector-thegraph-voting": "*",
-    "plumbery-connector-thegraph-token-manager": "*"
+    "plumbery-core": "*"
   },
   "devDependencies": {
     "typescript": "^3.8.3"

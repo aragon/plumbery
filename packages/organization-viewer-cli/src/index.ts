@@ -1,4 +1,6 @@
 // import data from './org-data.json'
+import { ethers } from 'ethers'
+
 import { Connect, Permission, App, Organization } from 'plumbery-core'
 import { GraphQLWrapper } from 'plumbery-connector-thegraph'
 import {
@@ -13,9 +15,14 @@ import {
 } from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
-const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging'
-const ALL_VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
-const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+const network = 'rinkeby'
+
+const DAO_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging'
+const ALL_VOTING_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
+const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
 
 const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
@@ -25,6 +32,8 @@ async function main() {
 
   await inspectOrg(org)
 
+  await trySimplePath(org)
+
   await inspectVotingHighLevel(VOTING_APP_ADDRESS)
   await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
@@ -32,6 +41,8 @@ async function main() {
 }
 
 async function initAndGetOrg(): Promise<Organization> {
+  const readProvider = ethers.getDefaultProvider(network)
+
   const org = Connect(
     ORG_ADDRESS, // location,
     {
@@ -41,6 +52,7 @@ async function initAndGetOrg(): Promise<Organization> {
           daoSubgraphUrl: DAO_SUBGRAPH_URL,
         },
       ],
+      readProvider,
     }
   ) as Organization
 
@@ -85,6 +97,23 @@ async function inspectOrg(org: Organization): Promise<void> {
   }
 }
 
+async function trySimplePath(org: Organization): Promise<void> {
+  const app = (await org.apps())[3]
+  console.log(app.toString())
+
+  const root = '0xb4124cEB3451635DAcedd11767f004d8a28c6eE7'
+
+  const intent = org.appIntent(app.address, 'deposit', [
+    ethers.constants.AddressZero,
+    ethers.utils.bigNumberify(1),
+    'Test deposit',
+  ])
+
+  const txPath = await intent.paths(root, { path: [] })
+
+  console.log(txPath.toString())
+}
+
 async function inspectTokenManager(org: Organization): Promise<void> {
   const apps = await org.apps()
   const app = apps.find(
@@ -92,9 +121,9 @@ async function inspectTokenManager(org: Organization): Promise<void> {
   )!
 
   console.log('\nTokenManager:')
-  
+
   const tokenManager = new TokenManager(app, SINGLE_TOKEN_MANAGER_SUBGRAPH_URL)
-  
+
   console.log(tokenManager.toString())
 
   console.log('\nToken:')
@@ -108,7 +137,7 @@ async function inspectTokenManager(org: Organization): Promise<void> {
 
 async function inspectVotingHighLevel(appAddress: string): Promise<void> {
   console.log('\nVoting:')
-  
+
   const voting = new Voting(appAddress, ALL_VOTING_SUBGRAPH_URL)
 
   console.log(voting.toString())
@@ -123,7 +152,11 @@ async function inspectVotingHighLevel(appAddress: string): Promise<void> {
 
   console.log('\nAnalysis of a vote:')
   const vote = votes[0]
-  console.log(`Vote for "${vote.metadata}" was ${vote.executed ? "executed" : "not executed"}, with ${vote.yea} yeas and ${vote.nay} nays.`)
+  console.log(
+    `Vote for "${vote.metadata}" was ${
+      vote.executed ? 'executed' : 'not executed'
+    }, with ${vote.yea} yeas and ${vote.nay} nays.`
+  )
 
   console.log('\nCasts:')
   const casts = await vote.casts()

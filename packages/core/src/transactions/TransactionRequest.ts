@@ -12,12 +12,13 @@ export interface TransactionRequestData {
 export default class TransactionRequest {
   readonly chainId!: number
   readonly data?: string
-  readonly from!: string
   readonly gas!: string
   readonly gasLimit!: string
   readonly gasPrice!: string
   readonly to!: string
   readonly value?: string
+
+  from!: string
 
   constructor(data: TransactionRequestData) {
     Object.assign(this, data)

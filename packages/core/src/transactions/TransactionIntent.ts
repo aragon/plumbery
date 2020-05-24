@@ -31,13 +31,14 @@ export default class TransactionIntent {
   }
 
   async paths(
-    address: string,
+    account: string,
     { as, path }: { as?: string; path?: string[] }
   ): Promise<TransactionPath[]> {
     const paths: TransactionPath[] = []
+
     if (path) {
       const transactionPath = await verifyTransactionPath(
-        address,
+        account,
         path,
         this.contractAddress,
         this.functionName,
@@ -55,9 +56,9 @@ export default class TransactionIntent {
   }
 
   async transactions(
-    address: string,
+    account: string,
     { as }: { as: string }
   ): Promise<TransactionRequest[]> {
-    return (await this.paths(address, { as }))[0].transactions
+    return (await this.paths(account, { as }))[0].transactions
   }
 }

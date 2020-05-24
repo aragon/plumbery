@@ -120,11 +120,11 @@ export default class Organization {
   // }
 
   ///////// INTENTS ///////////
-  async appIntent(
+  appIntent(
     appAddress: string,
     funcName: string,
-    funcArgs: string[]
-  ): Promise<TransactionIntent> {
+    funcArgs: any[]
+  ): TransactionIntent {
     return new TransactionIntent(
       {
         contractAddress: appAddress,
