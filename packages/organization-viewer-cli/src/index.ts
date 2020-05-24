@@ -24,10 +24,10 @@ const TOKENS_APP_ADDRESS = '0x8db3b9d93275ed6de3351846487117da02ab4e96'
 async function main() {
   const org = await initAndGetOrg()
 
-  // await inspectOrg(org)
+  await inspectOrg(org)
 
-  // await inspectVotingHighLevel(VOTING_APP_ADDRESS)
-  // await inspectVotingLowLevel(VOTING_APP_ADDRESS)
+  await inspectVotingHighLevel(VOTING_APP_ADDRESS)
+  await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
   await inspectTokenManager(TOKENS_APP_ADDRESS)
 }
