@@ -2,14 +2,23 @@
   "name": "root",
   "private": true,
   "devDependencies": {},
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": [
+      "projects/*"
+    ],
+    "nohoist": [
+      "projects/*-subgraph"
+    ]
+  },
   "scripts": {
     "postinstall": "./scripts/first-build.sh",
     "core": "yarn workspace plumbery-core",
     "connector-ethereum": "yarn workspace plumbery-connector-ethereum",
     "connector-thegraph": "yarn workspace plumbery-connector-thegraph",
+    "connector-thegraph-voting": "yarn workspace plumbery-connector-thegraph-voting",
+    "connector-thegraph-token-manager": "yarn workspace plumbery-connector-thegraph-token-manager",
     "react": "yarn workspace plumbery-react",
-    "build": "yarn connector-ethereum build; yarn connector-thegraph build; yarn core build",
-    "clean": "yarn connector-ethereum clean && yarn connector-thegraph clean && yarn core clean"
+    "build": "yarn connector-ethereum build; yarn connector-thegraph build; yarn core build; yarn connector-thegraph-voting build; yarn kconnector-thegraph-token-manager build",
+    "clean": "yarn connector-ethereum clean && yarn connector-thegraph clean && yarn core clean; yarn connector-thegraph-voting clean; yarn connector-thegraph-token-manager clean"
   }
 }

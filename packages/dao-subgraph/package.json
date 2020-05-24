@@ -1,5 +1,5 @@
 {
-  "name": "@aragon/dao-subgraph",
+  "name": "plumbery-dao-subgraph",
   "version": "1.0.0",
   "repository": "https://github.com/graphprotocol/aragon-network",
   "license": "MIT",
@@ -23,9 +23,8 @@
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",
     "@graphprotocol/graph-ts": "^0.18.1",
+    "graphqlviz": "^3.1.0",
     "mustache": "^4.0.1"
   },
-  "dependencies": {
-    "graphqlviz": "^3.1.0"
-  }
+  "dependencies": {}
 }

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "plumbery-core": "*",
+    "plumbery-connector-thegraph": "*",
     "plumbery-connector-thegraph-voting": "*",
     "plumbery-connector-thegraph-token-manager": "*"
   },

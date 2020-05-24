@@ -6,6 +6,7 @@ An app repository.
 
 | Name             | Type                                                                    | Description                                                                               |
 | ---------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `Address`        | `String`                                                                | Address of the repo.                                                                      |
 | `author`         | `String`                                                                | Author of the app. E.g. `"Aragon Association"`.                                           |
 | `changelogUrl`   | `String`                                                                | URL of the app versions changelog.                                                        |
 | `descriptionUrl` | `String`                                                                | URL pointing to the long description of the app.                                          |
