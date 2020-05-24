@@ -25,6 +25,8 @@
         file: ./abis/Kernel.json
       - name: TokenManager
         file: ./abis/TokenManager.json
+      - name: MiniMeToken
+        file: ./abis/MiniMeToken.json
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy

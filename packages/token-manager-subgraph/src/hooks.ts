@@ -9,6 +9,6 @@ export function getAppTemplateName(): string {
   return 'TokenManager'
 }
 
-export function onAppTemplateCreated(proxyAddress: Address): void {
-  initializeTokenManager(proxyAddress)
+export function onAppTemplateCreated(orgAddress: Address, proxyAddress: Address): void {
+  initializeTokenManager(orgAddress, proxyAddress)
 }

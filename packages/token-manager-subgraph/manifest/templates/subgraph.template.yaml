@@ -30,15 +30,15 @@ templates:
           file: ./abis/MiniMeToken.json
         - name: TokenManager
           file: ./abis/TokenManager.json
-      eventHandlers:
-        - event: NewVesting(indexed address,uint256,uint256)
-          handler: handleNewVesting
-        - event: RevokeVesting(indexed address,uint256,uint256)
-          handler: handleRevokeVesting
-        - event: ScriptResult(indexed address,bytes,bytes,bytes)
-          handler: handleScriptResult
-        - event: RecoverToVault(indexed address,indexed address,uint256)
-          handler: handleRecoverToVault
+      # eventHandlers:
+        # - event: NewVesting(indexed address,uint256,uint256)
+        #   handler: handleNewVesting
+        # - event: RevokeVesting(indexed address,uint256,uint256)
+        #   handler: handleRevokeVesting
+        # - event: ScriptResult(indexed address,bytes,bytes,bytes)
+        #   handler: handleScriptResult
+        # - event: RecoverToVault(indexed address,indexed address,uint256)
+        #   handler: handleRecoverToVault
       file: ./src/TokenManager.ts
   - kind: ethereum/contract
     name: MiniMeToken
@@ -59,12 +59,12 @@ templates:
         - name: TokenManager
           file: ./abis/TokenManager.json
       eventHandlers:
-        - event: ClaimedTokens(indexed address,indexed address,uint256)
-          handler: handleClaimedTokens
+        # - event: ClaimedTokens(indexed address,indexed address,uint256)
+        #   handler: handleClaimedTokens
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-        - event: NewCloneToken(indexed address,uint256)
-          handler: handleNewCloneToken
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
+        # - event: NewCloneToken(indexed address,uint256)
+        #   handler: handleNewCloneToken
+        # - event: Approval(indexed address,indexed address,uint256)
+          # handler: handleApproval
       file: ./src/MiniMeToken.ts

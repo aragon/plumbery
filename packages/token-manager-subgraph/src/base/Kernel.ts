@@ -8,6 +8,7 @@ export function handleNewAppProxy(event: NewAppProxyEvent): void {
 
     DataSourceTemplate.create(hooks.getAppTemplateName(), [proxyAddress.toHex()]);
 
-    hooks.onAppTemplateCreated(proxyAddress)
+    let orgAddress = event.address
+    hooks.onAppTemplateCreated(orgAddress, proxyAddress)
   }
 }
