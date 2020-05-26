@@ -3,8 +3,15 @@
   "private": true,
   "devDependencies": {},
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["packages/*-subgraph"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@graphprotocol/graph-ts",
+      "**/@graphprotocol/graph-ts/**",
+      "**/@graphprotocol/graph-cli",
+      "**/@graphprotocol/graph-cli/**"
+    ]
   },
   "scripts": {
     "postinstall": "./scripts/first-build.sh",
