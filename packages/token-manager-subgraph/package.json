@@ -8,10 +8,10 @@
     "manifest-staging": "env STAGING=true scripts/build-manifest.sh mainnet",
     "manifest-rinkeby": "scripts/build-manifest.sh rinkeby",
     "manifest-rinkeby-staging": "env STAGING=true scripts/build-manifest.sh rinkeby",
-    "deploy": "scripts/deploy.sh ajsantander token mainnet",
-    "deploy-staging": "env STAGING=true scripts/deploy.sh ajsantander token mainnet",
-    "deploy-rinkeby": "scripts/deploy.sh ajsantander token rinkeby",
-    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh ajsantander token rinkeby"
+    "deploy": "scripts/deploy.sh aragon tokens mainnet",
+    "deploy-staging": "env STAGING=true scripts/deploy.sh aragon tokens mainnet",
+    "deploy-rinkeby": "scripts/deploy.sh aragon tokens rinkeby",
+    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh aragon tokens rinkeby"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",

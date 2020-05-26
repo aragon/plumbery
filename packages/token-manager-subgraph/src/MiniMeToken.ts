@@ -77,7 +77,7 @@ function _getTokenHolder(miniMeTokenEntity: MiniMeTokenEntity, holderAddress: Ad
     return null
   }
 
-  let tokenAddress = miniMeTokenEntity.address
+  let tokenAddress = miniMeTokenEntity.address as Address
   let tokenHolderId = 'tokenAddress-' + tokenAddress.toHexString() + '-holderAddress-' + holderAddress.toHexString()
   let tokenHolder = TokenHolderEntity.load(tokenHolderId)
 
