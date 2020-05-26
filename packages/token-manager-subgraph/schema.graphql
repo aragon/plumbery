@@ -12,9 +12,9 @@ type MiniMeToken @entity {
   transferable: Boolean!
   name: String!
   symbol: String!
-  orgAddress: Bytes!
-  appAddress: Bytes!
-  tokenManager: TokenManager!
+  orgAddress: Bytes
+  appAddress: Bytes
+  tokenManager: TokenManager
   holders: [TokenHolder!]!
 }
 

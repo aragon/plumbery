@@ -7,7 +7,7 @@ import { MiniMeToken as MiniMeTokenContract } from '../generated/templates/MiniM
 // import { ClaimedTokens as ClaimedTokensEvent } from '../generated/templates/MiniMeToken/MiniMeToken'
 // import { NewCloneToken as NewCloneTokenEvent } from '../generated/templates/MiniMeToken/MiniMeToken'
 
-export function initializeMiniMeToken(
+export function createMiniMeTokenTemplateAndEntity(
   tokenManagerId: string,
   tokenManagerAddress: Address,
   orgAddress: Address,
@@ -15,62 +15,33 @@ export function initializeMiniMeToken(
 ): void {
   MiniMeTokenTemplate.create(tokenAddress)
 
-  let miniMeTokenEntity = new MiniMeTokenEntity(
-    _getTokenEntityId(tokenAddress)
-  )
-
-  miniMeTokenEntity.address = tokenAddress
+  let miniMeTokenEntity = _getMiniMeTokenEntity(tokenAddress)
   miniMeTokenEntity.tokenManager = tokenManagerId
   miniMeTokenEntity.orgAddress = orgAddress
   miniMeTokenEntity.appAddress = tokenManagerAddress
-
-  let tokenContract = MiniMeTokenContract.bind(tokenAddress)
-
-  miniMeTokenEntity.name = tokenContract.name()
-  miniMeTokenEntity.address = tokenAddress
-  miniMeTokenEntity.symbol = tokenContract.symbol()
-  miniMeTokenEntity.totalSupply = tokenContract.totalSupply()
-  miniMeTokenEntity.transferable = tokenContract.transfersEnabled()
-  miniMeTokenEntity.holders = new Array<string>()
 
   miniMeTokenEntity.save()
 }
 
 export function handleTransfer(event: TransferEvent): void {
   let tokenAddress = event.address
-
-  let miniMeTokenEntity = MiniMeTokenEntity.load(
-    _getTokenEntityId(tokenAddress)
-  )
-
   let transferedAmount = event.params._amount
 
+  let miniMeTokenEntity = _getMiniMeTokenEntity(tokenAddress)
+
   let sendingHolderAddress = event.params._from
-  let sendingHolder = _getTokenHolder(tokenAddress, sendingHolderAddress)
+  let sendingHolder = _getTokenHolder(miniMeTokenEntity, sendingHolderAddress)
   if (sendingHolder) {
     sendingHolder.balance = sendingHolder.balance.minus(transferedAmount)
-  }
 
-  let receivingHolderAddress = event.params._to
-  let receivingHolder = _getTokenHolder(tokenAddress, receivingHolderAddress)
-  if (receivingHolder) {
-    // If new holder, add to holders array.
-    let holders = miniMeTokenEntity.holders
-    if (receivingHolder.balance.equals(new BigInt(0)) && !holders.includes(receivingHolder.id)) {
-      holders.push(receivingHolder.id)
-      miniMeTokenEntity.holders = holders
-
-      miniMeTokenEntity.save()
-    }
-
-    receivingHolder.balance = receivingHolder.balance.plus(transferedAmount)
-  }
-
-  if(sendingHolder) {
     sendingHolder.save()
   }
 
+  let receivingHolderAddress = event.params._to
+  let receivingHolder = _getTokenHolder(miniMeTokenEntity, receivingHolderAddress)
   if (receivingHolder) {
+    receivingHolder.balance = receivingHolder.balance.plus(transferedAmount)
+
     receivingHolder.save()
   }
 }
@@ -79,25 +50,50 @@ export function handleTransfer(event: TransferEvent): void {
 // export function handleClaimedTokens(event: ClaimedTokensEvent): void {}
 // export function handleNewCloneToken(event: NewCloneTokenEvent): void {}
 
-function _getTokenEntityId(tokenAddress: Address): string {
-  return 'tokenAddress-' + tokenAddress.toHexString()
+function _getMiniMeTokenEntity(tokenAddress: Address): MiniMeTokenEntity {
+  let miniMeTokenEntityId = 'tokenAddress-' + tokenAddress.toHexString()
+
+  let miniMeTokenEntity = MiniMeTokenEntity.load(miniMeTokenEntityId)
+  if (!miniMeTokenEntity) {
+    miniMeTokenEntity = new MiniMeTokenEntity(miniMeTokenEntityId)
+    miniMeTokenEntity.address = tokenAddress
+
+    let tokenContract = MiniMeTokenContract.bind(tokenAddress)
+    miniMeTokenEntity.name = tokenContract.name()
+    miniMeTokenEntity.address = tokenAddress
+    miniMeTokenEntity.symbol = tokenContract.symbol()
+    miniMeTokenEntity.totalSupply = tokenContract.totalSupply()
+    miniMeTokenEntity.transferable = tokenContract.transfersEnabled()
+    miniMeTokenEntity.holders = new Array<string>()
+
+    miniMeTokenEntity.save()
+  }
+
+  return miniMeTokenEntity!
 }
 
-function _getTokenHolder(tokenAddress: Address, holderAddress: Address): TokenHolderEntity | null {
+function _getTokenHolder(miniMeTokenEntity: MiniMeTokenEntity, holderAddress: Address): TokenHolderEntity | null {
   if (holderAddress.toHexString() == '0x0000000000000000000000000000000000000000') {
     return null
   }
 
+  let tokenAddress = miniMeTokenEntity.address
   let tokenHolderId = 'tokenAddress-' + tokenAddress.toHexString() + '-holderAddress-' + holderAddress.toHexString()
   let tokenHolder = TokenHolderEntity.load(tokenHolderId)
 
   if (!tokenHolder) {
     tokenHolder = new TokenHolderEntity(tokenHolderId)
-
     tokenHolder.address = holderAddress
-    tokenHolder.balance = new BigInt(0)
-    tokenHolder.tokenAddress = tokenAddress
+    tokenHolder.tokenAddress = tokenAddress as Address
 
+    let tokenContract = MiniMeTokenContract.bind(tokenAddress)
+    tokenHolder.balance = tokenContract.balanceOf(holderAddress)
+
+    let holders = miniMeTokenEntity.holders
+    holders.push(tokenHolder.id)
+    miniMeTokenEntity.holders = holders
+
+    miniMeTokenEntity.save()
     tokenHolder.save()
   }
 

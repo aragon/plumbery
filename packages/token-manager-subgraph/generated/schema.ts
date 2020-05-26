@@ -145,31 +145,55 @@ export class MiniMeToken extends Entity {
     this.set("symbol", Value.fromString(value));
   }
 
-  get orgAddress(): Bytes {
+  get orgAddress(): Bytes | null {
     let value = this.get("orgAddress");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set orgAddress(value: Bytes) {
-    this.set("orgAddress", Value.fromBytes(value));
+  set orgAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("orgAddress");
+    } else {
+      this.set("orgAddress", Value.fromBytes(value as Bytes));
+    }
   }
 
-  get appAddress(): Bytes {
+  get appAddress(): Bytes | null {
     let value = this.get("appAddress");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set appAddress(value: Bytes) {
-    this.set("appAddress", Value.fromBytes(value));
+  set appAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("appAddress");
+    } else {
+      this.set("appAddress", Value.fromBytes(value as Bytes));
+    }
   }
 
-  get tokenManager(): string {
+  get tokenManager(): string | null {
     let value = this.get("tokenManager");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set tokenManager(value: string) {
-    this.set("tokenManager", Value.fromString(value));
+  set tokenManager(value: string | null) {
+    if (value === null) {
+      this.unset("tokenManager");
+    } else {
+      this.set("tokenManager", Value.fromString(value as string));
+    }
   }
 
   get holders(): Array<string> {

@@ -10,8 +10,6 @@ import {
   Cast as CastEntity
 } from '../generated/schema'
 
-/* --------------------- REDUCERS --------------------- */
-
 export function handleStartVote(event: StartVoteEvent): void {
   let vote = _getVoteEntity(event.address, event.params.voteId)
 
@@ -46,8 +44,6 @@ export function handleExecuteVote(event: ExecuteVoteEvent): void {
 
   vote.save()
 }
-
-/* --------------------- HELPERS --------------------- */
 
 function _getVoteEntity(appAddress: Address, voteNum: BigInt): VoteEntity {
   let voteEntityId = _getVoteEntityId(appAddress, voteNum)
