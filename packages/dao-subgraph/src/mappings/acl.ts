@@ -6,7 +6,7 @@ import {
   Permission as PermissionEntity,
   Role as RoleEntity,
   Param as ParamEntity,
-} from '../types/schema'
+} from '../../generated/schema'
 
 // Import event types from the templates contract ABI
 import {
@@ -14,7 +14,7 @@ import {
   SetPermission as SetPermissionEvent,
   SetPermissionParams as SetPermissionParamsEvent,
   ChangePermissionManager as ChangePermissionManagerEvent,
-} from '../types/templates/Acl/ACL'
+} from '../../generated/templates/Acl/ACL'
 
 export function handleSetPermission(event: SetPermissionEvent): void {
   const acl = AclContract.bind(event.address)
@@ -26,8 +26,6 @@ export function handleSetPermission(event: SetPermissionEvent): void {
   const roleHash = event.params.role
   const granteeAddress = event.params.entity
 
-  const allowed = event.params.allowed
-
   // Generate role id
   const roleId = appAddress
     .toHexString()
@@ -37,13 +35,13 @@ export function handleSetPermission(event: SetPermissionEvent): void {
   // If no Role yet create new one
   let role = RoleEntity.load(roleId)
   if (role == null) {
-    role = new RoleEntity(roleId) as RoleEntity
-    role.nameHash = roleHash
+    role = new RoleEntity(roleId)
+    role.roleHash = roleHash
+    role.app = appAddress.toHex()
     role.appAddress = appAddress
-    role.grantees = []
   }
 
-  /****** Update Permission ******/
+  // Update permission
   const permissionId = appAddress
     .toHexString()
     .concat('-')
@@ -51,37 +49,27 @@ export function handleSetPermission(event: SetPermissionEvent): void {
     .concat('-')
     .concat(granteeAddress.toHexString())
 
-  if (allowed) {
-    // if no Permission yet create new one
-    let permission = PermissionEntity.load(permissionId)
-    if (permission == null) {
-      permission = new PermissionEntity(permissionId) as PermissionEntity
-      permission.appAddress = appAddress
-      permission.roleHash = roleHash
-      permission.granteeAddress = event.params.entity
-    }
+  // if no Permission yet create new one
+  let permission = PermissionEntity.load(permissionId)
+  if (permission == null) {
+    permission = new PermissionEntity(permissionId)
+    permission.appAddress = appAddress
+    permission.role = roleId
+    permission.roleHash = roleHash
+    permission.granteeAddress = event.params.entity
+    permission.params = []
 
     // update org permissions
-    const orgPermissions = org.permissions || []
+    const orgPermissions = org.permissions
     orgPermissions.push(permission.id)
     org.permissions = orgPermissions
 
-    // update role grantees
-    const roleGrantees = role.grantees
-    roleGrantees.push(permission.id)
-    role.grantees = roleGrantees
-
-    permission.save()
-  } else {
-    // update role grantees
-    const roleGrantees = role.grantees || []
-    const index = roleGrantees.indexOf(permissionId)
-    if (index > -1) {
-      roleGrantees.splice(index, 1)
-    }
+    org.save()
   }
+  permission.allowed = event.params.allowed
+
+  permission.save()
   role.save()
-  org.save()
 }
 
 export function handleChangePermissionManager(
@@ -98,10 +86,10 @@ export function handleChangePermissionManager(
 
   let role = RoleEntity.load(roleId)
   if (role == null) {
-    role = new RoleEntity(roleId) as RoleEntity
-    role.nameHash = roleHash
+    role = new RoleEntity(roleId)
+    role.roleHash = roleHash
+    role.app = appAddress.toHex()
     role.appAddress = appAddress
-    role.grantees = []
   }
 
   // Update values
@@ -114,9 +102,6 @@ export function handleSetPermissionParams(
   event: SetPermissionParamsEvent
 ): void {
   const acl = AclContract.bind(event.address)
-  const orgAddress = acl.kernel()
-  const orgId = orgAddress.toHex()
-  const org = OrganizationEntity.load(orgId)
 
   const appAddress = event.params.app
   const roleHash = event.params.role
@@ -130,10 +115,9 @@ export function handleSetPermissionParams(
     .concat('-')
     .concat(granteeAddress.toHexString())
 
-  let permission = PermissionEntity.load(permissionId)
-  if (permission == null) {
-    permission = new PermissionEntity(permissionId) as PermissionEntity
-  }
+  // We know the permission exists because the smart contract always
+  // emit handleSetPermission first
+  const permission = PermissionEntity.load(permissionId)
 
   // get params length
   const paramsLength = acl
@@ -152,14 +136,11 @@ export function handleSetPermissionParams(
     )
 
     // get param id and create new entity
-    const paramId = paramHash
-      .toHexString()
-      .concat('-')
-      .concat(index.toString())
+    const paramId = paramHash.toHexString().concat('-').concat(index.toString())
 
     let param = ParamEntity.load(paramId)
     if (param == null) {
-      param = new ParamEntity(paramId) as ParamEntity
+      param = new ParamEntity(paramId)
       param.argumentId = paramData.value0
       param.operationType = paramData.value1
       param.argumentValue = paramData.value2
@@ -175,5 +156,4 @@ export function handleSetPermissionParams(
   }
 
   permission.save()
-  org.save()
 }
