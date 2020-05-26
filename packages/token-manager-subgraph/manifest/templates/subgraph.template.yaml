@@ -14,7 +14,7 @@ templates:
   {{> Kernel.template.yaml}}
   - kind: ethereum/contract
     name: TokenManager
-    network: rinkeby
+    network: {{network}}
     source:
       abi: TokenManager
     mapping:
@@ -42,7 +42,7 @@ templates:
       file: ./src/TokenManager.ts
   - kind: ethereum/contract
     name: MiniMeToken
-    network: rinkeby
+    network: {{network}}
     source:
       abi: MiniMeToken
     mapping:
