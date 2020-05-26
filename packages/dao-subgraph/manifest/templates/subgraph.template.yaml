@@ -32,6 +32,7 @@ templates:
         - Organization
         - Permission
         - Role
+        - Param
       abis:
         - name: ACL
           file: ./abis/ACL.json

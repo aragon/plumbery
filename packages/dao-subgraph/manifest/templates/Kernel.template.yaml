@@ -21,6 +21,7 @@
     entities:
       - Organization
       - App
+      - Implementation
     abis:
       - name: Kernel
         file: ./abis/Kernel.json
