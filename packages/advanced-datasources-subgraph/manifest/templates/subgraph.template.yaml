@@ -1,0 +1,15 @@
+specVersion: 0.0.2
+description: {{description}}
+repository: {{repository}}
+schema:
+  file: ./schema.graphql
+dataSources:
+{{#DAOTemplateDataSources}}
+  {{> DAOTemplate.template.yaml}}
+{{/DAOTemplateDataSources}}
+{{#DAOFactoryDataSources}}
+  {{> DAOFactory.template.yaml}}
+{{/DAOFactoryDataSources}}
+{{#KernelDataSources}}
+  {{> Kernel.template.yaml}}
+{{/KernelDataSources}}

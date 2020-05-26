@@ -1,0 +1,26 @@
+- kind: ethereum/contract
+  name: {{name}}
+  network: {{network}}
+  source:
+    abi: DAOTemplate
+    address: '{{address}}'
+    startBlock: {{startBlock}}
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - NoEnt
+    abis:
+      - name: DAOTemplate
+        file: ./abis/DAOTemplate.json
+    eventHandlers:
+      - event: DeployDao(address)
+        handler: handleDeployDao
+      - event: DeployToken(address)
+        handler: handleDeployToken
+      - event: InstalledApp(address,bytes32)
+        handler: handleInstalledApp
+      - event: SetupDao(address)
+        handler: handleSetupDao
+    file: ./src/base/DAOTemplate.ts

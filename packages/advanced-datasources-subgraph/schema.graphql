@@ -1,0 +1,15 @@
+type Org @entity {
+  id: ID!
+  address: Bytes!
+}
+
+type App @entity {
+  id: ID!
+  address: Bytes!
+  appId: Bytes!
+}
+
+type Token @entity {
+  id: ID!
+  address: Bytes!
+}

@@ -1,0 +1,45 @@
+{
+  "network": "mainnet",
+  "description": "Experimental dao-template data sources",
+  "repository": "https://github.com/aragon/plumbery",
+  "DAOTemplateDataSources": [
+    {
+      "name": "company-template.aragonpm.eth@1.0.0",
+      "address": "0xd737632caC4d039C9B0EEcc94C12267407a271b5",
+      "startBlock": "8495687"
+    },
+    {
+      "name": "company-board-template.aragonpm.eth@1.0.0",
+      "address": "0x4d1A892f42c947fa952b57bc6939b27A96215CfA",
+      "startBlock": "8495512"
+    },
+    {
+      "name": "dandelion-org-template.aragonpm.eth@1.0.0",
+      "address": "0x417c5ec1E30D37f1d3D54A974E2F384e640046E5",
+      "startBlock": "9438115"
+    },
+    {
+      "name": "fundraising-multisig-template.aragonpm.eth@1.0.0",
+      "address": "0xd4bc1aFD46e744F1834cad01B2262d095DCB6C9B",
+      "startBlock": "9110213"
+    },
+    {
+      "name": "membership-template.aragonpm.eth@2.0.0",
+      "address": "0x67430642C0c3B5E6538049B9E9eE719f2a4BeE7c",
+      "startBlock": "8495992"
+    },
+    {
+      "name": "multisig-kit.aragonpm.eth@2.0.0",
+      "address": "0x41bbaf498226b68415f1C78ED541c45A18fd7696",
+      "startBlock": "6593332"
+    },
+    {
+      "name": "reputation-template.aragonpm.eth@1.0.0",
+      "address": "0x3a06A6544e48708142508D9042f94DDdA769d04F",
+      "startBlock": "8495989"
+    }
+  ],
+  "DAOFactoryDataSources": [],
+  "KernelDataSources": []
+}
+
