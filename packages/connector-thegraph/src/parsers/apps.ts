@@ -15,6 +15,7 @@ function _parseApp(app: AppDataGql): AppData {
     kernelAddress: app.organization?.address,
     manifest: app.version?.manifest,
     name: app.repo?.name,
+    registry: app.repo?.registry?.name,
     registryAddress: app.repo?.registry?.address,
     registry: app.repo?.registry?.name,
     repoAddress: app.repo?.address,

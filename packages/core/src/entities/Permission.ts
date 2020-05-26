@@ -10,6 +10,7 @@ export interface ParamData {
 }
 
 export interface PermissionData {
+  allowed: boolean
   appAddress: string
   granteeAddress: string
   params: ParamData[]
@@ -17,6 +18,7 @@ export interface PermissionData {
 }
 
 export default class Permission extends Entity implements PermissionData {
+  readonly allowed!: boolean
   readonly appAddress!: string
   readonly granteeAddress!: string
   readonly params!: ParamData[]
@@ -34,6 +36,6 @@ export default class Permission extends Entity implements PermissionData {
 
   async getRole(): Promise<Role | undefined> {
     const roles = await this._connector.rolesForAddress!(this.appAddress)
-    return roles.find((role) => role.bytes === this.roleHash)
+    return roles.find((role) => role.hash === this.roleHash)
   }
 }

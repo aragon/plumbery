@@ -19,12 +19,13 @@ export interface AppData {
   appId: string
   artifact?: string | null
   codeAddress: string
-  contentUri?: string
+  contentUri?: string | null
   isForwarder?: boolean | null
   isUpgradeable?: boolean | null
   kernelAddress: string
   manifest?: string | null
   name?: string
+  registry?: string | null
   registryAddress: string
   registry?: string
   repoAddress?: string
@@ -48,8 +49,8 @@ export default class App extends Entity implements AppData {
   readonly intents?: AppIntent[]
   readonly deprecatedIntents?: { [version: string]: AppIntent[] }
   readonly icons?: { src: string; sizes: string }[]
-  readonly isForwarder?: boolean | null
-  readonly isUpgradeable?: boolean | null
+  readonly isForwarder?: boolean
+  readonly isUpgradeable?: boolean
   readonly kernelAddress!: string
   readonly name?: string
   readonly registryAddress!: string

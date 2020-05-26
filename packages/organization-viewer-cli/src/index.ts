@@ -1,7 +1,7 @@
 // import data from './org-data.json'
 import { ethers } from 'ethers'
 
-import { Connect, Permission, App, Organization } from 'plumbery-core'
+import { Connect, Permission, App, Role, Organization } from 'plumbery-core'
 import { GraphQLWrapper } from 'plumbery-connector-thegraph'
 import {
   Voting,
@@ -24,7 +24,7 @@ const ALL_VOTING_SUBGRAPH_URL =
 const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
 
-const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
+const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
 
 async function main() {
@@ -44,7 +44,7 @@ async function initAndGetOrg(): Promise<Organization> {
   const readProvider = ethers.getDefaultProvider(network)
 
   const org = Connect(
-    ORG_ADDRESS, // location,
+    ORG_ADDRESS,
     {
       connector: [
         'thegraph',
@@ -79,8 +79,14 @@ async function inspectOrg(org: Organization): Promise<void> {
   })
 
   console.log('\nA voting app:')
-  const votingApp = apps.find((app: App) => app.name == 'voting')!
+  const votingApp = apps.find((app: App) => app.name == 'dandelion-voting')!
   console.log(votingApp.toString())
+
+  console.log('\nRoles of an app:')
+  const roles = await votingApp.roles()
+  roles.map((role: Role) => {
+    console.log(role.toString())
+  })
 
   console.log('\nA repo from an app:')
   const repo = await apps[2].repo()
@@ -101,15 +107,20 @@ async function trySimplePath(org: Organization): Promise<void> {
   const app = (await org.apps())[3]
   console.log(app.toString())
 
-  const root = '0xb4124cEB3451635DAcedd11767f004d8a28c6eE7'
+  const account = '0xDC870979E88f771232e77e7A95A0c52E8Dc866FD'
 
-  const intent = org.appIntent(app.address, 'deposit', [
+  const intent = org.appIntent(app.address, 'newImmediatePayment', [
     ethers.constants.AddressZero,
+    account,
     ethers.utils.bigNumberify(1),
-    'Test deposit',
+    'Test payment',
   ])
 
-  const txPath = await intent.paths(root, { path: [] })
+  const timeLockAddress = "0xbce6ac172da935a8eb54bd102dd017e3dd2b0c9d"
+  const dandelionVotingAddress = "0x109b588a4f2a234e302c722f91fe42c5ab828a32"
+  const financeAddress = "0x34ca726d39eae3c8007d18220da99a3a328cba35"
+
+  const txPath = await intent.paths(account, { path: [timeLockAddress, dandelionVotingAddress, financeAddress] })
 
   console.log(txPath.toString())
 }

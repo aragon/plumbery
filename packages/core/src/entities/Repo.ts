@@ -11,9 +11,10 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 export interface RepoData {
   address: string
   artifact?: string | null
-  contentUri?: string
+  contentUri?: string | null
   name: string
   manifest?: string | null
+  registry?: string | null
 }
 
 export default class Repo extends Entity implements RepoData {
@@ -25,6 +26,7 @@ export default class Repo extends Entity implements RepoData {
   readonly environments?: AragonEnvironments
   readonly icons?: { src: string; sizes: string }[]
   readonly name!: string
+  readonly registry!: string
   readonly roles?: AragonArtifactRole[]
   readonly screenshots?: { src: string }[]
   readonly sourceUrl?: string
