@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export const PERMISSION_FRAGMENT = gql`
   fragment Permission_permission on Permission {
     appAddress
+    allowed
     granteeAddress
     roleHash
     params {
@@ -15,10 +16,11 @@ export const PERMISSION_FRAGMENT = gql`
 
 export const ROLE_FRAGMENT = gql`
   fragment Role_role on Role {
-    nameHash
+    roleHash
     manager
     appAddress
     grantees {
+      allowed
       granteeAddress
       params {
         argumentId

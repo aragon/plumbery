@@ -50,10 +50,14 @@ export const ORGANIZATION_PERMISSIONS = gql`
 export const ROLE_BY_APP_ADDRESS = gql`
   query App($appAddress: String!) {
     app(id: $appAddress) {
+      version{
+        ...Version_version
+      }
       roles {
         ...Role_role
       }
     }
   }
+  ${fragments.VERSION_FRAGMENT}
   ${fragments.ROLE_FRAGMENT}
 `

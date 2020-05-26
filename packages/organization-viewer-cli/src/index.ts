@@ -1,5 +1,5 @@
 // import data from './org-data.json'
-import { Connect, Permission, App, Organization } from 'plumbery-core'
+import { Connect, Permission, App, Role, Organization } from 'plumbery-core'
 import { GraphQLWrapper } from 'plumbery-connector-thegraph'
 import {
   Voting,
@@ -13,11 +13,11 @@ import {
 } from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
-const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging'
+const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
 const ALL_VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
 const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
 
-const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
+const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
 
 async function main() {
@@ -33,7 +33,7 @@ async function main() {
 
 async function initAndGetOrg(): Promise<Organization> {
   const org = Connect(
-    ORG_ADDRESS, // location,
+    ORG_ADDRESS,
     {
       connector: [
         'thegraph',
@@ -67,8 +67,14 @@ async function inspectOrg(org: Organization): Promise<void> {
   })
 
   console.log('\nA voting app:')
-  const votingApp = apps.find((app: App) => app.name == 'voting')!
+  const votingApp = apps.find((app: App) => app.name == 'dandelion-voting')!
   console.log(votingApp.toString())
+
+  console.log('\nRoles of an app:')
+  const roles = await votingApp.roles()
+  roles.map((role: Role) => {
+    console.log(role.toString())
+  })
 
   console.log('\nA repo from an app:')
   const repo = await apps[2].repo()
