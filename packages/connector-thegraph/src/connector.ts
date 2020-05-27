@@ -26,6 +26,9 @@ export type ConnectorTheGraphConfig = {
 const DAO_SUBGRAPH_URL_DEFAULT =
   'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet'
 
+// https://api.thegraph.com/subgraphs/name/ensdomains/ens
+// https://api.thegraph.com/subgraphs/name/ensdomains/ensrinkeby
+
 export default class ConnectorTheGraph extends GraphQLWrapper
   implements ConnectorInterface {
   constructor({
