@@ -9,8 +9,13 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
         exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            // options: { projectReferences: true }, // TODO: investigate why circular dependencies are not allowed (for types)
+          },
+        ],
       },
     ],
   },
