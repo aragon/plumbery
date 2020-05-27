@@ -15,17 +15,16 @@ import {
 } from 'plumbery-connector-thegraph-token-manager'
 import gql from 'graphql-tag'
 
-const network = 'rinkeby'
-
 const DAO_SUBGRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging'
+  'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
 const ALL_VOTING_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
-const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+const ALL_TOKEN_MANAGER_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-token-rinkeby'
 
 const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
+const TOKENS_APP_ADDRESS = '0x8db3b9d93275ed6de3351846487117da02ab4e96'
 
 async function main() {
   const org = await initAndGetOrg()
@@ -37,24 +36,21 @@ async function main() {
   await inspectVotingHighLevel(VOTING_APP_ADDRESS)
   await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
-  await inspectTokenManager(org)
+  await inspectTokenManager(TOKENS_APP_ADDRESS)
 }
 
 async function initAndGetOrg(): Promise<Organization> {
   const readProvider = ethers.getDefaultProvider(network)
 
-  const org = Connect(
-    ORG_ADDRESS,
-    {
-      connector: [
-        'thegraph',
-        {
-          daoSubgraphUrl: DAO_SUBGRAPH_URL,
-        },
-      ],
-      readProvider,
-    }
-  ) as Organization
+  const org = Connect(ORG_ADDRESS, {
+    connector: [
+      'thegraph',
+      {
+        daoSubgraphUrl: DAO_SUBGRAPH_URL,
+      },
+    ],
+    readProvider,
+  }) as Organization
 
   console.log('\nOrganization initialized')
 
@@ -116,24 +112,24 @@ async function trySimplePath(org: Organization): Promise<void> {
     'Test payment',
   ])
 
-  const timeLockAddress = "0xbce6ac172da935a8eb54bd102dd017e3dd2b0c9d"
-  const dandelionVotingAddress = "0x109b588a4f2a234e302c722f91fe42c5ab828a32"
-  const financeAddress = "0x34ca726d39eae3c8007d18220da99a3a328cba35"
+  const timeLockAddress = '0xbce6ac172da935a8eb54bd102dd017e3dd2b0c9d'
+  const dandelionVotingAddress = '0x109b588a4f2a234e302c722f91fe42c5ab828a32'
+  const financeAddress = '0x34ca726d39eae3c8007d18220da99a3a328cba35'
 
-  const txPath = await intent.paths(account, { path: [timeLockAddress, dandelionVotingAddress, financeAddress] })
+  const txPath = await intent.paths(account, {
+    path: [timeLockAddress, dandelionVotingAddress, financeAddress],
+  })
 
   console.log(txPath.toString())
 }
 
-async function inspectTokenManager(org: Organization): Promise<void> {
-  const apps = await org.apps()
-  const app = apps.find(
-    (app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844'
-  )!
-
+async function inspectTokenManager(appAddress: string): Promise<void> {
   console.log('\nTokenManager:')
 
-  const tokenManager = new TokenManager(app, SINGLE_TOKEN_MANAGER_SUBGRAPH_URL)
+  const tokenManager = new TokenManager(
+    appAddress,
+    ALL_TOKEN_MANAGER_SUBGRAPH_URL
+  )
 
   console.log(tokenManager.toString())
 
