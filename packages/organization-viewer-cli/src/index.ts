@@ -15,10 +15,11 @@ import gql from 'graphql-tag'
 
 const DAO_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
 const ALL_VOTING_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
-const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+const ALL_TOKEN_MANAGER_SUBGRAPH_URL =  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-token-rinkeby'
 
 const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
+const TOKENS_APP_ADDRESS = '0x8db3b9d93275ed6de3351846487117da02ab4e96'
 
 async function main() {
   const org = await initAndGetOrg()
@@ -28,7 +29,7 @@ async function main() {
   await inspectVotingHighLevel(VOTING_APP_ADDRESS)
   await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
-  await inspectTokenManager(org)
+  await inspectTokenManager(TOKENS_APP_ADDRESS)
 }
 
 async function initAndGetOrg(): Promise<Organization> {
@@ -91,16 +92,11 @@ async function inspectOrg(org: Organization): Promise<void> {
   }
 }
 
-async function inspectTokenManager(org: Organization): Promise<void> {
-  const apps = await org.apps()
-  const app = apps.find(
-    (app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844'
-  )!
-
+async function inspectTokenManager(appAddress: string): Promise<void> {
   console.log('\nTokenManager:')
-  
-  const tokenManager = new TokenManager(app, SINGLE_TOKEN_MANAGER_SUBGRAPH_URL)
-  
+
+  const tokenManager = new TokenManager(appAddress, ALL_TOKEN_MANAGER_SUBGRAPH_URL)
+
   console.log(tokenManager.toString())
 
   console.log('\nToken:')
@@ -114,7 +110,7 @@ async function inspectTokenManager(org: Organization): Promise<void> {
 
 async function inspectVotingHighLevel(appAddress: string): Promise<void> {
   console.log('\nVoting:')
-  
+
   const voting = new Voting(appAddress, ALL_VOTING_SUBGRAPH_URL)
 
   console.log(voting.toString())

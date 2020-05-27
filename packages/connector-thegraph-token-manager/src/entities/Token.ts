@@ -26,6 +26,6 @@ export default class Token extends Entity implements TokenData {
   }
 
   async holders(): Promise<TokenHolder[]> {
-    return this._connector.tokenHolders()
+    return this._connector.tokenHolders(this.address)
   }
 }
