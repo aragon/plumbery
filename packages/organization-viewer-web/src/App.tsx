@@ -71,7 +71,14 @@ export default function App() {
   }, [])
 
   const [org] = useCancellableAsync(
-    async () => connect(addressFromOrgName(orgName.trim()), 'thegraph'),
+    async () =>
+      connect(addressFromOrgName(orgName.trim()), [
+        'thegraph',
+        {
+          daoSubgraphUrl:
+            'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging',
+        },
+      ]),
     [orgName]
   )
 
