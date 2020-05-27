@@ -1,10 +1,8 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
-import React from 'react'
+import { jsx } from '@emotion/core'
 import { Organization } from 'plumbery-core'
 import Group from './Group'
 import Table from './Table'
-import TextButton from './TextButton'
 
 type OrgInfoProps = {
   org?: Organization
@@ -23,7 +21,7 @@ export default function OrgApps({ org, orgAddress }: OrgInfoProps) {
         rows={Object.entries({ ...org, address: orgAddress }).map(
           ([name, value]) => {
             if (value.startsWith('0x')) {
-              value = value.slice(0, 6)
+              value = value.slice(0, 10) + '…'
             }
             return [name, value]
           }

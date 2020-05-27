@@ -1,43 +1,22 @@
 /** @jsx jsx */
-import React, { useEffect, useState } from 'react'
-import { css, jsx } from '@emotion/core'
+import { useEffect, useState } from 'react'
+import { jsx } from '@emotion/core'
 import { App, Organization } from 'plumbery-core'
 import Group from './Group'
 import Table from './Table'
 import TextButton from './TextButton'
+import { useCancellableAsync } from './generic-hooks'
 
-type OrgAppsProps = {
+type Props = {
   org?: Organization
   onOpenApp: (address: string) => void
 }
 
-export default function OrgApps({ onOpenApp, org }: OrgAppsProps) {
-  const [apps, setOrgApps] = useState<App[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    let cancelled = false
-
-    const update = async () => {
-      if (!org) {
-        return
-      }
-
-      setLoading(true)
-      const apps = await org.apps()
-
-      if (!cancelled) {
-        setLoading(false)
-        setOrgApps(apps)
-      }
-    }
-
-    update()
-
-    return () => {
-      cancelled = true
-    }
-  }, [org])
+export default function OrgApps({ onOpenApp, org }: Props) {
+  const [apps = [], loading] = useCancellableAsync<App[]>(
+    async () => (org ? org.apps() : []),
+    [org]
+  )
 
   return (
     <Group name="Apps" loading={loading}>
