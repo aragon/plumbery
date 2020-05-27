@@ -8,7 +8,7 @@ export default function Main({ children }: MainProps) {
     <div>
       <div
         css={css`
-          width: 600px;
+          max-width: 800px;
           margin: 0 auto;
           padding: 60px 0;
         `}
