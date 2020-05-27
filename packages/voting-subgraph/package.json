@@ -8,18 +8,18 @@
     "manifest-staging": "env STAGING=true scripts/build-manifest.sh mainnet",
     "manifest-rinkeby": "scripts/build-manifest.sh rinkeby",
     "manifest-rinkeby-staging": "env STAGING=true scripts/build-manifest.sh rinkeby",
-    "deploy": "scripts/deploy.sh ajsantander voting mainnet",
-    "deploy-staging": "env STAGING=true scripts/deploy.sh ajsantander voting mainnet",
-    "deploy-rinkeby": "scripts/deploy.sh ajsantander voting rinkeby",
-    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh ajsantander voting rinkeby"
+    "deploy": "scripts/deploy.sh aragon voting mainnet",
+    "deploy-staging": "env STAGING=true scripts/deploy.sh aragon voting mainnet",
+    "deploy-rinkeby": "scripts/deploy.sh aragon voting rinkeby",
+    "deploy-rinkeby-staging": "env STAGING=true scripts/deploy.sh aragon voting rinkeby"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.18.0",
-    "@graphprotocol/graph-ts": "^0.18.1"
+    "@graphprotocol/graph-ts": "^0.18.1",
+    "mustache": "^4.0.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0",
-    "mustache": "^4.0.1"
+    "babel-register": "^6.26.0"
   }
 }
