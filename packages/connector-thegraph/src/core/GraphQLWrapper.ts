@@ -1,4 +1,3 @@
-import 'isomorphic-unfetch';
 import { Client } from '@urql/core'
 import { DocumentNode } from 'graphql';
 import {
