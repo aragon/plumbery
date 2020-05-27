@@ -7,7 +7,7 @@ function _parseRole(role: RoleDataGql, artifact?: string | null): RoleData {
   return {
     appAddress: role.appAddress,
     manager: role.manager,
-    bytes: role.nameHash,
+    hash: role.roleHash,
     artifact,
   }
 }
