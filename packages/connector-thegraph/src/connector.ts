@@ -1,12 +1,3 @@
-import * as queries from './queries'
-import GraphQLWrapper from './core/GraphQLWrapper'
-import {
-  parseApp,
-  parseApps,
-  parsePermissions,
-  parseRepo,
-  parseRoles,
-} from './parsers'
 import {
   ConnectorInterface,
   Permission,
@@ -17,16 +8,31 @@ import {
   Role,
   RoleData,
 } from 'plumbery-core'
+import * as queries from './queries'
+import GraphQLWrapper from './core/GraphQLWrapper'
+import {
+  parseApp,
+  parseApps,
+  parsePermissions,
+  parseRepo,
+  parseRoles,
+} from './parsers'
 
 export type ConnectorTheGraphConfig = {
-  daoSubgraphUrl: string
+  daoSubgraphUrl?: string
   verbose?: boolean
 }
 
+const DAO_SUBGRAPH_URL_DEFAULT =
+  'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet'
+
 export default class ConnectorTheGraph extends GraphQLWrapper
   implements ConnectorInterface {
-  constructor(config: ConnectorTheGraphConfig) {
-    super(config.daoSubgraphUrl, config.verbose)
+  constructor({
+    daoSubgraphUrl = DAO_SUBGRAPH_URL_DEFAULT,
+    verbose = false,
+  }: ConnectorTheGraphConfig = {}) {
+    super(daoSubgraphUrl, verbose)
   }
 
   async rolesForAddress(appAddress: string): Promise<Role[]> {
