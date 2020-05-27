@@ -4,13 +4,11 @@ import {
   CastVote as CastVoteEvent,
   ExecuteVote as ExecuteVoteEvent,
   Voting as VotingContract
-} from '../../generated/templates/Voting/Voting'
+} from '../generated/templates/Voting/Voting'
 import {
   Vote as VoteEntity,
   Cast as CastEntity
-} from '../../generated/schema'
-
-/* --------------------- REDUCERS --------------------- */
+} from '../generated/schema'
 
 export function handleStartVote(event: StartVoteEvent): void {
   let vote = _getVoteEntity(event.address, event.params.voteId)
@@ -46,8 +44,6 @@ export function handleExecuteVote(event: ExecuteVoteEvent): void {
 
   vote.save()
 }
-
-/* --------------------- HELPERS --------------------- */
 
 function _getVoteEntity(appAddress: Address, voteNum: BigInt): VoteEntity {
   let voteEntityId = _getVoteEntityId(appAddress, voteNum)

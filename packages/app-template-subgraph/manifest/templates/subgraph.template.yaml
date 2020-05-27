@@ -34,4 +34,4 @@ templates:
           handler: handleCastVote
         - event: ExecuteVote(indexed uint256)
           handler: handleExecuteVote
-      file: ./src/mappings/Voting.ts
+      file: ./src/Voting.ts
