@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "ethers": "^4.0.47",
+    "graphql-tag": "^2.10.3",
     "plumbery-connector-thegraph": "*",
     "plumbery-connector-thegraph-token-manager": "*",
     "plumbery-connector-thegraph-voting": "*",

@@ -2,8 +2,9 @@ import { ethers } from 'ethers'
 
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
+import App from '../entities/App'
 import Organization from '../entities/Organization'
-import { verifyTransactionPath } from '../utils/verifyPath'
+import { calculateTransactionPath } from '../utils/calculatePath'
 
 export interface TransactionIntentData {
   contractAddress: string
@@ -32,33 +33,44 @@ export default class TransactionIntent {
 
   async paths(
     account: string,
-    { as, path }: { as?: string; path?: string[] }
-  ): Promise<TransactionPath[]> {
-    const paths: TransactionPath[] = []
+    options?: { as?: string; path?: string[] }
+  ): Promise<TransactionPath> {
+    const apps = await this.#org.apps()
+    const destination = this.contractAddress
 
-    if (path) {
-      const transactionPath = await verifyTransactionPath(
-        account,
-        path,
-        this.contractAddress,
-        this.functionName,
-        this.functionArgs,
-        this.#org,
-        this.#provider
-      )
+    const transactions = await calculateTransactionPath(
+      account,
+      destination,
+      this.functionName,
+      this.functionArgs,
+      apps,
+      this.#provider
+    )
 
-      paths.push(transactionPath)
-    }
+    // Include chainId and create Transaction Request objects
+    const chainId = (await this.#provider.getNetwork()).chainId
+    const transactionsRequests = transactions.map((tx) => {
+      return new TransactionRequest({
+        ...tx,
+        chainId,
+      })
+    })
 
-    // TODO: support calculate transaction path
+    const appsOnPath = transactions.map((tx) => tx.to)
 
-    return paths
+    return new TransactionPath({
+      apps: apps.filter((app) =>
+        appsOnPath.some((address) => address === app.address)
+      ),
+      destination: apps.find((app) => app.address == destination) as App,
+      transactions: transactionsRequests,
+    })
   }
 
   async transactions(
     account: string,
-    { as }: { as: string }
+    options?: { as: string; path?: string[] }
   ): Promise<TransactionRequest[]> {
-    return (await this.paths(account, { as }))[0].transactions
+    return (await this.paths(account, options)).transactions
   }
 }

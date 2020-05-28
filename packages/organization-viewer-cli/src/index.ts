@@ -1,7 +1,8 @@
 // import data from './org-data.json'
 import { ethers } from 'ethers'
+import gql from 'graphql-tag'
 
-import { Connect, Permission, App, Role, Organization } from 'plumbery-core'
+import { connect, Permission, App, Role, Organization } from 'plumbery-core'
 import { GraphQLWrapper } from 'plumbery-connector-thegraph'
 import {
   Voting,
@@ -13,14 +14,15 @@ import {
   Token,
   TokenHolder,
 } from 'plumbery-connector-thegraph-token-manager'
-import gql from 'graphql-tag'
+
+const network = 'mainnet'
 
 const DAO_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
 const ALL_VOTING_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
-const ALL_TOKEN_MANAGER_SUBGRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-token-rinkeby'
+const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
 
 const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
@@ -42,15 +44,18 @@ async function main() {
 async function initAndGetOrg(): Promise<Organization> {
   const readProvider = ethers.getDefaultProvider(network)
 
-  const org = Connect(ORG_ADDRESS, {
-    connector: [
+  const org = (await connect(
+    ORG_ADDRESS,
+    [
       'thegraph',
       {
         daoSubgraphUrl: DAO_SUBGRAPH_URL,
       },
     ],
-    readProvider,
-  }) as Organization
+    {
+      readProvider,
+    }
+  )) as Organization
 
   console.log('\nOrganization initialized')
 
@@ -100,27 +105,21 @@ async function inspectOrg(org: Organization): Promise<void> {
 }
 
 async function trySimplePath(org: Organization): Promise<void> {
-  const app = (await org.apps())[3]
-  console.log(app.toString())
-
-  const account = '0xDC870979E88f771232e77e7A95A0c52E8Dc866FD'
-
-  const intent = org.appIntent(app.address, 'newImmediatePayment', [
-    ethers.constants.AddressZero,
-    account,
-    ethers.utils.bigNumberify(1),
-    'Test payment',
-  ])
-
-  const timeLockAddress = '0xbce6ac172da935a8eb54bd102dd017e3dd2b0c9d'
-  const dandelionVotingAddress = '0x109b588a4f2a234e302c722f91fe42c5ab828a32'
   const financeAddress = '0x34ca726d39eae3c8007d18220da99a3a328cba35'
 
-  const txPath = await intent.paths(account, {
-    path: [timeLockAddress, dandelionVotingAddress, financeAddress],
-  })
+  const account = '0xB24b54FE5a3ADcB4cb3B27d31B6C7f7E9F6A73a7'
 
-  console.log(txPath.toString())
+  const intent = org.appIntent(financeAddress, 'newImmediatePayment', [
+    ethers.constants.AddressZero,
+    account,
+    ethers.utils.parseEther('1'),
+    'Tests Payment',
+  ])
+
+  const txPath = await intent.paths(account)
+
+  console.log('\nTransactions on the path:')
+  txPath.transactions.map((tx: any) => console.log(tx))
 }
 
 async function inspectTokenManager(appAddress: string): Promise<void> {
@@ -128,7 +127,7 @@ async function inspectTokenManager(appAddress: string): Promise<void> {
 
   const tokenManager = new TokenManager(
     appAddress,
-    ALL_TOKEN_MANAGER_SUBGRAPH_URL
+    SINGLE_TOKEN_MANAGER_SUBGRAPH_URL
   )
 
   console.log(tokenManager.toString())
