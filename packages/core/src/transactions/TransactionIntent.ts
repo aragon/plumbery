@@ -1,8 +1,10 @@
+import { ethers } from 'ethers'
+
 import TransactionPath from './TransactionPath'
 import TransactionRequest from './TransactionRequest'
-// import { verifyTransactionPath } from '../utils/verifyPath'
-// import { calculateTransactionPath } from '../utils/calculatePath'
+import App from '../entities/App'
 import Organization from '../entities/Organization'
+import { calculateTransactionPath } from '../utils/calculatePath'
 
 export interface TransactionIntentData {
   contractAddress: string
@@ -16,50 +18,59 @@ export default class TransactionIntent {
   readonly functionArgs!: any[]
 
   #org: Organization
-  #finalForwarder?: string
+  #provider: ethers.providers.Provider
 
-  constructor(data: TransactionIntentData, org: Organization) {
+  constructor(
+    data: TransactionIntentData,
+    org: Organization,
+    provider: ethers.providers.Provider
+  ) {
     this.#org = org
+    this.#provider = provider
 
     Object.assign(this, data)
   }
 
   async paths(
-    address: string,
-    { as, path }: { as?: string; path?: string[] }
-  ): Promise<TransactionPath[]> {
-    const paths: TransactionPath[] = []
-    // if (path) {
-    //   const transactionPath = verifyTransactionPath(
-    //     address,
-    //     path,
-    //     this.contractAddress,
-    //     this.functionName,
-    //     this.functionArgs,
-    //     this.#org
-    //   )
+    account: string,
+    options?: { as?: string; path?: string[] }
+  ): Promise<TransactionPath> {
+    const apps = await this.#org.apps()
+    const destination = this.contractAddress
 
-    //   if (path) paths.push(transactionPath)
-    // }
+    const transactions = await calculateTransactionPath(
+      account,
+      destination,
+      this.functionName,
+      this.functionArgs,
+      apps,
+      this.#provider
+    )
 
-    // TODO: support calculate transaction path
-    // paths = calculateTransactionPath(
-    //   address,
-    //   this.contractAddress,
-    //   this.functionName,
-    //   this.functionArgs,
-    //   this.#org,
-    //   path,
-    //   as
-    // )
+    // Include chainId and create Transaction Request objects
+    const chainId = (await this.#provider.getNetwork()).chainId
+    const transactionsRequests = transactions.map((tx) => {
+      return new TransactionRequest({
+        ...tx,
+        chainId,
+      })
+    })
 
-    return paths
+    const appsOnPath = transactions.map((tx) => tx.to)
+
+    return new TransactionPath({
+      apps: apps.filter((app) =>
+        appsOnPath.some((address) => address === app.address)
+      ),
+      destination: apps.find((app) => app.address == destination) as App,
+      transactions: transactionsRequests,
+    })
   }
 
   async transactions(
-    address: string,
-    { as }: { as: string }
+    account: string,
+    options?: { as: string; path?: string[] }
   ): Promise<TransactionRequest[]> {
-    return (await this.paths(address, { as }))[0].transactions
+    return (await this.paths(account, options)).transactions
   }
 }

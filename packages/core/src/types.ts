@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 export type ParamType = {
   name?: string
   type: string
@@ -20,7 +22,7 @@ export type FunctionFragment = {
   outputs: Array<ParamType>
   payable: boolean
   stateMutability: string
-  gas?: BigInt
+  gas?: string
 }
 
 export type Abi = (EventFragment | FunctionFragment)[]

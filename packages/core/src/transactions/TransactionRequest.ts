@@ -1,22 +1,31 @@
 export interface TransactionRequestData {
-  from: string
-  chainId: number
-  data?: string
-  gas: string
-  gasLimit: number
-  gasPrice: string
   to: string
-  value?: string
+  from: string
+  data: string
+  pretransaction?: {
+    to: string
+    from: string
+    data: string
+  }
+  gas?: string
+  gasPrice?: string
+  gasLimit?: string
+  chainId?: number
 }
 
 export default class TransactionRequest {
-  readonly from!: string
-  readonly chainId!: number
-  readonly data?: string
-  readonly gasLimit!: number
-  readonly gasPrice!: string
   readonly to!: string
-  readonly value?: string
+  readonly from!: string
+  readonly data!: string
+  readonly pretransaction?: {
+    to: string
+    from: string
+    data: string
+  }
+  readonly gas?: string
+  readonly gasPrice?: string
+  readonly gasLimit?: string
+  readonly chainId?: number
 
   constructor(data: TransactionRequestData) {
     Object.assign(this, data)

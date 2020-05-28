@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 import ConnectorEthereum, {
   ConnectorEthereumConfig,
 } from 'plumbery-connector-ethereum'
@@ -9,6 +11,8 @@ import { ConnectorInterface } from './ConnectorInterface'
 import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'
 
 type ConnectOptions = {
+  readProvider?: ethers.providers.Provider
+  chainId?: number
   ipfs?: ResolveIpfs
 }
 type ConnectorDeclaration =
@@ -55,9 +59,17 @@ function getConnector(connector: ConnectorDeclaration): ConnectorInterface {
 async function connect(
   location: string,
   connector: ConnectorDeclaration,
-  { ipfs }: ConnectOptions = {}
+  { readProvider, chainId, ipfs }: ConnectOptions = {}
 ): Promise<Organization> {
-  return new Organization(location, getConnector(connector))
+  // TODO: Handle ENS names
+  // TODO: support several connections
+
+  return new Organization(
+    location,
+    getConnector(connector),
+    readProvider,
+    chainId
+  )
 }
 
 export default connect
