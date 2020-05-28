@@ -17,7 +17,6 @@ function _parseApp(app: AppDataGql): AppData {
     name: app.repo?.name,
     registry: app.repo?.registry?.name,
     registryAddress: app.repo?.registry?.address,
-    registry: app.repo?.registry?.name,
     repoAddress: app.repo?.address,
     version: app.version?.semanticVersion.replace(/,/g, '.'),
   }

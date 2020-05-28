@@ -1,4 +1,5 @@
 import Entity from './Entity'
+import { PermissionData } from './Permission'
 import { AragonArtifact } from '../types'
 import { parseMetadata } from '../utils/parseMetadata'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
@@ -8,11 +9,13 @@ export interface RoleData {
   artifact?: string | null
   hash: string
   manager?: string
+  grantees?: PermissionData[] | null
 }
 
 export default class Role extends Entity implements RoleData {
   readonly appAddress!: string
   readonly description?: string
+  readonly grantees?: PermissionData[]
   readonly hash!: string
   readonly name?: string
   readonly manager?: string

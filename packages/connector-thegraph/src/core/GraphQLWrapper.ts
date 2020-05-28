@@ -1,10 +1,7 @@
-import 'isomorphic-unfetch';
+import 'isomorphic-unfetch'
 import { Client } from '@urql/core'
-import { DocumentNode } from 'graphql';
-import {
-  ParseFunction,
-  QueryResult
-} from '../types'
+import { DocumentNode } from 'graphql'
+import { ParseFunction, QueryResult } from '../types'
 
 export default class GraphQLWrapper {
   #client: Client
@@ -19,18 +16,20 @@ export default class GraphQLWrapper {
     this.#verbose = verbose
   }
 
-  async performQuery(query: DocumentNode, args: any =  {}): Promise<QueryResult> {
-    const result = await this.#client.query(
-      query,
-      args
-    ).toPromise()
+  async performQuery(
+    query: DocumentNode,
+    args: any = {}
+  ): Promise<QueryResult> {
+    const result = await this.#client.query(query, args).toPromise()
 
     if (this.#verbose) {
       console.log(this.describeQueryResult(result)) // Uncomment for debugging.
     }
 
     if (result.error) {
-      throw new Error(`Error performing query.${this.describeQueryResult(result)}`)
+      throw new Error(
+        `Error performing query.${this.describeQueryResult(result)}`
+      )
     }
 
     return result

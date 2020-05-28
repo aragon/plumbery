@@ -27,7 +27,6 @@ export interface AppData {
   name?: string
   registry?: string | null
   registryAddress: string
-  registry?: string
   repoAddress?: string
   version?: string
 }

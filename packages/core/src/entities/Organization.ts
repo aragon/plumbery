@@ -73,16 +73,26 @@ export default class Organization {
 
   ///////// PERMISSIONS ///////////
   async permissions(): Promise<Permission[]> {
-    const allPermissions = await this.#connector.permissionsForOrg(this.#address)
-    return allPermissions.filter(permission => permission.allowed === true)
+    const allPermissions = await this.#connector.permissionsForOrg(
+      this.#address
+    )
+    return allPermissions.filter((permission) => permission.allowed === true)
   }
 
   // async addPermissions(
   //   grantee: string,
-  //   appAddress: string,
   //   roleId: string
   // ): Promise<TransactionIntent> {
-  //   return []
+  //   return new TransactionIntent(
+  //     {
+  //       contractAddress: acl,
+  //       functionName: '',
+  //       functionArgs: [appAddress, grantee, roleId],
+  //     },
+  //     this,
+  //     this.#provider
+  //   )
+  // }
   // }
 
   // async removePermissions(

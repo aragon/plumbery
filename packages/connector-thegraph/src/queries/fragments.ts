@@ -20,15 +20,10 @@ export const ROLE_FRAGMENT = gql`
     manager
     appAddress
     grantees {
-      allowed
-      granteeAddress
-      params {
-        argumentId
-        operationType
-        argumentValue
-      }
+      ...Permission_permission
     }
   }
+  ${PERMISSION_FRAGMENT}
 `
 
 export const VERSION_FRAGMENT = gql`
