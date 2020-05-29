@@ -1,5 +1,5 @@
-export { default as ConnectorEthereum } from 'plumbery-connector-ethereum'
-export { default as ConnectorTheGraph } from 'plumbery-connector-thegraph'
+export { default as ConnectorEthereum } from '@aragon/connect-ethereum'
+export { default as ConnectorTheGraph } from '@aragon/connect-thegraph'
 export { ConnectorInterface } from './connections/ConnectorInterface'
 export { default as ConnectorJson } from './connections/ConnectorJson'
 export { default as connect } from './connections/connect'

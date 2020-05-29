@@ -1,9 +1,9 @@
-# Ethereum Connector for Aragon Plumbery
+# Ethereum Connector for Aragon Connect
 
 ## Usage
 
 ```js
-const connection = new AragonPlumbery({
+const myorg = await connect('myorg', {
   connector: new ConnectorEthereum({
     provider: ethereumProvider,
     appStateReducer: (state, { eventName, appId, repoId }) => {},

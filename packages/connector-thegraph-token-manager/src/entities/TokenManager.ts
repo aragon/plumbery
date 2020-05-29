@@ -1,6 +1,7 @@
+import { App } from '@aragon/connect'
+import TokenManagerConnectorTheGraph from '../connector'
 import Entity from './Entity'
 import Token from './Token'
-import TokenManagerConnectorTheGraph from "../connector";
 
 export default class TokenManager extends Entity {
   readonly appAddress: string

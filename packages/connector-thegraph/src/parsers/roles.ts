@@ -1,8 +1,8 @@
+import { RoleData, PermissionData } from '@aragon/connect'
 import { App as AppDataGql } from '../queries/types'
 import { Param as ParamDataGql } from '../queries/types'
 import { Permission as PermissionDataGql } from '../queries/types'
 import { Role as RoleDataGql } from '../queries/types'
-import { RoleData, PermissionData } from 'plumbery-core'
 import { QueryResult } from '../types'
 
 function _parseRole(role: RoleDataGql, artifact?: string | null): RoleData {

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { useEffect, useState } from 'react'
 import { css, jsx } from '@emotion/core'
-import { connect } from 'plumbery-core'
+import { connect } from '@aragon/connect'
 import Main from './Main'
 import OrgApps from './OrgApps'
 import OrgInfo from './OrgInfo'

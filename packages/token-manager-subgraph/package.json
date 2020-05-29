@@ -1,5 +1,5 @@
 {
-  "name": "aragon-token-manager-subgraph",
+  "name": "@aragon/subgraph-token-manager",
   "version": "0.1.0",
   "scripts": {
     "codegen": "rm -rf generated; graph codegen",

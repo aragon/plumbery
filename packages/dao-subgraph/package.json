@@ -1,5 +1,5 @@
 {
-  "name": "plumbery-dao-subgraph",
+  "name": "@aragon/subgraph-dao",
   "version": "1.0.0",
   "repository": "https://github.com/graphprotocol/aragon-network",
   "license": "MIT",

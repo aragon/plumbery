@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { useEffect, useState } from 'react'
 import { jsx } from '@emotion/core'
-import { App, Organization } from 'plumbery-core'
+import { App, Organization } from '@aragon/connect'
 import Group from './Group'
 import Table from './Table'
 import TextButton from './TextButton'

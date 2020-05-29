@@ -7,7 +7,7 @@ import {
   Repo,
   Role,
   RoleData,
-} from 'plumbery-core'
+} from '@aragon/connect'
 import * as queries from './queries'
 import GraphQLWrapper from './core/GraphQLWrapper'
 import {

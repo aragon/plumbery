@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { useEffect, useState } from 'react'
 import { jsx } from '@emotion/core'
-import { Organization, Permission } from 'plumbery-core'
+import { Organization, Permission } from '@aragon/connect'
 import Group from './Group'
 import Table from './Table'
 import { useCancellableAsync } from './generic-hooks'

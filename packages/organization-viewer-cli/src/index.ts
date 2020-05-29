@@ -1,19 +1,10 @@
 // import data from './org-data.json'
 import { ethers } from 'ethers'
 import gql from 'graphql-tag'
-
-import { connect, Permission, App, Role, Organization } from 'plumbery-core'
-import { GraphQLWrapper } from 'plumbery-connector-thegraph'
-import {
-  Voting,
-  VotingVote,
-  VotingCast,
-} from 'plumbery-connector-thegraph-voting'
-import {
-  TokenManager,
-  Token,
-  TokenHolder,
-} from 'plumbery-connector-thegraph-token-manager'
+import { connect, Permission, App, Role, Organization } from '@aragon/connect'
+import { GraphQLWrapper } from '@aragon/connect-thegraph'
+import { Voting, VotingVote, VotingCast } from '@aragon/connect-thegraph-voting'
+import { TokenManager } from '@aragon/connect-thegraph-token-manager'
 
 const network = 'mainnet'
 
@@ -46,15 +37,8 @@ async function initAndGetOrg(): Promise<Organization> {
 
   const org = (await connect(
     ORG_ADDRESS,
-    [
-      'thegraph',
-      {
-        daoSubgraphUrl: DAO_SUBGRAPH_URL,
-      },
-    ],
-    {
-      readProvider,
-    }
+    ['thegraph', { daoSubgraphUrl: DAO_SUBGRAPH_URL }],
+    { readProvider }
   )) as Organization
 
   console.log('\nOrganization initialized')
@@ -193,7 +177,7 @@ async function inspectVotingLowLevel(appAddress: string): Promise<void> {
 
 main()
   .then(() => process.exit(0))
-  .catch((err) => {
+  .catch(err => {
     console.log(`err`, err)
     process.exit(1)
   })

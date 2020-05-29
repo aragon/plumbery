@@ -11,12 +11,12 @@
     "compile": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@aragon/connect": "*",
+    "@aragon/connect-thegraph": "*",
+    "@aragon/connect-thegraph-voting": "*",
+    "@aragon/connect-thegraph-token-manager": "*",
     "ethers": "^4.0.47",
-    "graphql-tag": "^2.10.3",
-    "plumbery-connector-thegraph": "*",
-    "plumbery-connector-thegraph-token-manager": "*",
-    "plumbery-connector-thegraph-voting": "*",
-    "plumbery-core": "*"
+    "graphql-tag": "^2.10.3"
   },
   "devDependencies": {
     "typescript": "^3.8.3"

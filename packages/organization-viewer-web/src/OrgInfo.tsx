@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import { Organization } from 'plumbery-core'
+import { Organization } from '@aragon/connect'
 import Group from './Group'
 import Table from './Table'
 

@@ -2,10 +2,10 @@ import { ethers } from 'ethers'
 
 import ConnectorEthereum, {
   ConnectorEthereumConfig,
-} from 'plumbery-connector-ethereum'
+} from '@aragon/connect-ethereum'
 import ConnectorTheGraph, {
   ConnectorTheGraphConfig,
-} from 'plumbery-connector-thegraph'
+} from '@aragon/connect-thegraph'
 import Organization from '../entities/Organization'
 import { ConnectorInterface } from './ConnectorInterface'
 import ConnectorJson, { ConnectorJsonConfig } from './ConnectorJson'

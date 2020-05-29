@@ -1,8 +1,6 @@
-# Plumbery
+# Aragon Connect
 
-Note: “Plumbery” is a code name used during the development of this project and will change in the future.
-
-This file documents the exports of the library.
+This file documents the main exports of the library.
 
 ## connect(location, config)
 
@@ -27,7 +25,7 @@ Connects and returns an `Organization` for `location`.
 ### Example
 
 ```js
-import { connect } from 'plumbery'
+import { connect } from '@aragon/connect'
 
 // Connections should get wrapped in a try / catch to capture connection errors.
 try {
@@ -76,7 +74,7 @@ When `connect()` gets called with a config only, it returns a function that allo
 ### Example
 
 ```js
-import { connect } from 'plumbery'
+import { connect } from '@aragon/connect'
 
 const getOrg = await connect({ connector: 'thegraph' })
 

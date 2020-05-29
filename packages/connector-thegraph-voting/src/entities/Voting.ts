@@ -1,7 +1,7 @@
-import VotingEntity from "./Entity";
-import Vote from "./Vote";
-import VotingConnectorTheGraph from "../connector";
-import { App } from "plumbery-core";
+import VotingEntity from './Entity'
+import Vote from './Vote'
+import VotingConnectorTheGraph from '../connector'
+import { App } from '@aragon/connect'
 
 export default class Voting extends VotingEntity {
   readonly appAddress: string
