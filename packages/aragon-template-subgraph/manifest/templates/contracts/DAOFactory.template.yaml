@@ -1,3 +1,4 @@
+# DAOFactory
 - kind: ethereum/contract
   name: {{name}}
   network: {{network}}
