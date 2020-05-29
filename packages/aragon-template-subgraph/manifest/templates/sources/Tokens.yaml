@@ -1,0 +1,3 @@
+{{#dataSources.Tokens}}
+  {{> MiniMeToken.template.yaml}}
+{{/dataSources.Tokens}}

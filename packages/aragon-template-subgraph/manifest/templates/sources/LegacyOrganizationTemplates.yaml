@@ -1,0 +1,3 @@
+{{#dataSources.LegacyOrganizationTemplates}}
+  {{> DAOKit.template.yaml}}
+{{/dataSources.LegacyOrganizationTemplates}}

@@ -1,0 +1,13 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+{{> Organizations.template.yaml}}
+{{> OrganizationFactories.template.yaml}}
+{{> OrganizationTemplates.template.yaml}}
+{{> LegacyOrganizationTemplates.template.yaml}}
+{{> TokenFactories.template.yaml}}
+{{> Tokens.template.yaml}}
+templates:
+  {{> Kernel.template.yaml}}
+  {{> Token.template.yaml}}

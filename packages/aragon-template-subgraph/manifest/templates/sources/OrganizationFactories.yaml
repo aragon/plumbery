@@ -1,0 +1,3 @@
+{{#dataSources.OrganizationFactories}}
+  {{> DAOFactory.template.yaml}}
+{{/dataSources.OrganizationFactories}}

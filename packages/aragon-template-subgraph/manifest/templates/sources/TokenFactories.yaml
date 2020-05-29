@@ -1,0 +1,3 @@
+{{#dataSources.TokenFactories}}
+  {{> MiniMeTokenFactory.template.yaml}}
+{{/dataSources.TokenFactories}}

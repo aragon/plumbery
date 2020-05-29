@@ -1,0 +1,3 @@
+{{#dataSources.OrganizationTemplates}}
+  {{> DAOTemplate.template.yaml}}
+{{/dataSources.OrganizationTemplates}}
