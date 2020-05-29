@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 import App from './App'
 import TransactionIntent from '../transactions/TransactionIntent'
 import Permission from './Permission'
@@ -26,10 +28,19 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 export default class Organization {
   #address: string
   #connector: ConnectorInterface
+  #provider: ethers.providers.Provider
 
-  constructor(address: string, connector: ConnectorInterface) {
+  constructor(
+    address: string,
+    connector: ConnectorInterface,
+    provider?: ethers.providers.Provider,
+    chainId?: number
+  ) {
     this.#address = address
     this.#connector = connector
+    this.#provider =
+      provider ||
+      new ethers.providers.InfuraProvider(chainId || connector.chainId || 1)
   }
 
   ///////// APPS ///////////
@@ -62,16 +73,26 @@ export default class Organization {
 
   ///////// PERMISSIONS ///////////
   async permissions(): Promise<Permission[]> {
-    const allPermissions = await this.#connector.permissionsForOrg(this.#address)
-    return allPermissions.filter(permission => permission.allowed === true)
+    const allPermissions = await this.#connector.permissionsForOrg(
+      this.#address
+    )
+    return allPermissions.filter((permission) => permission.allowed === true)
   }
 
   // async addPermissions(
   //   grantee: string,
-  //   appAddress: string,
   //   roleId: string
   // ): Promise<TransactionIntent> {
-  //   return []
+  //   return new TransactionIntent(
+  //     {
+  //       contractAddress: acl,
+  //       functionName: '',
+  //       functionArgs: [appAddress, grantee, roleId],
+  //     },
+  //     this,
+  //     this.#provider
+  //   )
+  // }
   // }
 
   // async removePermissions(
@@ -110,18 +131,19 @@ export default class Organization {
   // }
 
   ///////// INTENTS ///////////
-  async appIntent(
+  appIntent(
     appAddress: string,
     funcName: string,
-    funcArgs: string[]
-  ): Promise<TransactionIntent> {
+    funcArgs: any[]
+  ): TransactionIntent {
     return new TransactionIntent(
       {
         contractAddress: appAddress,
         functionName: funcName,
         functionArgs: funcArgs,
       },
-      this
+      this,
+      this.#provider
     )
   }
 }

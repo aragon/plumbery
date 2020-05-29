@@ -1,16 +1,19 @@
 // import data from './org-data.json'
-import { Connect, Permission, App, Role, Organization } from '@aragon/connect'
+import { ethers } from 'ethers'
+import gql from 'graphql-tag'
+import { connect, Permission, App, Role, Organization } from '@aragon/connect'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
 import { Voting, VotingVote, VotingCast } from '@aragon/connect-thegraph-voting'
 import { TokenManager } from '@aragon/connect-thegraph-token-manager'
-import gql from 'graphql-tag'
+
+const network = 'mainnet'
 
 const DAO_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
 const ALL_VOTING_SUBGRAPH_URL =
   'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
-const ALL_TOKEN_MANAGER_SUBGRAPH_URL =
-  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-token-rinkeby'
+const SINGLE_TOKEN_MANAGER_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
 
 const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
 const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
@@ -21,6 +24,8 @@ async function main() {
 
   await inspectOrg(org)
 
+  await trySimplePath(org)
+
   await inspectVotingHighLevel(VOTING_APP_ADDRESS)
   await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
@@ -28,14 +33,13 @@ async function main() {
 }
 
 async function initAndGetOrg(): Promise<Organization> {
-  const org = Connect(ORG_ADDRESS, {
-    connector: [
-      'thegraph',
-      {
-        daoSubgraphUrl: DAO_SUBGRAPH_URL,
-      },
-    ],
-  }) as Organization
+  const readProvider = ethers.getDefaultProvider(network)
+
+  const org = (await connect(
+    ORG_ADDRESS,
+    ['thegraph', { daoSubgraphUrl: DAO_SUBGRAPH_URL }],
+    { readProvider }
+  )) as Organization
 
   console.log('\nOrganization initialized')
 
@@ -84,12 +88,30 @@ async function inspectOrg(org: Organization): Promise<void> {
   }
 }
 
+async function trySimplePath(org: Organization): Promise<void> {
+  const financeAddress = '0x34ca726d39eae3c8007d18220da99a3a328cba35'
+
+  const account = '0xB24b54FE5a3ADcB4cb3B27d31B6C7f7E9F6A73a7'
+
+  const intent = org.appIntent(financeAddress, 'newImmediatePayment', [
+    ethers.constants.AddressZero,
+    account,
+    ethers.utils.parseEther('1'),
+    'Tests Payment',
+  ])
+
+  const txPath = await intent.paths(account)
+
+  console.log('\nTransactions on the path:')
+  txPath.transactions.map((tx: any) => console.log(tx))
+}
+
 async function inspectTokenManager(appAddress: string): Promise<void> {
   console.log('\nTokenManager:')
 
   const tokenManager = new TokenManager(
     appAddress,
-    ALL_TOKEN_MANAGER_SUBGRAPH_URL
+    SINGLE_TOKEN_MANAGER_SUBGRAPH_URL
   )
 
   console.log(tokenManager.toString())

@@ -1,13 +1,37 @@
-import { RoleData } from '@aragon/connect'
+import { RoleData, PermissionData } from '@aragon/connect'
 import { App as AppDataGql } from '../queries/types'
+import { Param as ParamDataGql } from '../queries/types'
+import { Permission as PermissionDataGql } from '../queries/types'
 import { Role as RoleDataGql } from '../queries/types'
 import { QueryResult } from '../types'
 
 function _parseRole(role: RoleDataGql, artifact?: string | null): RoleData {
+  const grantees =
+    role?.grantees &&
+    role?.grantees.map(
+      (permission: PermissionDataGql): PermissionData => {
+        return {
+          appAddress: permission.appAddress,
+          allowed: permission.allowed,
+          granteeAddress: permission.granteeAddress,
+          params:
+            permission.params.map((param: ParamDataGql) => {
+              return {
+                argumentId: param.argumentId,
+                operationType: param.operationType,
+                argumentValue: param.argumentValue,
+              }
+            }) || [],
+          roleHash: permission.roleHash,
+        }
+      }
+    )
+
   return {
     appAddress: role.appAddress,
     manager: role.manager,
     hash: role.roleHash,
+    grantees,
     artifact,
   }
 }

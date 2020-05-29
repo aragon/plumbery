@@ -8,6 +8,7 @@ An object describing a transaction that can get signed by a library like ethers.
 | ---------- | -------- | -------------------------------------------------------- |
 | `chainId`  | `Number` | Chain ID of the network.                                 |
 | `data`     | `String` | Transaction data.                                        |
+| `from`     | `String` | Address to use as default sender.                        |
 | `gas`      | `String` | Price (in wei) per unit of gas. Duplicate of `gasPrice`. |
 | `gasLimit` | `Number` | Maximum gas this transaction may spend.                  |
 | `gasPrice` | `String` | Price (in wei) per unit of gas.                          |

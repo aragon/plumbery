@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@aragon/connect-ethereum": "*",
-    "@aragon/connect-thegraph": "*"
+    "@aragon/connect-thegraph": "*",
+    "ethers": "^4.0.0"
   }
 }

@@ -8,6 +8,7 @@ import {
   AragonEnvironment,
   AragonManifest,
 } from '../types'
+import { parseMetadata } from '../utils/parseMetadata'
 import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
@@ -73,7 +74,7 @@ export default class App extends Entity implements AppData {
         functions,
         deprecatedFunctions,
         abi,
-      }: AragonArtifact = JSON.parse(artifact)
+      }: AragonArtifact = parseMetadata(artifact, 'artifact.json')
 
       this.appName = appName
       this.contractPath = path
@@ -89,7 +90,7 @@ export default class App extends Entity implements AppData {
         start_url: htmlPath,
         icons,
         source_url: sourceUrl,
-      }: AragonManifest = JSON.parse(manifest)
+      }: AragonManifest = parseMetadata(manifest, 'manifest.json')
 
       this.author = author
       this.description = description
