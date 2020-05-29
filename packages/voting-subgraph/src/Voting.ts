@@ -88,11 +88,15 @@ function _populateVoteDataFromContract(vote: VoteEntity, appAddress: Address, vo
 }
 
 function _populateVoteDataFromEvent(vote: VoteEntity, event: StartVoteEvent): void {
+  vote.transactionHash = event.transaction.hash
+  vote.timestamp = event.block.timestamp
   vote.creator = event.params.creator
   vote.metadata = event.params.metadata
 }
 
 function _populateCastDataFromEvent(cast: CastEntity, event: CastVoteEvent, voteNum: BigInt): void {
+  cast.transactionHash = event.transaction.hash
+  cast.timestamp = event.block.timestamp
   cast.voteNum = voteNum
   cast.voter = event.params.voter
   cast.supports = event.params.supports

@@ -1,11 +1,13 @@
 type Vote @entity {
   id: ID!
+  transactionHash: Bytes!
   orgAddress: Bytes!
   appAddress: Bytes!
   creator: Bytes!
   metadata: String!
   open: Boolean!
   executed: Boolean!
+  timestamp: BigInt!
   startDate: BigInt!
   snapshotBlock: BigInt!
   supportRequiredPct: BigInt!
@@ -20,6 +22,8 @@ type Vote @entity {
 
 type Cast @entity {
   id: ID!
+  transactionHash: Bytes!
+  timestamp: BigInt!
   voteNum: BigInt!
   voter: Bytes!
   supports: Boolean!
