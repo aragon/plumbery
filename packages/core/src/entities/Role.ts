@@ -5,14 +5,14 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 export interface RoleData {
   appAddress: string
   artifact?: string | null
-  bytes: string
+  hash: string
   manager?: string
 }
 
 export default class Role extends Entity implements RoleData {
   readonly appAddress!: string
-  readonly bytes!: string
-  readonly id?: string
+  readonly description?: string
+  readonly hash!: string
   readonly name?: string
   readonly manager?: string
   readonly params?: string
@@ -25,9 +25,10 @@ export default class Role extends Entity implements RoleData {
     if (artifact) {
       const { roles }: AragonArtifact = JSON.parse(artifact)
 
-      const role = roles.find((role) => role.bytes === this.bytes)
+      const role = roles.find((role) => role.bytes === data.hash)
 
-      Object.assign(this, role)
+      this.name = role?.id
+      this.description = role?.name
     }
 
     Object.assign(this, data)

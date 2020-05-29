@@ -6,7 +6,7 @@ dist/
 packages/dao-subgraph/src/helpers/ens.ts
 
 # Production subgraph
-types
+generated
 subgraph.yaml
 
 .yarn/*

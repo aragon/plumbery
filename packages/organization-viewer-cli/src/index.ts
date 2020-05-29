@@ -1,40 +1,41 @@
 // import data from './org-data.json'
-import { Connect, Permission, App, Organization } from '@aragon/connect'
+import { Connect, Permission, App, Role, Organization } from '@aragon/connect'
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
 import { Voting, VotingVote, VotingCast } from '@aragon/connect-thegraph-voting'
-import {
-  TokenManager,
-  Token,
-  TokenHolder,
-} from '@aragon/connect-thegraph-token-manager'
+import { TokenManager } from '@aragon/connect-thegraph-token-manager'
 import gql from 'graphql-tag'
 
-const ORG_ADDRESS = '0x00018d22ece8b2ea4e9317b93f7dff67385693d8'
+const DAO_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet-staging'
+const ALL_VOTING_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-voting'
+const ALL_TOKEN_MANAGER_SUBGRAPH_URL =
+  'https://api.thegraph.com/subgraphs/name/ajsantander/aragon-token-rinkeby'
+
+const ORG_ADDRESS = '0x0c188b183ff758500d1d18b432313d10e9f6b8a4'
+const VOTING_APP_ADDRESS = '0x8012a3f8632870e64994751f7e0a6da2a287eda3'
+const TOKENS_APP_ADDRESS = '0x8db3b9d93275ed6de3351846487117da02ab4e96'
 
 async function main() {
   const org = await initAndGetOrg()
 
   await inspectOrg(org)
 
-  await inspectVotingHighLevel(org)
-  await inspectVotingLowLevel(org)
+  await inspectVotingHighLevel(VOTING_APP_ADDRESS)
+  await inspectVotingLowLevel(VOTING_APP_ADDRESS)
 
-  await inspectTokenManager(org)
+  await inspectTokenManager(TOKENS_APP_ADDRESS)
 }
 
 async function initAndGetOrg(): Promise<Organization> {
-  const org = Connect(
-    ORG_ADDRESS, // location,
-    {
-      connector: [
-        'thegraph',
-        {
-          daoSubgraphUrl:
-            'https://api.thegraph.com/subgraphs/name/0xgabi/dao-subgraph-staging',
-        },
-      ],
-    }
-  ) as Organization
+  const org = Connect(ORG_ADDRESS, {
+    connector: [
+      'thegraph',
+      {
+        daoSubgraphUrl: DAO_SUBGRAPH_URL,
+      },
+    ],
+  }) as Organization
 
   console.log('\nOrganization initialized')
 
@@ -59,8 +60,14 @@ async function inspectOrg(org: Organization): Promise<void> {
   })
 
   console.log('\nA voting app:')
-  const votingApp = apps.find((app: App) => app.name == 'voting')!
+  const votingApp = apps.find((app: App) => app.name == 'dandelion-voting')!
   console.log(votingApp.toString())
+
+  console.log('\nRoles of an app:')
+  const roles = await votingApp.roles()
+  roles.map((role: Role) => {
+    console.log(role.toString())
+  })
 
   console.log('\nA repo from an app:')
   const repo = await apps[2].repo()
@@ -77,17 +84,14 @@ async function inspectOrg(org: Organization): Promise<void> {
   }
 }
 
-async function inspectTokenManager(org: Organization): Promise<void> {
-  const apps = await org.apps()
-  const app = apps.find(
-    (app: App) => app.address == '0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844'
-  )!
-
+async function inspectTokenManager(appAddress: string): Promise<void> {
   console.log('\nTokenManager:')
+
   const tokenManager = new TokenManager(
-    app,
-    'https://api.thegraph.com/subgraphs/name/ajsantander/token-manager'
+    appAddress,
+    ALL_TOKEN_MANAGER_SUBGRAPH_URL
   )
+
   console.log(tokenManager.toString())
 
   console.log('\nToken:')
@@ -99,45 +103,46 @@ async function inspectTokenManager(org: Organization): Promise<void> {
   console.log(holders)
 }
 
-async function inspectVotingHighLevel(org: Organization): Promise<void> {
-  const apps = await org.apps()
-  const app = apps.find((app: App) => app.name == 'voting')!
-
+async function inspectVotingHighLevel(appAddress: string): Promise<void> {
   console.log('\nVoting:')
-  const voting = new Voting(
-    app,
-    'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
-  )
+
+  const voting = new Voting(appAddress, ALL_VOTING_SUBGRAPH_URL)
+
   console.log(voting.toString())
 
   console.log('\nVotes:')
   const votes = await voting.votes()
   votes.map((vote: VotingVote) => console.log(vote.toString()))
 
-  console.log('\nCasts:')
-  const vote = votes[0]
-  const casts = await vote.casts()
-  casts.map((cast: VotingCast) => console.log(cast.toString()))
+  if (votes.length == 0) {
+    return
+  }
 
   console.log('\nAnalysis of a vote:')
+  const vote = votes[0]
   console.log(
     `Vote for "${vote.metadata}" was ${
       vote.executed ? 'executed' : 'not executed'
     }, with ${vote.yea} yeas and ${vote.nay} nays.`
   )
+
+  console.log('\nCasts:')
+  const casts = await vote.casts()
+  casts.map((cast: VotingCast) => console.log(cast.toString()))
+
   const voters = casts.map((cast: VotingCast) => cast.voter)
   console.log('Voters:', voters)
 }
 
-async function inspectVotingLowLevel(org: Organization): Promise<void> {
+async function inspectVotingLowLevel(appAddress: string): Promise<void> {
   console.log('\nLow-level inspection of a voting app:')
-  const wrapper = new GraphQLWrapper(
-    'https://api.thegraph.com/subgraphs/name/ajsantander/voting-subgraph'
-  )
+  const wrapper = new GraphQLWrapper(ALL_VOTING_SUBGRAPH_URL)
 
   const results = await wrapper.performQuery(gql`
     query {
-      votes {
+      votes(where:{
+        appAddress: "${appAddress}"
+      }) {
         id
         metadata
         creator

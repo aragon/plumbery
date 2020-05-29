@@ -17,5 +17,6 @@ export function parseRepo(result: QueryResult): RepoData {
     contentUri: repo.lastVersion?.contentUri,
     manifest: repo.lastVersion?.manifest,
     name: repo.name,
+    registry: repo.registry?.name
   }
 }

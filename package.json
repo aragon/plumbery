@@ -2,14 +2,26 @@
   "name": "root",
   "private": true,
   "devDependencies": {},
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@graphprotocol/graph-ts",
+      "**/@graphprotocol/graph-ts/**",
+      "**/@graphprotocol/graph-cli",
+      "**/@graphprotocol/graph-cli/**"
+    ]
+  },
   "scripts": {
     "postinstall": "./scripts/first-build.sh",
     "core": "yarn workspace @aragon/connect",
     "connector-ethereum": "yarn workspace @aragon/connect-ethereum",
     "connector-thegraph": "yarn workspace @aragon/connect-thegraph",
+    "connector-thegraph-voting": "yarn workspace @aragon/connect-thegraph-voting",
+    "connector-thegraph-token-manager": "yarn workspace @aragon/connect-thegraph-token-manager",
     "react": "yarn workspace @aragon/connect-react",
-    "build": "yarn connector-ethereum build; yarn connector-thegraph build; yarn core build",
-    "clean": "yarn connector-ethereum clean && yarn connector-thegraph clean && yarn core clean"
+    "build": "yarn connector-ethereum build; yarn connector-thegraph build; yarn core build; yarn connector-thegraph-voting build; yarn connector-thegraph-token-manager build",
+    "clean": "yarn connector-ethereum clean && yarn connector-thegraph clean && yarn core clean; yarn connector-thegraph-voting clean; yarn connector-thegraph-token-manager clean"
   }
 }

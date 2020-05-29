@@ -19,19 +19,28 @@ import {
 } from './parsers'
 
 export type ConnectorTheGraphConfig = {
-  daoSubgraphUrl: string
+  daoSubgraphUrl?: string
   verbose?: boolean
 }
 
+const DAO_SUBGRAPH_URL_DEFAULT =
+  'https://api.thegraph.com/subgraphs/name/aragon/aragon-mainnet'
+
+// https://api.thegraph.com/subgraphs/name/ensdomains/ens
+// https://api.thegraph.com/subgraphs/name/ensdomains/ensrinkeby
+
 export default class ConnectorTheGraph extends GraphQLWrapper
   implements ConnectorInterface {
-  constructor(config: ConnectorTheGraphConfig) {
-    super(config.daoSubgraphUrl, config.verbose)
+  constructor({
+    daoSubgraphUrl = DAO_SUBGRAPH_URL_DEFAULT,
+    verbose = false,
+  }: ConnectorTheGraphConfig = {}) {
+    super(daoSubgraphUrl, verbose)
   }
 
   async rolesForAddress(appAddress: string): Promise<Role[]> {
     const result = await this.performQuery(queries.ROLE_BY_APP_ADDRESS, {
-      appAddress,
+      appAddress: appAddress.toLowerCase(),
     })
 
     const datas = this.parseQueryResult(parseRoles, result)
@@ -43,7 +52,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper
 
   async permissionsForOrg(orgAddress: string): Promise<Permission[]> {
     const result = await this.performQuery(queries.ORGANIZATION_PERMISSIONS, {
-      orgAddress,
+      orgAddress: orgAddress.toLowerCase(),
     })
 
     const datas = this.parseQueryResult(parsePermissions, result)
@@ -55,7 +64,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper
 
   async appsForOrg(orgAddress: string): Promise<App[]> {
     const result = await this.performQuery(queries.ORGANIZATION_APPS, {
-      orgAddress,
+      orgAddress: orgAddress.toLowerCase(),
     })
 
     const datas = this.parseQueryResult(parseApps, result)
@@ -67,7 +76,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper
 
   async appByAddress(appAddress: string): Promise<App> {
     const result = await this.performQuery(queries.APP_BY_ADDRESS, {
-      appAddress,
+      appAddress: appAddress.toLowerCase(),
     })
 
     const data = this.parseQueryResult(parseApp, result)
@@ -77,7 +86,7 @@ export default class ConnectorTheGraph extends GraphQLWrapper
 
   async repoForApp(appAddress: string): Promise<Repo> {
     const result = await this.performQuery(queries.REPO_BY_APP_ADDRESS, {
-      appAddress,
+      appAddress: appAddress.toLowerCase(),
     })
 
     const data = this.parseQueryResult(parseRepo, result)

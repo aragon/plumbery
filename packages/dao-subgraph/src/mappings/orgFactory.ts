@@ -1,60 +1,19 @@
-import {Bytes, Address} from '@graphprotocol/graph-ts'
-
 // Import event types from the contract ABI
-import {DeployDAO as DeployDAOEvent} from '../types/OrgFactory/DAOFactory'
+import { DeployDAO as DeployDAOEvent } from '../../generated/DaoFactory/DAOFactory'
 
 // Import entity types from the schema
 import {
   OrgFactory as FactoryEntity,
   Organization as OrganizationEntity,
-  App as AppEntity,
-  Implementation as ImplementationEntity,
-} from '../types/schema'
+} from '../../generated/schema'
 
 // Import templates types
-import {Organization as OrganizationTemplate} from '../types/templates'
-import {Kernel as KernelContract} from '../types/templates/Organization/Kernel'
-
-import {KERNEL_CORE_APP_ID, KERNEL_CORE_NAMESPACE} from '../helpers/constants'
-
-function addKernelApp(
-  kernelProxyAddress: Address,
-  kernel: KernelContract,
-  org: OrganizationEntity,
-): void {
-  // handle kernel implementation
-  const implementationId = KERNEL_CORE_NAMESPACE.concat('-').concat(
-    KERNEL_CORE_APP_ID,
-  )
-  const implementation = new ImplementationEntity(
-    implementationId,
-  ) as ImplementationEntity
-  implementation.address = kernel.getApp(
-    Bytes.fromHexString(KERNEL_CORE_NAMESPACE) as Bytes,
-    Bytes.fromHexString(KERNEL_CORE_APP_ID) as Bytes,
-  )
-
-  implementation.save()
-
-  // handle kernel implementation
-  const app = new AppEntity(kernelProxyAddress.toHex()) as AppEntity
-  app.address = kernelProxyAddress
-  app.appId = KERNEL_CORE_APP_ID
-  app.implementation = implementationId
-
-  const orgApps = org.apps || []
-  orgApps.push(app.id)
-  org.apps = orgApps
-
-  app.save()
-}
+import { Kernel as OrganizationTemplate } from '../../generated/templates'
+import { Kernel as KernelContract } from '../../generated/templates/Kernel/Kernel'
 
 export function handleDeployDAO(event: DeployDAOEvent): void {
   let factory = FactoryEntity.load('1')
   const factoryAddress = event.address
-
-  const orgId = event.params.dao.toHexString()
-  const orgAddress = event.params.dao
 
   // if no factory yet, set up empty
   if (factory == null) {
@@ -65,16 +24,18 @@ export function handleDeployDAO(event: DeployDAOEvent): void {
   }
   factory.orgCount = factory.orgCount + 1
 
+  const orgId = event.params.dao.toHexString()
+  const orgAddress = event.params.dao
+
   let kernel = KernelContract.bind(orgAddress)
 
-  // create new dao
-  const org = new OrganizationEntity(orgId) as OrganizationEntity
+  // create new org
+  const org = new OrganizationEntity(orgId)
   org.address = orgAddress
   org.recoveryVault = kernel.getRecoveryVault()
   org.acl = kernel.acl()
-
-  // add kernel app
-  addKernelApp(orgAddress, kernel, org)
+  org.apps = []
+  org.permissions = []
 
   // add the org to the factory
   const currentOrganizations = factory.organizations

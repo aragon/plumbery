@@ -15,6 +15,7 @@ function _parseApp(app: AppDataGql): AppData {
     kernelAddress: app.organization?.address,
     manifest: app.version?.manifest,
     name: app.repo?.name,
+    registry: app.repo?.registry?.name,
     registryAddress: app.repo?.registry?.address,
     repoAddress: app.repo?.address,
     version: app.version?.semanticVersion.replace(/,/g, '.'),

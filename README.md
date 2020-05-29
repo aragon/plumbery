@@ -7,7 +7,7 @@
 const org = await connect('org.aragonid.eth')
 
 // Intents can be converted in a transaction.
-const intent = await myOrg.removeApp('0x…')
+const intent = await org.removeApp('0x…')
 
 // Get the transactions for the intent with the current account
 const transactions = await intent.transactions(wallet.address)

@@ -1,14 +1,14 @@
 // Import event types from the contract ABI
-import {DeployAPM as DeployAPMEvent} from '../types/ApmRegistryFactory/APMRegistryFactory'
+import { DeployAPM as DeployAPMEvent } from '../../generated/ApmRegistryFactory/APMRegistryFactory'
 
 // Import entity types from the schema
 import {
   RegistryFactory as RegistryFactoryEntity,
   Registry as RegistryEntity,
-} from '../types/schema'
+} from '../../generated/schema'
 
 // Import templates types
-import {Registry as RegistryTemplate} from '../types/templates'
+import { Registry as RegistryTemplate } from '../../generated/templates'
 
 import {
   APM_REGISTRY_NODE,
@@ -20,11 +20,6 @@ export function handleDeployAPM(event: DeployAPMEvent): void {
   let factory = RegistryFactoryEntity.load('1')
   const factoryAddress = event.address
 
-  const registryId = event.params.apm.toHex()
-  const registryAddress = event.params.apm
-
-  const node = event.params.node
-
   // if no factory yet, set up empty
   if (factory == null) {
     factory = new RegistryFactoryEntity('1')
@@ -33,6 +28,10 @@ export function handleDeployAPM(event: DeployAPMEvent): void {
     factory.registries = []
   }
   factory.registryCount = factory.registryCount + 1
+
+  const registryId = event.params.apm.toHex()
+  const registryAddress = event.params.apm
+  const node = event.params.node
 
   // solve registry name
   let name = ''
@@ -45,7 +44,7 @@ export function handleDeployAPM(event: DeployAPMEvent): void {
   }
 
   // create new registry
-  const registry = new RegistryEntity(registryId) as RegistryEntity
+  const registry = new RegistryEntity(registryId)
   registry.address = registryAddress
   registry.node = node
   registry.name = name

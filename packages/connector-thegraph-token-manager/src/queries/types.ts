@@ -24,14 +24,25 @@ export type Scalars = {
   Bytes: any
 }
 
-export type Token = {
-  __typename?: 'Token'
+export type TokenManager = {
+  __typename?: 'TokenManager'
+  id: Scalars['ID']
+  address: Scalars['Bytes']
+  orgAddress: Scalars['Bytes']
+  token: MiniMeToken
+}
+
+export type MiniMeToken = {
+  __typename?: 'MiniMeToken'
   id: Scalars['ID']
   address: Scalars['Bytes']
   totalSupply: Scalars['BigInt']
   transferable: Scalars['Boolean']
   name: Scalars['String']
   symbol: Scalars['String']
+  orgAddress: Scalars['Bytes']
+  appAddress: Scalars['Bytes']
+  tokenManager: TokenManager
   holders: Array<TokenHolder>
 }
 
@@ -39,16 +50,7 @@ export type TokenHolder = {
   __typename?: 'TokenHolder'
   id: Scalars['ID']
   address: Scalars['Bytes']
+  tokenAddress: Scalars['Bytes']
   balance: Scalars['BigInt']
-  approvals: Array<Approval>
-}
-
-export type Approval = {
-  __typename?: 'Approval'
-  id: Scalars['ID']
-  owner: Scalars['Bytes']
-  spender: Scalars['Bytes']
-  amount: Scalars['BigInt']
-  txHash: Scalars['Bytes']
 }
 

@@ -2,7 +2,7 @@ export { default as ConnectorEthereum } from '@aragon/connect-ethereum'
 export { default as ConnectorTheGraph } from '@aragon/connect-thegraph'
 export { ConnectorInterface } from './connections/ConnectorInterface'
 export { default as ConnectorJson } from './connections/ConnectorJson'
-export { default as Connect } from './connections/Connect'
+export { default as connect } from './connections/connect'
 
 // TODO: Use index.ts in src/wrappers instead?
 export { default as Organization } from './entities/Organization'

@@ -4,15 +4,15 @@ import Entity from './Entity'
 import Token from './Token'
 
 export default class TokenManager extends Entity {
-  readonly app: App
+  readonly appAddress: string
 
-  constructor(app: App, subgraphUrl: string) {
+  constructor(appAddress: string, subgraphUrl: string) {
     super(new TokenManagerConnectorTheGraph(subgraphUrl))
 
-    this.app = app
+    this.appAddress = appAddress
   }
 
   async token(): Promise<Token> {
-    return this._connector.token()
+    return this._connector.token(this.appAddress)
   }
 }

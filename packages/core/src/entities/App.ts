@@ -12,19 +12,19 @@ import { ConnectorInterface } from '../connections/ConnectorInterface'
 
 // TODO: Implement all properties and methods from the API spec (https://github.com/aragon/plumbery/blob/master/docs/app.md).
 // [ ] (ipfs) contentUrl 	String 	The HTTP URL of the app content. Uses the IPFS HTTP provider. E.g. http://gateway.ipfs.io/ipfs/QmdLEDDfi…/ (ContentUri passing through the resolver)
-// [ ] registry 	String 	Name of the aragonPM registry for this app. E.g. "aragonpm.eth"
 
 export interface AppData {
   address: string
   appId: string
   artifact?: string | null
   codeAddress: string
-  contentUri?: string
+  contentUri?: string | null
   isForwarder?: boolean | null
   isUpgradeable?: boolean | null
   kernelAddress: string
   manifest?: string | null
   name?: string
+  registry?: string | null
   registryAddress: string
   repoAddress?: string
   version?: string
@@ -47,8 +47,8 @@ export default class App extends Entity implements AppData {
   readonly intents?: AppIntent[]
   readonly deprecatedIntents?: { [version: string]: AppIntent[] }
   readonly icons?: { src: string; sizes: string }[]
-  readonly isForwarder?: boolean | null
-  readonly isUpgradeable?: boolean | null
+  readonly isForwarder?: boolean
+  readonly isUpgradeable?: boolean
   readonly kernelAddress!: string
   readonly name?: string
   readonly registryAddress!: string
