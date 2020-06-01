@@ -24,4 +24,4 @@
         handler: handleDeployToken
       - event: InstalledApp(address,bytes32)
         handler: handleInstalledApp
-    file: ./src/aragon/DAOTemplate.ts
+    file: ./src/aragon/mappings/DAOTemplate.ts

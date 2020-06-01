@@ -1,16 +1,16 @@
 import { Address, DataSourceTemplate } from '@graphprotocol/graph-ts'
-import { AragonInfo as AragonInfoEntity } from '../../../generated/schema'
-import { Kernel as KernelTemplate } from '../../../generated/templates'
+import { AragonInfo as AragonInfoEntity } from '../../generated/schema'
+import { Kernel as KernelTemplate } from '../../generated/templates'
 // import { Token as TokenTemplate } from '../../../generated/templates'
-import * as hooks from '../../hooks'
+import * as hooks from '../aragon-hooks'
 
 export function processOrg(orgAddress: Address): void {
   if (!_isRegistered(orgAddress, 'org')) {
     KernelTemplate.create(orgAddress)
     hooks.onOrgTemplateCreated(orgAddress)
-  }
 
-  _registerEntity(orgAddress, 'org')
+    _registerEntity(orgAddress, 'org')
+  }
 }
 
 export function processApp(appAddress: Address, appId: string): void {
@@ -20,18 +20,18 @@ export function processApp(appAddress: Address, appId: string): void {
       DataSourceTemplate.create(templateType, [appAddress.toHexString()])
       hooks.onAppTemplateCreated(appAddress, appId)
     }
-  }
 
-  _registerEntity(appAddress, 'app')
+    _registerEntity(appAddress, 'app')
+  }
 }
 
 export function processToken(tokenAddress: Address): void {
   if (!_isRegistered(tokenAddress, 'token')) {
     // TokenTemplate.create(tokenAddress)
     hooks.onTokenTemplateCreated(tokenAddress)
-  }
 
-  _registerEntity(tokenAddress, 'token')
+    _registerEntity(tokenAddress, 'token')
+  }
 }
 
 function _isRegistered(address: Address, type: string): boolean {

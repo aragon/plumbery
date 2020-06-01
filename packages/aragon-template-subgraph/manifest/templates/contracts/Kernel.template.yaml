@@ -27,4 +27,4 @@
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy
-    file: ./src/aragon/Kernel.ts
+    file: ./src/aragon/mappings/Kernel.ts

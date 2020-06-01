@@ -1,8 +1,8 @@
-import { DeployDao as DeployDaoEvent } from '../../generated/bare-template.aragonpm.eth@1.0.0/DAOTemplate'
-import { processOrg } from './helpers/aragon'
+import { DeployDao as DeployDaoEvent } from '../../../generated/bare-template.aragonpm.eth@1.0.0/DAOTemplate'
+import * as aragon from '../aragon'
 
 export function handleDeployDao(event: DeployDaoEvent): void {
-  processOrg(event.params.dao)
+  aragon.processOrg(event.params.dao)
 }
 
 export function handleInstalledApp(): void {}
