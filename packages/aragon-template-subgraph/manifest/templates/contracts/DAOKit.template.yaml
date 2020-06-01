@@ -16,6 +16,10 @@
       - name: DAOKit
         file: ./abis/DAOKit.json
     eventHandlers:
-      - event: DeployDAO(address)
-        handler: handleDeployDAO
-    file: ./src/aragon/mappings/DAOFactory.ts
+      - event: DeployInstance(address,indexed address)
+        handler: handleDeployInstance
+      - event: InstalledApp(address,bytes32)
+        handler: handleInstalledApp
+      - event: DeployToken(address,indexed address)
+        handler: handleDeployToken
+    file: ./src/aragon/mappings/DAOKit.ts
