@@ -80,6 +80,10 @@ function _getAragonInfo(): AragonInfoEntity {
   if (!aragon) {
     aragon = new AragonInfoEntity(aragonId)
 
+    aragon.orgs = []
+    aragon.apps = []
+    aragon.tokens = []
+
     aragon.save()
   }
 
