@@ -3,7 +3,7 @@
   name: {{name}}
   network: {{network}}
   source:
-    abi: DAOKit
+    abi: MiniMeTokenFactory
     address: '{{address}}'
     startBlock: {{startBlock}}
   mapping:
@@ -13,10 +13,10 @@
     entities:
       - NoEnt
     abis:
-      - name: DAOKit
-        file: ./abis/DAOKit.json
+      - name: MiniMeTokenFactory
+        file: ./abis/MiniMeTokenFactory.json
     eventHandlers:
-      - event: DeployDAO(address)
-        handler: handleDeployDAO
-    file: ./src/aragon/mappings/DAOFactory.ts
+      - event: NewFactoryCloneToken(indexed address,indexed address,indexed uint256)
+        handler: handleNewFactoryCloneToken
+    file: ./src/aragon/mappings/MiniMeTokenFactory.ts
 
