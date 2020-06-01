@@ -1,8 +1,6 @@
-import { DeployDAO as DeployDAOEvent } from '../../generated/DAOFactory/DAOFactory'
-import { Kernel as KernelTemplate } from '../../generated/templates'
+import { DeployDAO as DeployDAOEvent } from '../../generated/DAOFactory@0.6/DAOFactory'
+import { processOrg } from './helpers/aragon'
 
 export function handleDeployDAO(event: DeployDAOEvent): void {
-  let orgAddress = event.params.dao
-
-  KernelTemplate.create(orgAddress)
+  processOrg(event.params.dao)
 }
